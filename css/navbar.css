@@ -1,7 +1,13 @@
 /* Стили для навигационной панели */
 .navbar {
-    display: flex;
-    align-items: center;
+    background-color: #444; /* Цвет фона меню */
+    padding: 10px 20px; /* Внутренние отступы */
+    position: fixed; /* Фиксированное положение */
+    top: 60px; /* Прижато к хедеру (высота хедера) */
+    left: 0;
+    right: 0;
+    z-index: 999; /* Меню под хедером */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Тень */
 }
 
 .nav-links {
