@@ -3,7 +3,14 @@
         <li><a href="/dashboard.php">Главная</a></li>
         <li><a href="#">Создать задание</a></li>
         <li><a href="#">Задания</a></li>
-        <li><a href="/FR_register.php">Зарегистрировать</a></li>
-        <li><a href="/logout.php">Выход</a></li>
+        <li class="dropdown"> <!-- Добавляем класс для выпадающего меню -->
+            <a href="#"><i class="fas fa-users"></i> Учетные записи <i class="fas fa-caret-down"></i></a>
+            <ul class="dropdown-menu">
+                <li><a href="/my_account.php"><i class="fas fa-user"></i> Моя учетная запись</a></li>
+                <li><a href="/all_accounts.php"><i class="fas fa-users"></i> Все учетные записи</a></li>
+                <li><a href="/FR_register.php"><i class="fas fa-user-plus"></i> Зарегистрировать</a></li>
+            </ul>
+        </li>
+        <li class="push-right"><a href="/logout.php">Выход</a></li>
     </ul>
 </nav>

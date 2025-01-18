@@ -15,22 +15,67 @@
     display: flex;
     margin: 0;
     padding: 0;
+    align-items: center; /* Выравниваем элементы по вертикали */
 }
 
 .nav-links li {
-    margin-left: 20px; /* Отступ между пунктами меню */
+    margin-left: 10px; /* Отступ между пунктами меню */
+    position: relative; /* Для позиционирования выпадающего меню */
+}
+
+/* Выравниваем два последних элемента по правому краю */
+.nav-links li.push-right {
+    margin-left: auto; /* Автоматический отступ слева */
 }
 
 .nav-links a {
-    color: #fff; /* Цвет текста */
-    text-decoration: none; /* Убираем подчёркивание */
-    font-size: 1em; /* Размер шрифта */
-    padding: 5px 10px; /* Внутренние отступы */
-    transition: background-color 0.3s ease; /* Плавный переход */
+    color: var(--navbar-text-color);
+    text-decoration: none;
+    font-size: 1em;
+    padding: var(--navbar-link-padding);
+    transition: var(--navbar-transition);
+    border-radius: var(--navbar-border-radius);
+    display: flex;
+    align-items: center; /* Выравниваем иконки и текст по вертикали */
 }
 
 /* Эффект при наведении на ссылки */
 .nav-links a:hover {
-    background-color: #555; /* Цвет фона при наведении */
-    border-radius: 5px; /* Закруглённые углы */
+    background-color: var(--navbar-hover-bg-color);
+}
+
+/* Активная ссылка */
+.nav-links a.active {
+    background-color: var(--navbar-hover-bg-color);
+    font-weight: bold;
+}
+
+/* Стили для выпадающего меню */
+.dropdown-menu {
+    display: none; /* Скрываем выпадающее меню по умолчанию */
+    position: absolute;
+    top: 100%; /* Позиционируем ниже родительского элемента */
+    left: 0;
+    background-color: var(--dropdown-bg-color);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    min-width: 200px; /* Минимальная ширина выпадающего меню */
+    border-radius: var(--navbar-border-radius);
+    box-shadow: var(--navbar-shadow);
+    z-index: 1000; /* Убедимся, что меню поверх других элементов */
+}
+
+.dropdown-menu li {
+    margin: 0; /* Убираем отступы между пунктами */
+}
+
+.dropdown-menu a {
+    padding: 10px 20px; /* Отступы для ссылок в выпадающем меню */
+    display: block; /* Ссылки занимают всю ширину */
+}
+
+/* Показываем выпадающее меню при наведении */
+.dropdown:hover .dropdown-menu {
+    display: block;
 }
