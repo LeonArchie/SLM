@@ -1,5 +1,11 @@
 <?php
 	session_start();
+	// Проверка, авторизован ли пользователь
+	//if (!isset($_SESSION['user']) || !isset($_COOKIE['session_id']) || $_COOKIE['session_id'] !== session_id()) {
+		// Если пользователь не авторизован или куки не совпадают, перенаправляем на страницу авторизации
+		//header("Location: logout.php");
+	//exit();
+	//}
 	// Генерация CSRF-токена, если он еще не создан
 	if (empty($_SESSION['csrf_token'])) {
 		$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -46,15 +52,15 @@
 		<!-- Подключение стилей -->
 		<link 
 			rel="stylesheet" 
-			href="/css/register.css"
-		/>
-		<link 
-			rel="stylesheet" 
 			href="/css/all.css"
 		/>
 		<link 
 			rel="stylesheet" 
 			href="/css/navbar.css"
+		/>
+		<link 
+			rel="stylesheet" 
+			href="/css/register.css"
 		/>
 		<!-- Фавикон -->
 		<link
