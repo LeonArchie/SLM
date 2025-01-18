@@ -1,0 +1,74 @@
+.authorization {
+    background-color: #ffffff; /* Белый фон */
+    border: 2px solid #333; /* Рамка */
+    border-radius: 20px; /* Закруглённые углы */
+    padding: 30px; /* Внутренние отступы */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Тень */
+    width: 400px; /* Ширина блока */
+    text-align: center; /* Выравнивание текста по центру */
+	margin: 0 auto; /* Центрирование блока по горизонтали */
+}
+
+.authorization h2 {
+    margin-top: 0; /* Убираем отступ сверху у заголовка */
+	margin-bottom: 15px; /* Отступ снизу для заголовка */
+    font-size: 1.5em; /* Размер шрифта заголовка */
+    color: #333; /* Цвет текста */
+    text-align: center; /* Выравнивание текста по центру */
+}
+
+.authorization form {
+    display: flex;
+    flex-direction: column; /* Элементы формы в колонку */
+    gap: 15px; /* Отступ между элементами формы */
+}
+
+.authorization .input-group {
+    display: flex; /* Размещаем label и input в одной строке */
+    align-items: center; /* Выравниваем по вертикали */
+    gap: 6px; /* Отступ между label и input */
+}
+
+.authorization label {
+    flex: 0 0 80px; /* Фиксированная ширина для label */
+    font-size: 1em;
+    color: #333;
+    text-align: right; /* Выравнивание текста label по правому краю */
+}
+
+.authorization input[type="text"],
+.authorization input[type="password"] {
+    padding: 10px; /* Внутренние отступы */
+    border: 1px solid #ccc; /* Рамка */
+    border-radius: 5px; /* Закруглённые углы */
+    font-size: 1em; /* Размер шрифта */
+	flex: 1; /* Занимает всё оставшееся пространство */
+	box-sizing: border-box; /* Учитываем padding и border в ширине */
+	height: auto; /* Автоматическая высота */
+	line-height: 1.1; /* Увеличиваем межстрочный интервал */
+}
+
+.authorization input[type="submit"] {
+    padding: 8px; /* Внутренние отступы */
+    background-color: #007bff; /* Цвет фона кнопки */
+    color: white; /* Цвет текста */
+    border: none; /* Убираем рамку */
+    border-radius: 5px; /* Закруглённые углы */
+    font-size: 1.1em; /* Размер шрифта */
+    cursor: pointer; /* Курсор в виде указателя */
+    transition: background-color 0.3s ease; /* Плавное изменение цвета */
+}
+
+.authorization input[type="submit"]:hover {
+    background-color: #0056b3; /* Цвет фона при наведении */
+}
+
+.error-message {
+    color: red;
+    font-size: 1.1em;
+    margin-top: 10px;
+    text-align: center;
+    padding: 10px;
+    background-color: #ffe6e6; /* Светло-красный фон */
+    border-radius: 40px;
+}
