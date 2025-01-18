@@ -48,7 +48,8 @@
 }
 
 .register input[type="submit"],
-.register button[type="submit"] {
+.register button[type="submit"],
+.register button[type="button"] {
     padding: 10px; /* Внутренние отступы */
     background-color: #007bff; /* Цвет фона кнопки */
     color: white; /* Цвет текста */
@@ -61,7 +62,8 @@
 }
 
 .register input[type="submit"]:hover,
-.register button[type="submit"]:hover {
+.register button[type="submit"]:hover,
+.register button[type="button"]:hover {
     background-color: #0056b3; /* Цвет фона при наведении */
 }
 
