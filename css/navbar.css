@@ -19,34 +19,34 @@
 }
 
 .nav-links li {
-    margin-left: 10px; /* Отступ между пунктами меню */
+    margin-left: 25px; /* Отступ между пунктами меню */
     position: relative; /* Для позиционирования выпадающего меню */
 }
 
-/* Выравниваем два последних элемента по правому краю */
+/* Выравниваем последний элемента по правому краю */
 .nav-links li.push-right {
     margin-left: auto; /* Автоматический отступ слева */
 }
 
 .nav-links a {
-    color: var(--navbar-text-color);
+    color: #fff; /* Белый текст для контраста */
     text-decoration: none;
     font-size: 1em;
-    padding: var(--navbar-link-padding);
-    transition: var(--navbar-transition);
-    border-radius: var(--navbar-border-radius);
+    padding: 10px 15px; /* Отступы для ссылок */
+    transition: background-color 0.3s ease; /* Плавное изменение цвета */
+    border-radius: 5px; /* Закругленные углы */
     display: flex;
     align-items: center; /* Выравниваем иконки и текст по вертикали */
 }
 
 /* Эффект при наведении на ссылки */
 .nav-links a:hover {
-    background-color: var(--navbar-hover-bg-color);
+    background-color: #6AA67B; /* Немного темнее основного цвета */
 }
 
 /* Активная ссылка */
 .nav-links a.active {
-    background-color: var(--navbar-hover-bg-color);
+    background-color: #6AA67B; /* Немного темнее основного цвета */
     font-weight: bold;
 }
 
