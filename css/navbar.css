@@ -56,13 +56,13 @@
     position: absolute;
     top: 100%; /* Позиционируем ниже родительского элемента */
     left: 0;
-    background-color: var(--dropdown-bg-color);
+    background-color: #7CB68C; /* Тот же цвет, что и у навигационного бара */
     list-style: none;
     margin: 0;
     padding: 0;
     min-width: 200px; /* Минимальная ширина выпадающего меню */
-    border-radius: var(--navbar-border-radius);
-    box-shadow: var(--navbar-shadow);
+    border-radius: 5px; /* Закругленные углы */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Тень */
     z-index: 1000; /* Убедимся, что меню поверх других элементов */
 }
 
