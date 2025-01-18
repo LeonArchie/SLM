@@ -86,12 +86,13 @@
                 <input type="password" id="password" name="password" required>
                 <label for="role">Выберите роль:</label>
                 <select id="role" name="role" required>
-                <option value="">-- Выберите роль --</option>
-                <?php foreach ($roles as $role): ?>
-                <option value="<?php echo $role['roleid']; ?>">
-                    <?php echo htmlspecialchars($role['names_rol']); ?>
-                </option>
-                <?php endforeach; ?>
+                	<option value="">-- Выберите роль --</option>
+                	<?php foreach ($roles as $role): ?>
+                	<option value="<?php echo $role['roleid']; ?>">
+                    	<?php echo htmlspecialchars($role['names_rol']); ?>
+                	</option>
+                	<?php endforeach; ?>
+				</select>
 				<?php if (!empty($error_message)): ?>
 					<div class="error-message">
 						<?php echo $error_message; ?>
