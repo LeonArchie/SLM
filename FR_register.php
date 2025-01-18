@@ -62,6 +62,7 @@
 	</head>
 	<body>
 		<?php include 'header.html'; ?>
+		<?php include 'menu.html'; ?>
 		<!-- Основной контент -->
 		<main class="register ">
             <h2>Ручная регистрация пользователя</h2>

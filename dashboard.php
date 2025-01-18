@@ -44,6 +44,7 @@
 	</head>
 	<body>
 		<?php include 'header.html'; ?>
+		<?php include 'menu.html'; ?>
 		<main>
 			<h1>Добро пожаловать, <?php echo htmlspecialchars($_SESSION['user']); ?>!</h1>
 			<p>ID вашей сессии: <?php echo htmlspecialchars($_SESSION['session_id']); ?></p>

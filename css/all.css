@@ -2,7 +2,7 @@ body {
 	display: flex;
 	justify-content: center; /* Выравнивание по горизонтали */
 	align-items: center; /* Выравнивание по вертикали */
-	height: calc(100vh - 3em - 3em-3em); /* Высота body равна высоте окна браузера - 60px — высота header, 5em — высота footer */
+	height: calc(100vh - 3em - 3em - 3em); /* Высота body равна высоте окна браузера - 60px — высота header, 5em — высота footer */
 	margin: 0; /* Убираем отступы по умолчанию */
 	background-color: #fdf5e6; /* Молочный цвет */
 	font-size: 16px;
