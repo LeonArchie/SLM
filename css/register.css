@@ -25,14 +25,16 @@
 
 .register .input-group {
     display: flex;
-    flex-direction: column; /* Лейбл и поле ввода в колонку */
-    gap: 5px; /* Отступ между лейблом и полем ввода */
+    flex-direction: row; /* Лейбл и поле ввода в строку */
+    align-items: center; /* Выравнивание по вертикали */
+    gap: 10px; /* Отступ между лейблом и полем ввода */
 }
 
 .register label {
     font-size: 1em;
     color: #333;
     text-align: left; /* Лейбл выравнивается по левому краю */
+    flex: 0 0 120px; /* Фиксированная ширина для лейбла */
 }
 
 .register input[type="email"],
@@ -43,13 +45,36 @@
     border: 1px solid #ccc; /* Рамка */
     border-radius: 5px; /* Закруглённые углы */
     font-size: 1em; /* Размер шрифта */
-    width: 100%; /* Ширина поля ввода на всю доступную ширину */
+    flex: 1; /* Занимает всё оставшееся пространство */
     box-sizing: border-box; /* Учитываем padding и border в ширине */
 }
 
+.register .password-container {
+    display: flex;
+    gap: 5px; /* Отступ между полем и кнопкой */
+    flex: 1; /* Занимает всё оставшееся пространство */
+}
+
+.register .password-container input[type="text"] {
+    flex: 1; /* Поле занимает всё доступное пространство */
+}
+
+.register .password-container button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.register .password-container button:hover {
+    background-color: #0056b3;
+}
+
 .register input[type="submit"],
-.register button[type="submit"],
-.register button[type="button"] {
+.register button[type="submit"] {
     padding: 10px; /* Внутренние отступы */
     background-color: #007bff; /* Цвет фона кнопки */
     color: white; /* Цвет текста */
@@ -62,8 +87,7 @@
 }
 
 .register input[type="submit"]:hover,
-.register button[type="submit"]:hover,
-.register button[type="button"]:hover {
+.register button[type="submit"]:hover {
     background-color: #0056b3; /* Цвет фона при наведении */
 }
 
@@ -75,18 +99,4 @@
     padding: 10px;
     background-color: #ffe6e6; /* Светло-красный фон */
     border-radius: 40px;
-}
-
-#generate-password {
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#generate-password:hover {
-    background-color: #0056b3;
 }

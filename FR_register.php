@@ -87,9 +87,11 @@
                 	<input type="text" id="username" name="username" required>
 				</div>
 				<div class="input-group">
-                	<label for="password">Транспортный пароль:</label>
-                	<input type="password" id="password" name="password" required>
-					<button type="button" id="generate-password">Сгенерировать</button>
+					<label for="password">Транспортный пароль:</label>
+					<div class="password-container">
+						<input type="text" id="password" name="password" required>
+						<button type="button" id="generate-password">Сгенерировать</button>
+					</div>
 				</div>
 				<div class="input-group">
                 	<label for="role">Выберите роль:</label>
