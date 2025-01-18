@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const generateButton = document.getElementById("generate-password");
     const passwordField = document.getElementById("password");
     generateButton.addEventListener("click", function () {
-        const randomPassword = generateRandomPassword(5);
+        const randomPassword = generateRandomPassword(10);
         passwordField.value = randomPassword;
     });
     function generateRandomPassword(length) {
