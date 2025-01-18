@@ -11,7 +11,7 @@
 <html>
 	<head>
 		<!--Заголовок-->
-		<title>Lifecycle management</title>	
+		<title>SLM</title>	
 		<!--Кодировка-->
 		<meta charset="utf-8">							
 		 <!-- Адаптивность -->

@@ -16,14 +16,12 @@
 				header("Location: login.php?error=" . urlencode($error_message));
 				exit();
 			}
-
 			try {
 				// Поиск пользователя в базе данных
 				$sql = "SELECT userid, userlogin, password_hash, roleid, usernames FROM users WHERE userlogin = :userlogin";
 				$stmt = $pdo->prepare($sql);
 				$stmt->execute(['userlogin' => $login]);
 				$user = $stmt->fetch();
-
 				// Проверка пароля
 				if ($user && password_verify($password, $user['password_hash'])) {
 					// Успешная авторизация
