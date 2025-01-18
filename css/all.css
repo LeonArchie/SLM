@@ -7,7 +7,6 @@ body {
 	background-color: #fdf5e6; /* Молочный цвет */
 	font-size: 16px;
 	font-family: Arial, sans-serif;
-	padding-top: 60px; /* Отступ для фиксированного хедера */
 }
 
 .header {
@@ -22,7 +21,6 @@ body {
 	z-index: 1000;
 	background-color: #6b7a8f; /* Цвет фона */
 	border: 2px solid #333; /* Рамка */
-	justify-content: space-between; /* Распределение пространства между логотипом и меню */
 }
 
 .logo-container {
