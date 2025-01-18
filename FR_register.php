@@ -78,21 +78,29 @@
             <h2>Ручная регистрация пользователя</h2>
             <form action="/BC_register.php" method="POST">
                 <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-                <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" required>
-                <label for="username">Логин:</label>
-                <input type="text" id="username" name="username" required>
-                <label for="password">Транспортный пароль:</label>
-                <input type="password" id="password" name="password" required>
-                <label for="role">Выберите роль:</label>
-                <select id="role" name="role" required>
-                	<option value="">-- Выберите роль --</option>
-                	<?php foreach ($roles as $role): ?>
-                	<option value="<?php echo $role['roleid']; ?>">
-                    	<?php echo htmlspecialchars($role['names_rol']); ?>
-                	</option>
-                	<?php endforeach; ?>
-				</select>
+				<div class="input-group">
+                	<label for="email">E-mail:</label>
+                	<input type="email" id="email" name="email" required>
+				</div>
+				<div class="input-group">
+					<label for="username">Логин:</label>
+                	<input type="text" id="username" name="username" required>
+				</div>
+				<div class="input-group">
+                	<label for="password">Транспортный пароль:</label>
+                	<input type="password" id="password" name="password" required>
+				</div>
+				<div class="input-group">
+                	<label for="role">Выберите роль:</label>
+                	<select id="role" name="role" required>
+                		<option value="">-- Выберите роль --</option>
+                		<?php foreach ($roles as $role): ?>
+                		<option value="<?php echo $role['roleid']; ?>">
+                   		 	<?php echo htmlspecialchars($role['names_rol']); ?>
+                		</option>
+                		<?php endforeach; ?>
+					</select>
+				</div>
 				<?php if (!empty($error_message)): ?>
 					<div class="error-message">
 						<?php echo $error_message; ?>
