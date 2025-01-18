@@ -1,0 +1,30 @@
+/* Стили для навигационной панели */
+.navbar {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links {
+    list-style: none; /* Убираем маркеры списка */
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    margin-left: 20px; /* Отступ между пунктами меню */
+}
+
+.nav-links a {
+    color: #fff; /* Цвет текста */
+    text-decoration: none; /* Убираем подчёркивание */
+    font-size: 1em; /* Размер шрифта */
+    padding: 5px 10px; /* Внутренние отступы */
+    transition: background-color 0.3s ease; /* Плавный переход */
+}
+
+/* Эффект при наведении на ссылки */
+.nav-links a:hover {
+    background-color: #555; /* Цвет фона при наведении */
+    border-radius: 5px; /* Закруглённые углы */
+}
