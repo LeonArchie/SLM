@@ -3,7 +3,7 @@
 session_start();
 
 // Проверка, авторизован ли пользователь
-if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
+if (isset($_SESSION['session_id']) && isset($_SESSION['username'])) {
     // Пользователь авторизован, перенаправляем на dashboard.php
     header("Location: dashboard.php");
     exit();

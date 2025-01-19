@@ -2,7 +2,7 @@
 session_start();
 
 //Проверка, авторизован ли пользователь
-if (!isset($_SESSION['user']) || !isset($_COOKIE['session_id']) || $_COOKIE['session_id'] !== session_id()) {
+if (!isset($_SESSION['username']) || !isset($_COOKIE['session_id']) || $_COOKIE['session_id'] !== session_id()) {
     header("Location: logout.php");
     exit();
 }
