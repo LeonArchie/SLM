@@ -2,13 +2,18 @@
 	// Начало сессии
 	session_start();
 		if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-			die("Ошибка безопасности: неверный CSRF-токен.");
+			$error_message = "Ошибка безопасности: неверный CSRF-токен.";
+			header("Location: login.php?error=" . urlencode($error_message)); // Возвращаем на страницу авторизации с сообщением об ошибке
+			exit();
 		}
+		
 		// Подключение к базе данных
 		require_once 'db_connect.php'; // Файл с подключением к PostgreSQL
+		
 		// Проверка, была ли отправлена форма
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
-		// Получение данных из формы
+		
+			// Получение данных из формы
 			$login = trim($_POST['login']); // Удаляем лишние пробелы
 			$password = trim($_POST['password']);
 			if (empty($login) || empty($password)) {
@@ -17,11 +22,13 @@
 				exit();
 			}
 			try {
+				
 				// Поиск пользователя в базе данных
 				$sql = "SELECT userid, userlogin, password_hash, roleid, usernames FROM users WHERE userlogin = :userlogin";
 				$stmt = $pdo->prepare($sql);
 				$stmt->execute(['userlogin' => $login]);
 				$user = $stmt->fetch();
+			
 				// Проверка пароля
 				if ($user && password_verify($password, $user['password_hash'])) {
 					// Успешная авторизация
@@ -48,7 +55,9 @@
 			} 
 			catch (PDOException $e) {
 				error_log("Ошибка выполнения запроса: " . $e->getMessage());
-				die("Произошла ошибка. Пожалуйста, попробуйте позже.");
+				$error_message = "Произошла ошибка. Пожалуйста, попробуйте позже.";
+				header("Location: login.php?error=" . urlencode($error_message)); // Возвращаем на страницу авторизации с сообщением об ошибке
+				exit();
 			}
 		} 
 		else {
