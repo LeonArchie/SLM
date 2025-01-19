@@ -1,4 +1,4 @@
- <?php
+<?php
 	session_start();
 	// Проверка, авторизован ли пользователь
 	//if (!isset($_SESSION['user']) || !isset($_COOKIE['session_id']) || $_COOKIE['session_id'] !== session_id()) {
@@ -17,7 +17,7 @@
 	}
 ?>
 <!DOCTYPE html> 											
-<html>
+<html lang="ru">
 	<head>
 		<!--Заголовок-->
 		<title>SLM</title>	
@@ -41,11 +41,11 @@
 		<!-- Подключение стилей -->
 		<link 
 			rel="stylesheet" 
-			href="/css/all.css"
+			href="/css/navbar.css"
 		/>
 		<link 
 			rel="stylesheet" 
-			href="/css/navbar.css"
+			href="/css/all.css"
 		/>
 		<!-- Фавикон -->
 		<link
@@ -59,8 +59,8 @@
 		<?php include 'header.html'; ?>
 		<?php include 'navbar.html'; ?>
 		<main>
-			<h1>Добро пожаловать, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
-			<p>ID вашей сессии: <?php echo htmlspecialchars($_SESSION['session_id']); ?></p>
+
+
 		</main>
 		<?php include 'footer.html'; ?>	
 	</body>
