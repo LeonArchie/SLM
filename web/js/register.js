@@ -49,6 +49,9 @@ document.addEventListener("DOMContentLoaded", function () {
                             indicator.classList.add("invalid");
                         }
                     }
+
+                    // Показываем блок с ошибками, если они есть
+                    errorSummary.style.display = "block";
                 }
                 // Показываем общее сообщение об ошибке
                 showNotification(data.message, "error");
@@ -65,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const errorSummary = document.getElementById("error-summary");
         if (errorSummary) {
             errorSummary.innerHTML = "";
+            errorSummary.style.display = "none"; // Скрываем блок, если ошибок нет
         }
     }
 

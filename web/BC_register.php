@@ -56,7 +56,7 @@ if (!empty($errors)) {
 }
 
 // Чтение конфигурации из config.json
-$configPath = __DIR__ . '/../config/config.json'; // Путь к файлу config.json
+$configPath = __DIR__ . '/config/config.json'; // Убедитесь, что путь правильный
 
 if (!file_exists($configPath)) {
     echo json_encode([

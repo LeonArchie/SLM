@@ -47,7 +47,7 @@ if ($stmt->rowCount() > 0) {
     <!-- Подключение стилей -->
     <link rel="stylesheet" href="/css/all.css">
     <link rel="stylesheet" href="/css/navbar.css">
-    <link rel="stylesheet" href="/css/register.css">
+    <link rel="stylesheet" href="/css/register.css"> <!-- Подключение стилей для регистрации -->
     <!-- Фавикон -->
     <link rel="icon" sizes="16x16 32x32 48x48" type="image/png" href="/img/icon.png">
 </head>
@@ -55,48 +55,47 @@ if ($stmt->rowCount() > 0) {
     <?php include 'header.html'; ?>
     <?php include 'navbar.html'; ?>
     <!-- Основной контент -->
-<!-- Основной контент -->
-<main class="register">
-    <h2>Ручная регистрация пользователя</h2>
-    <form id="registrationForm" action="/BC_register.php" method="POST">
-        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-        <div class="input-group">
-            <label for="email">E-mail:</label>
-            <input type="email" id="email" name="email" required>
-            <span class="validation-indicator" id="email-indicator"></span>
-        </div>
-        <div class="input-group">
-            <label for="username">Логин:</label>
-            <input type="text" id="username" name="username" required>
-            <span class="validation-indicator" id="username-indicator"></span>
-        </div>
-        <div class="input-group">
-            <label for="password">Транспортный пароль:</label>
-            <div class="password-container">
-                <input type="text" id="password" name="password" required>
-                <button type="button" id="generate-password">Сгенерировать</button>
+    <main class="register">
+        <h2>Ручная регистрация пользователя</h2>
+        <form id="registrationForm" action="/BC_register.php" method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+            <div class="input-group">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" required>
+                <span class="validation-indicator" id="email-indicator"></span>
             </div>
-            <span class="validation-indicator" id="password-indicator"></span>
-        </div>
-        <div class="input-group">
-            <label for="role">Выберите роль:</label>
-            <select id="role" name="role" required>
-                <option value="">-- Выберите роль --</option>
-                <?php foreach ($roles as $role): ?>
-                    <option value="<?php echo $role['roleid']; ?>">
-                        <?php echo htmlspecialchars($role['names_rol']); ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <span class="validation-indicator" id="role-indicator"></span>
-        </div>
-        <!-- Блок для отображения всех ошибок -->
-        <div id="error-summary" class="error-message"></div>
-        <button type="submit">Зарегистрировать</button>
-    </form>
-    <!-- Уведомление о результате регистрации -->
-    <div id="notification" style="display: none;"></div>
-</main>
+            <div class="input-group">
+                <label for="username">Логин:</label>
+                <input type="text" id="username" name="username" required>
+                <span class="validation-indicator" id="username-indicator"></span>
+            </div>
+            <div class="input-group">
+                <label for="password">Транспортный пароль:</label>
+                <div class="password-container">
+                    <input type="text" id="password" name="password" required>
+                    <button type="button" id="generate-password">Сгенерировать</button>
+                </div>
+                <span class="validation-indicator" id="password-indicator"></span>
+            </div>
+            <div class="input-group">
+                <label for="role">Выберите роль:</label>
+                <select id="role" name="role" required>
+                    <option value="">-- Выберите роль --</option>
+                    <?php foreach ($roles as $role): ?>
+                        <option value="<?php echo $role['roleid']; ?>">
+                            <?php echo htmlspecialchars($role['names_rol']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <span class="validation-indicator" id="role-indicator"></span>
+            </div>
+            <!-- Блок для отображения всех ошибок -->
+            <div id="error-summary" class="error-message"></div>
+            <button type="submit">Зарегистрировать</button>
+        </form>
+        <!-- Уведомление о результате регистрации -->
+        <div id="notification"></div>
+    </main>
     <?php include 'footer.html'; ?>
     <!-- Подключаем внешние скрипты -->
     <script src="/js/generator_pass.js"></script>

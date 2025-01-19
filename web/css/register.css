@@ -100,6 +100,7 @@
     padding: 10px;
     background-color: #ffe6e6; /* Светло-красный фон */
     border-radius: 40px;
+    display: none; /* Скрываем блок по умолчанию */
 }
 
 /* Стили для индикаторов */
@@ -110,9 +111,11 @@
     border-radius: 50%;
     margin-left: 10px;
 }
+
 .validation-indicator.valid {
     background-color: green;
 }
+
 .validation-indicator.invalid {
     background-color: red;
 }
@@ -121,4 +124,23 @@
 #error-summary {
     margin-top: 10px;
     color: red;
+}
+
+/* Стили для уведомлений */
+#notification {
+    display: none; /* Скрываем уведомление по умолчанию */
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#notification.success {
+    background-color: #d4edda; /* Зелёный фон для успешного уведомления */
+    color: #155724; /* Тёмно-зелёный текст */
+}
+
+#notification.error {
+    background-color: #f8d7da; /* Красный фон для ошибки */
+    color: #721c24; /* Тёмно-красный текст */
 }
