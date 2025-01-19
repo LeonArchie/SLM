@@ -28,11 +28,44 @@ if (empty($email) || empty($username) || empty($password) || empty($roleid)) {
     exit();
 }
 
-// Получение GUID для userid
-$guidResponse = file_get_contents('/generator.php');
+// Чтение конфигурации из config.json
+$configPath = __DIR__ . '/../config/config.json'; // Путь к файлу config.json
+if (!file_exists($configPath)) {
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Конфигурационный файл не найден.'
+    ]);
+    exit();
+}
+
+$config = json_decode(file_get_contents($configPath), true);
+if (json_last_error() !== JSON_ERROR_NONE || !isset($config['generator_url'])) {
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Ошибка при чтении конфигурационного файла.'
+    ]);
+    exit();
+}
+
+$generatorUrl = $config['generator_url']; // Получаем URL из конфигурации
+
+// Получение GUID из generator.php
+$guidResponse = file_get_contents($generatorUrl);
+
+if ($guidResponse === false) {
+    // Ошибка при запросе к generator.php
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Ошибка при получении GUID. Пожалуйста, попробуйте позже.'
+    ]);
+    exit();
+}
+
+// Декодируем JSON-ответ
 $guidData = json_decode($guidResponse, true);
 
-if (!$guidData || $guidData['status'] !== 'success') {
+if (!$guidData || $guidData['status'] !== 'success' || empty($guidData['guid'])) {
+    // Ошибка при декодировании или неверный формат ответа
     echo json_encode([
         'status' => 'error',
         'message' => 'Ошибка при генерации уникального идентификатора.'
