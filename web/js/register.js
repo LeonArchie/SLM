@@ -36,21 +36,22 @@ document.addEventListener("DOMContentLoaded", function () {
             } else if (data.status === "error") {
                 // Показываем красные индикаторы для полей с ошибками
                 if (data.errors) {
+                    const errorSummary = document.getElementById("error-summary");
+                    errorSummary.innerHTML = ""; // Очищаем предыдущие ошибки
+
                     for (const field in data.errors) {
+                        const errorMessage = document.createElement("div");
+                        errorMessage.textContent = data.errors[field];
+                        errorSummary.appendChild(errorMessage);
+
                         const indicator = document.getElementById(`${field}-indicator`);
                         if (indicator) {
                             indicator.classList.add("invalid");
-                        }
-                        const errorElement = document.getElementById(`${field}-error`);
-                        if (errorElement) {
-                            errorElement.textContent = data.errors[field];
                         }
                     }
                 }
                 // Показываем общее сообщение об ошибке
                 showNotification(data.message, "error");
-                // Отображаем все ошибки под кнопкой
-                showErrorSummary(data.errors);
             }
         })
         .catch(error => {
@@ -61,10 +62,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function clearErrors() {
         // Очищаем все сообщения об ошибках
-        const errorElements = document.querySelectorAll(".error-message");
-        errorElements.forEach(element => {
-            element.textContent = "";
-        });
+        const errorSummary = document.getElementById("error-summary");
+        if (errorSummary) {
+            errorSummary.innerHTML = "";
+        }
     }
 
     function clearIndicators() {
@@ -97,23 +98,5 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
             notification.style.display = "none";
         }, 5000);
-    }
-
-    function showErrorSummary(errors) {
-        const errorSummary = document.getElementById("error-summary");
-        if (!errorSummary) {
-            console.error("Элемент с ID 'error-summary' не найден.");
-            return;
-        }
-        // Очищаем предыдущие ошибки
-        errorSummary.innerHTML = "";
-        // Добавляем новые ошибки
-        if (errors) {
-            for (const field in errors) {
-                const errorMessage = document.createElement("div");
-                errorMessage.textContent = errors[field];
-                errorSummary.appendChild(errorMessage);
-            }
-        }
     }
 });
