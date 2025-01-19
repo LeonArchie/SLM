@@ -1,8 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
+    console.log("Скрипт register.js загружен и выполняется.");
+
     const form = document.getElementById("registrationForm");
+
+    if (!form) {
+        console.error("Форма с ID 'registrationForm' не найдена.");
+        return;
+    }
 
     form.addEventListener("submit", function (event) {
         event.preventDefault(); // Отменяем стандартную отправку формы
+        console.log("Форма отправлена.");
 
         const formData = new FormData(form);
 
@@ -13,8 +21,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Accept": "application/json"
             }
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Ошибка сети или сервера.");
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log("Ответ от сервера:", data);
+
             if (data.status === "success") {
                 // Очищаем ошибки
                 clearErrors();
@@ -39,6 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         })
         .catch(error => {
+            console.error("Ошибка при отправке запроса:", error);
             showNotification("Ошибка при отправке запроса.", "error");
         });
     });
@@ -53,6 +69,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function showNotification(message, type) {
         const notification = document.getElementById("notification");
+        if (!notification) {
+            console.error("Элемент с ID 'notification' не найден.");
+            return;
+        }
         notification.textContent = message;
         notification.className = type; // Добавляем класс для стилизации
         notification.style.display = "block";
