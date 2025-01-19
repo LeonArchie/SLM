@@ -19,17 +19,45 @@ $username = trim($_POST['username']);
 $password = trim($_POST['password']);
 $roleid = trim($_POST['role']); // Оставляем как есть, без приведения к (int)
 
-// Проверка, что все поля заполнены
-if (empty($email) || empty($username) || empty($password) || empty($roleid)) {
+// Массив для хранения ошибок
+$errors = [];
+
+// Проверка каждого поля
+if (empty($email)) {
+    $errors['email'] = 'Поле "E-mail" обязательно для заполнения.';
+} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $errors['email'] = 'Некорректный формат E-mail.';
+}
+
+if (empty($username)) {
+    $errors['username'] = 'Поле "Логин" обязательно для заполнения.';
+} elseif (strlen($username) < 3) {
+    $errors['username'] = 'Логин должен содержать не менее 3 символов.';
+}
+
+if (empty($password)) {
+    $errors['password'] = 'Поле "Пароль" обязательно для заполнения.';
+} elseif (strlen($password) < 6) {
+    $errors['password'] = 'Пароль должен содержать не менее 6 символов.';
+}
+
+if (empty($roleid)) {
+    $errors['role'] = 'Поле "Роль" обязательно для заполнения.';
+}
+
+// Если есть ошибки, возвращаем их
+if (!empty($errors)) {
     echo json_encode([
         'status' => 'error',
-        'message' => 'Все поля обязательны для заполнения!'
+        'message' => 'Ошибка валидации данных.',
+        'errors' => $errors
     ]);
     exit();
 }
 
 // Чтение конфигурации из config.json
 $configPath = __DIR__ . '/../config/config.json'; // Путь к файлу config.json
+
 if (!file_exists($configPath)) {
     echo json_encode([
         'status' => 'error',
@@ -38,8 +66,8 @@ if (!file_exists($configPath)) {
     exit();
 }
 
-$config = json_decode(file_get_contents($configPath), true);
-if (json_last_error() !== JSON_ERROR_NONE || !isset($config['generator_url'])) {
+$configContent = file_get_contents($configPath);
+if ($configContent === false) {
     echo json_encode([
         'status' => 'error',
         'message' => 'Ошибка при чтении конфигурационного файла.'
@@ -47,13 +75,30 @@ if (json_last_error() !== JSON_ERROR_NONE || !isset($config['generator_url'])) {
     exit();
 }
 
-$generatorUrl = $config['generator_url']; // Получаем URL из конфигурации
+$config = json_decode($configContent, true);
+if (json_last_error() !== JSON_ERROR_NONE) {
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Ошибка при декодировании конфигурационного файла.'
+    ]);
+    exit();
+}
+
+// Проверка наличия ключа generator_url внутри объекта web
+if (!isset($config['web']['generator_url'])) {
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Ключ "generator_url" отсутствует в конфигурационном файле.'
+    ]);
+    exit();
+}
+
+$generatorUrl = $config['web']['generator_url']; // Получаем URL из конфигурации
 
 // Получение GUID из generator.php
 $guidResponse = file_get_contents($generatorUrl);
 
 if ($guidResponse === false) {
-    // Ошибка при запросе к generator.php
     echo json_encode([
         'status' => 'error',
         'message' => 'Ошибка при получении GUID. Пожалуйста, попробуйте позже.'
@@ -65,7 +110,6 @@ if ($guidResponse === false) {
 $guidData = json_decode($guidResponse, true);
 
 if (!$guidData || $guidData['status'] !== 'success' || empty($guidData['guid'])) {
-    // Ошибка при декодировании или неверный формат ответа
     echo json_encode([
         'status' => 'error',
         'message' => 'Ошибка при генерации уникального идентификатора.'
