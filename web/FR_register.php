@@ -1,11 +1,11 @@
 <?php
 session_start();
 
-// Проверка, авторизован ли пользователь
-//if (!isset($_SESSION['user']) || !isset($_COOKIE['session_id']) || $_COOKIE['session_id'] !== session_id()) {
-//    header("Location: logout.php");
-//    exit();
-//}
+//Проверка, авторизован ли пользователь
+if (!isset($_SESSION['user']) || !isset($_COOKIE['session_id']) || $_COOKIE['session_id'] !== session_id()) {
+    header("Location: logout.php");
+    exit();
+}
 
 // Генерация CSRF-токена, если он еще не создан
 if (empty($_SESSION['csrf_token'])) {
