@@ -33,7 +33,7 @@
     text-decoration: none;
     font-size: 1em;
     padding: 8px 10px; /* Отступы для ссылок */
-    transition: backg8nd-color 0.3s ease; /* Плавное изменение цвета */
+    transition: background-color 0.3s ease; /* Плавное изменение цвета */
     border-radius: 5px; /* Закругленные углы */
     display: flex;
     align-items: center; /* Выравниваем иконки и текст по вертикали */
