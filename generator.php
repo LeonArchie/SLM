@@ -19,7 +19,6 @@
     // Возвращаем GUID в формате JSON
     echo json_encode([
         'guid' => $guid,
-        'status' => 'success',
-        'message' => 'GUID успешно сгенерирован'
+        'status' => 'success'
     ]);
 ?>
