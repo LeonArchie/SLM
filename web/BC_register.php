@@ -17,7 +17,7 @@ require_once 'db_connect.php';
 $email = trim($_POST['email']);
 $username = trim($_POST['username']);
 $password = trim($_POST['password']);
-$roleid = (int)$_POST['role']; // Приводим к целому числу
+$roleid = trim($_POST['role']); // Оставляем как есть, без приведения к (int)
 
 // Проверка, что все поля заполнены
 if (empty($email) || empty($username) || empty($password) || empty($roleid)) {
@@ -93,7 +93,7 @@ try {
         ':userlogin' => $username,
         ':password_hash' => $password_hash,
         ':email' => $email,
-        ':roleid' => $roleid,
+        ':roleid' => $roleid, // Используем roleid как есть
         ':regtimes' => $regtimes // Передаем текущее время
     ]);
 
