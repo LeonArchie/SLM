@@ -47,7 +47,7 @@ if ($stmt->rowCount() > 0) {
     <!-- Подключение стилей -->
     <link rel="stylesheet" href="/css/all.css">
     <link rel="stylesheet" href="/css/navbar.css">
-    <link rel="stylesheet" href="/css/register.css"> <!-- Подключение стилей для регистрации -->
+    <link rel="stylesheet" href="/css/register.css">
     <!-- Фавикон -->
     <link rel="icon" sizes="16x16 32x32 48x48" type="image/png" href="/img/icon.png">
 </head>
@@ -63,11 +63,19 @@ if ($stmt->rowCount() > 0) {
                 <label for="email">E-mail:</label>
                 <input type="email" id="email" name="email" required>
                 <span class="validation-indicator" id="email-indicator"></span>
+                <div class="error-message" id="email-error"></div>
             </div>
+            <div class="input-group">
+                <label for="usernames">Имя пользователя:</label>
+                <input type="text" id="usernames" name="usernames" required>
+                <span class="validation-indicator" id="usernames-indicator"></span>
+                <div class="error-message" id="usernames-error"></div>
+            </div>            
             <div class="input-group">
                 <label for="username">Логин:</label>
                 <input type="text" id="username" name="username" required>
                 <span class="validation-indicator" id="username-indicator"></span>
+                <div class="error-message" id="username-error"></div>
             </div>
             <div class="input-group">
                 <label for="password">Транспортный пароль:</label>
@@ -76,6 +84,7 @@ if ($stmt->rowCount() > 0) {
                     <button type="button" id="generate-password">Сгенерировать</button>
                 </div>
                 <span class="validation-indicator" id="password-indicator"></span>
+                <div class="error-message" id="password-error"></div>
             </div>
             <div class="input-group">
                 <label for="role">Выберите роль:</label>
@@ -88,13 +97,19 @@ if ($stmt->rowCount() > 0) {
                     <?php endforeach; ?>
                 </select>
                 <span class="validation-indicator" id="role-indicator"></span>
+                <div class="error-message" id="role-error"></div>
             </div>
-            <!-- Блок для отображения всех ошибок -->
-            <div id="error-summary" class="error-message"></div>
+            <?php if (!empty($error_message)): ?>
+                <div class="error-message">
+                    <?php echo $error_message; ?>
+                </div>
+            <?php endif; ?>
             <button type="submit">Зарегистрировать</button>
+            <!-- Блок для отображения всех ошибок -->
+            <div id="error-summary"></div>
         </form>
         <!-- Уведомление о результате регистрации -->
-        <div id="notification"></div>
+        <div id="notification" style="display: none;"></div>
     </main>
     <?php include 'footer.html'; ?>
     <!-- Подключаем внешние скрипты -->

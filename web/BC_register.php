@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+// Включение логирования ошибок
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // Проверка CSRF-токена
 if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
     echo json_encode([
@@ -17,7 +22,8 @@ require_once 'db_connect.php';
 $email = trim($_POST['email']);
 $username = trim($_POST['username']);
 $password = trim($_POST['password']);
-$roleid = trim($_POST['role']); // Оставляем как есть, без приведения к (int)
+$roleid = trim($_POST['role']);
+$usernames = trim($_POST['usernames']); // Новое поле: Имя пользователя
 
 // Массив для хранения ошибок
 $errors = [];
@@ -45,6 +51,12 @@ if (empty($roleid)) {
     $errors['role'] = 'Поле "Роль" обязательно для заполнения.';
 }
 
+if (empty($usernames)) {
+    $errors['usernames'] = 'Поле "Имя пользователя" обязательно для заполнения.';
+} elseif (strlen($usernames) < 2) {
+    $errors['usernames'] = 'Имя пользователя должно содержать не менее 2 символов.';
+}
+
 // Если есть ошибки, возвращаем их
 if (!empty($errors)) {
     echo json_encode([
@@ -55,80 +67,29 @@ if (!empty($errors)) {
     exit();
 }
 
-// Чтение конфигурации из config.json
-$configPath = __DIR__ . '/config/config.json'; // Убедитесь, что путь правильный
-
-if (!file_exists($configPath)) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Конфигурационный файл не найден.'
-    ]);
-    exit();
+// Локальная генерация GUID (если generator.php недоступен)
+function generateGUID() {
+    if (function_exists('com_create_guid') === true) {
+        return trim(com_create_guid(), '{}');
+    }
+    $data = random_bytes(16);
+    $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
+    $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
+    return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
 }
 
-$configContent = file_get_contents($configPath);
-if ($configContent === false) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Ошибка при чтении конфигурационного файла.'
-    ]);
-    exit();
-}
-
-$config = json_decode($configContent, true);
-if (json_last_error() !== JSON_ERROR_NONE) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Ошибка при декодировании конфигурационного файла.'
-    ]);
-    exit();
-}
-
-// Проверка наличия ключа generator_url внутри объекта web
-if (!isset($config['web']['generator_url'])) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Ключ "generator_url" отсутствует в конфигурационном файле.'
-    ]);
-    exit();
-}
-
-$generatorUrl = $config['web']['generator_url']; // Получаем URL из конфигурации
-
-// Получение GUID из generator.php
-$guidResponse = file_get_contents($generatorUrl);
-
-if ($guidResponse === false) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Ошибка при получении GUID. Пожалуйста, попробуйте позже.'
-    ]);
-    exit();
-}
-
-// Декодируем JSON-ответ
-$guidData = json_decode($guidResponse, true);
-
-if (!$guidData || $guidData['status'] !== 'success' || empty($guidData['guid'])) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Ошибка при генерации уникального идентификатора.'
-    ]);
-    exit();
-}
-
-$userid = $guidData['guid']; // Используем GUID как userid
+$userid = generateGUID(); // Используем локальную генерацию GUID
 
 // Хэширование пароля
 $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
 // Текущее время регистрации
-$regtimes = date('Y-m-d H:i:s'); // Формат: ГГГГ-ММ-ДД ЧЧ:ММ:СС
+$regtimes = date('Y-m-d H:i:s');
 
 try {
     // Подготовка SQL-запроса для вставки данных
-    $sql = "INSERT INTO users (userid, userlogin, password_hash, email, roleid, regtimes) 
-            VALUES (:userid, :userlogin, :password_hash, :email, :roleid, :regtimes)";
+    $sql = "INSERT INTO users (userid, userlogin, password_hash, email, roleid, regtimes, usernames) 
+            VALUES (:userid, :userlogin, :password_hash, :email, :roleid, :regtimes, :usernames)";
     $stmt = $pdo->prepare($sql);
 
     // Выполнение запроса с привязкой параметров
@@ -137,8 +98,9 @@ try {
         ':userlogin' => $username,
         ':password_hash' => $password_hash,
         ':email' => $email,
-        ':roleid' => $roleid, // Используем roleid как есть
-        ':regtimes' => $regtimes // Передаем текущее время
+        ':roleid' => $roleid,
+        ':regtimes' => $regtimes,
+        ':usernames' => $usernames // Новое поле: Имя пользователя
     ]);
 
     // Успешный ответ
