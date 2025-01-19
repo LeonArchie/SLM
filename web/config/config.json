@@ -2,7 +2,7 @@
     "web": {
         "session_timeout": 3600,
         "host": "192.168.8.8",
-        "domain": "rlp-psi-user.school59.ru",
+        "domain": "slm-psi.school59.ru",
         "generator_url": "http://192.168.8.8/generator.php"
     },
     "db": {
@@ -10,6 +10,6 @@
         "port": "5432",
         "name": "RLM-PSI",
         "user": "RLM_PSI_USER",
-        "password": "vbn$grjemd#mf!"
+        "password": "vbngrjemd#mf!"
     }
 }
