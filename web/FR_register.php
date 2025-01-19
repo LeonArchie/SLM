@@ -62,10 +62,12 @@ if ($stmt->rowCount() > 0) {
             <div class="input-group">
                 <label for="email">E-mail:</label>
                 <input type="email" id="email" name="email" required>
+                <div class="error-message" id="email-error"></div>
             </div>
             <div class="input-group">
                 <label for="username">Логин:</label>
                 <input type="text" id="username" name="username" required>
+                <div class="error-message" id="username-error"></div>
             </div>
             <div class="input-group">
                 <label for="password">Транспортный пароль:</label>
@@ -73,6 +75,7 @@ if ($stmt->rowCount() > 0) {
                     <input type="text" id="password" name="password" required>
                     <button type="button" id="generate-password">Сгенерировать</button>
                 </div>
+                <div class="error-message" id="password-error"></div>
             </div>
             <div class="input-group">
                 <label for="role">Выберите роль:</label>
@@ -84,6 +87,7 @@ if ($stmt->rowCount() > 0) {
                         </option>
                     <?php endforeach; ?>
                 </select>
+                <div class="error-message" id="role-error"></div>
             </div>
             <?php if (!empty($error_message)): ?>
                 <div class="error-message">
