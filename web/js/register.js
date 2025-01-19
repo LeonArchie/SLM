@@ -1,16 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("Скрипт register.js загружен и выполняется.");
-
     const form = document.getElementById("registrationForm");
-
-    if (!form) {
-        console.error("Форма с ID 'registrationForm' не найдена.");
-        return;
-    }
 
     form.addEventListener("submit", function (event) {
         event.preventDefault(); // Отменяем стандартную отправку формы
-        console.log("Форма отправлена.");
 
         const formData = new FormData(form);
 
@@ -30,19 +22,25 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             console.log("Ответ от сервера:", data);
 
+            // Очищаем предыдущие ошибки и индикаторы
+            clearErrors();
+            clearIndicators();
+
             if (data.status === "success") {
-                // Очищаем ошибки
-                clearErrors();
+                // Показываем зелёные индикаторы для всех полей
+                setIndicators("valid");
                 // Показываем уведомление об успехе
                 showNotification(data.message, "success");
                 // Очищаем форму
                 form.reset();
             } else if (data.status === "error") {
-                // Очищаем предыдущие ошибки
-                clearErrors();
-                // Показываем ошибки для каждого поля
+                // Показываем красные индикаторы для полей с ошибками
                 if (data.errors) {
                     for (const field in data.errors) {
+                        const indicator = document.getElementById(`${field}-indicator`);
+                        if (indicator) {
+                            indicator.classList.add("invalid");
+                        }
                         const errorElement = document.getElementById(`${field}-error`);
                         if (errorElement) {
                             errorElement.textContent = data.errors[field];
@@ -51,6 +49,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 // Показываем общее сообщение об ошибке
                 showNotification(data.message, "error");
+                // Отображаем все ошибки под кнопкой
+                showErrorSummary(data.errors);
             }
         })
         .catch(error => {
@@ -64,6 +64,22 @@ document.addEventListener("DOMContentLoaded", function () {
         const errorElements = document.querySelectorAll(".error-message");
         errorElements.forEach(element => {
             element.textContent = "";
+        });
+    }
+
+    function clearIndicators() {
+        // Очищаем все индикаторы
+        const indicators = document.querySelectorAll(".validation-indicator");
+        indicators.forEach(indicator => {
+            indicator.classList.remove("valid", "invalid");
+        });
+    }
+
+    function setIndicators(status) {
+        // Устанавливаем индикаторы для всех полей
+        const indicators = document.querySelectorAll(".validation-indicator");
+        indicators.forEach(indicator => {
+            indicator.classList.add(status);
         });
     }
 
@@ -81,5 +97,23 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
             notification.style.display = "none";
         }, 5000);
+    }
+
+    function showErrorSummary(errors) {
+        const errorSummary = document.getElementById("error-summary");
+        if (!errorSummary) {
+            console.error("Элемент с ID 'error-summary' не найден.");
+            return;
+        }
+        // Очищаем предыдущие ошибки
+        errorSummary.innerHTML = "";
+        // Добавляем новые ошибки
+        if (errors) {
+            for (const field in errors) {
+                const errorMessage = document.createElement("div");
+                errorMessage.textContent = errors[field];
+                errorSummary.appendChild(errorMessage);
+            }
+        }
     }
 });
