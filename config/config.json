@@ -1,0 +1,14 @@
+{
+    "web": {
+        "session_timeout": 3600,
+        "host": "192.168.8.8",
+        "domain": "rlp-psi-user.school59.ru"
+    },
+    "db": {
+        "host": "192.168.3.4",
+        "port": "5432",
+        "name": "RLM-PSI",
+        "user": "RLM_PSI_USER",
+        "password": "vbn$grjemd#mf!"
+    }
+}

@@ -116,4 +116,5 @@
 	</body>
 	<!-- Подключаем внешний скрипт -->
 	<script src="js/generator_pass.js"></script>
+	<script src="js/register.js"></script>
 </html>
