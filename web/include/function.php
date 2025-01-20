@@ -18,9 +18,6 @@
         if (!isset($_SESSION['username']) || !isset($_COOKIE['session_id']) || $_COOKIE['session_id'] !== session_id()) {
             header("Location: " . LOGOUT_PATH);
             exit();
-        } else {
-            // Регенерация ID сессии для защиты от фиксации сессии
-            session_regenerate_id(true);
         }
     }
     
