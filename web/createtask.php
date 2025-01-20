@@ -1,67 +1,29 @@
 <?php
-	session_start();
-	// Проверка, авторизован ли пользователь
-	if (!isset($_SESSION['username']) || !isset($_COOKIE['session_id']) || $_COOKIE['session_id'] !== session_id()) {
-		// Если пользователь не авторизован или куки не совпадают, перенаправляем на страницу авторизации
-		header("Location: logout.php");
-	exit();
-	}
-	// Генерация CSRF-токена, если он еще не создан
-	if (empty($_SESSION['csrf_token'])) {
-    	$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-	}
+	require_once 'include/function.php';
+		logger(); // Логирование
+		startSessionIfNotStarted(); // Запуск сессии
+		checkAuth(); // Проверка авторизации
+		csrf_token(); // Генерация CSRF-токена
 	// Проверка, есть ли сообщение об ошибке
 	$error_message = "";
 	if (isset($_GET['error'])) {
-    	$error_message = htmlspecialchars($_GET['error']);
+		$error_message = htmlspecialchars($_GET['error']);
 	}
 ?>
 <!DOCTYPE html> 											
 <html lang="ru">
 	<head>
-		<!--Заголовок-->
-		<title>SLM</title>	
-		<!--Кодировка-->
-		<meta charset="utf-8">							
-		 <!-- Адаптивность -->
-		<meta											
-			name="viewport"
-			content="width=device-width, initial-scale=1.0"
-		/>
-		<!--Ключевые слова-->
-		<meta
-			name="description"
-			content="Управление жизненным циклом серверов и приложений"
-		/>
-		<!--Минус роботы-->
-		<meta 
-			name="robots"
-			content="noindex, nofollow" 
-		/>
-		<!-- Подключение стилей -->
-		<link 
-			rel="stylesheet" 
-			href="/css/navbar.css"
-		/>
-		<link 
-			rel="stylesheet" 
-			href="/css/all.css"
-		/>
-		<!-- Фавикон -->
-		<link
-			rel="icon"
-			sizes="16x16 32x32 48x48"
-			type="image/png"
-			href="/img/icon.png"
-		/>
+		<?php include 'include/all_head.html'; ?>	
 	</head>
 	<body>
-		<?php include 'header.html'; ?>
-		<?php include 'navbar.html'; ?>
+		<?php include 'include/header.html'; ?>
+		<?php include 'include/navbar.html'; ?>
 		<main>
-
-
+			<h1>Добро пожаловать, <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Гость'; ?>!</h1>
+			<p>Создание задач</p>
+			<p> Страница в разработке</p>
+			<p>ID вашей сессии: <?php echo htmlspecialchars($_SESSION['session_id']); ?></p>
 		</main>
-		<?php include 'footer.html'; ?>	
+		<?php include 'include/footer.html'; ?>	
 	</body>
 </html>

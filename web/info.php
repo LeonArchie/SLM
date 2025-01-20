@@ -1,57 +1,20 @@
 <?php
-	session_start();
-	// Проверка, авторизован ли пользователь
-	if (!isset($_SESSION['username']) || !isset($_COOKIE['session_id']) || $_COOKIE['session_id'] !== session_id()) {
-		// Если пользователь не авторизован или куки не совпадают, перенаправляем на страницу авторизации
-		header("Location: logout.php");
-	exit();
-	}
+	require_once 'include/function.php';
+		logger(); // Логирование
+		startSessionIfNotStarted(); // Запуск сессии
+		checkAuth(); // Проверка авторизации
 ?>
 <!DOCTYPE html> 											
 <html lang="ru">
 	<head>
-		<!--Заголовок-->
-		<title>SLM</title>	
-		<!--Кодировка-->
-		<meta charset="utf-8">							
-		 <!-- Адаптивность -->
-		<meta											
-			name="viewport"
-			content="width=device-width, initial-scale=1.0"
-		/>
-		<!--Ключевые слова-->
-		<meta
-			name="description"
-			content="Управление жизненным циклом серверов и приложений"
-		/>
-		<!--Минус роботы-->
-		<meta 
-			name="robots"
-			content="noindex, nofollow" 
-		/>
-		<!-- Подключение стилей -->
-		<link 
-			rel="stylesheet" 
-			href="/css/navbar.css"
-		/>
-		<link 
-			rel="stylesheet" 
-			href="/css/all.css"
-		/>
-		<!-- Фавикон -->
-		<link
-			rel="icon"
-			sizes="16x16 32x32 48x48"
-			type="image/png"
-			href="/img/icon.png"
-		/>
+		<?php include 'include/all_head.html'; ?>	
 	</head>
 	<body>
-		<?php include 'header.html'; ?>
-		<?php include 'navbar.html'; ?>
+		<?php include 'include/header.html'; ?>
+		<?php include 'include/navbar.html'; ?>
 		<main>
             <?php phpinfo(); ?>
 		</main>
-		<?php include 'footer.html'; ?>	
+		<?php include 'include/footer.html'; ?>	
 	</body>
 </html>
