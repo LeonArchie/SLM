@@ -52,7 +52,7 @@
 	</head>
 	<body>
 		<?php include 'header.html'; ?>
-		<?php include 'navbar.html'; ?>
+		<?php include 'include/navbar.html'; ?>
 		<main>
 			<h1>Добро пожаловать, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
 			<p>ID вашей сессии: <?php echo htmlspecialchars($_SESSION['session_id']); ?></p>

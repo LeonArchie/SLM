@@ -1,20 +1,9 @@
 <?php
-	session_start();
-	// Проверка, авторизован ли пользователь
-	if (!isset($_SESSION['username']) || !isset($_COOKIE['session_id']) || $_COOKIE['session_id'] !== session_id()) {
-		// Если пользователь не авторизован или куки не совпадают, перенаправляем на страницу авторизации
-		header("Location: logout.php");
-		exit();
-	}
-	// Генерация CSRF-токена, если он еще не создан
-	if (empty($_SESSION['csrf_token'])) {
-    	$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-	}
-	// Проверка, есть ли сообщение об ошибке
-	$error_message = "";
-	if (isset($_GET['error'])) {
-    	$error_message = htmlspecialchars($_GET['error']);
-	}
+	require_once 'include/function.php';
+	logger(); // Логирование
+	startSessionIfNotStarted(); // Запуск сессии
+	checkAuth(); // Проверка авторизации
+	csrf_token(); // Генерация CSRF-токена
 ?>
 <!DOCTYPE html> 											
 <html lang="ru">
@@ -51,12 +40,14 @@
 		/>
 	</head>
 	<body>
-		<?php include 'header.html'; ?>
-		<?php include 'navbar.html'; ?>
+		<?php include 'include/header.html'; ?>
+		<?php include 'include/navbar.html'; ?>
 		<main>
-
-
+			<h1>Добро пожаловать, <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Гость'; ?>!</h1>!</h1>
+			<p>Просмотреть все аккаунты</p>
+			<p> Страница в разработке</p>
+			<p>ID вашей сессии: <?php echo htmlspecialchars($_SESSION['session_id']); ?></p>
 		</main>
-		<?php include 'footer.html'; ?>	
+		<?php include 'include/footer.html'; ?>	
 	</body>
 </html>

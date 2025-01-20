@@ -77,7 +77,7 @@ if (isset($_GET['error'])) {
 					<input type="submit" value="Войти">
 				</form>
 		</main>
-		<?php include 'footer.html'; ?>
+		<?php include 'include/footer.html'; ?>	
 		<!-- Подключаем внешний скрипт -->
 		<script src="js/input_err.js"></script>
 	</body>
