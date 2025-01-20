@@ -1,0 +1,17 @@
+Таблица для хранения привилегий ролей
+Флаги hardware_view, hardvare_edit, createtask позволяют войти в раздел управления ресурсами
+При этом у пользователя должены быть выданы привилегии в таблице hardvare_user на объект, который хотим просмотреть, отредактировать, или создать задачу
+
+NAME                        TYPE                    DESCRIPTION                     COOMMENT
+
+roleid                      TEST                    role id (name_rol)              PRIMARY KEY
+Register                    BOOLEAN                 flag user registration allow
+all_accounts_view           BOOLEAN                 flag view all user account
+all_accouts_edit            BOOLEAN                 flag edit all user account
+my_account                  BOOLEAN                 flag view/edit user account
+incidentsrequest_view       BOOLEAN                 flag view list incident and request
+incidentsrequest_edit       BOOLEAN                 flag worc list incident and request
+hardware_view               BOOLEAN                 flag view hardvare
+hardvare_edit               BOOLEAN                 flag edit hardware
+reistrytack                 BOOLEAN                 flag allow read task
+createtask                  BOOLEAN                 flag allow create task
