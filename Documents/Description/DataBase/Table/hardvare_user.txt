@@ -5,4 +5,4 @@ NAME                        TYPE                    DESCRIPTION                 
 id                          TEXT                    GUID entry                      PRIMARY KEY
 hwid                        TEXT                    GUID Hardvare (Hardvare)
 userid                      TEXT                    GUID user (users)
-role                        TEXT                    true - edit / false -edit / NULL - Close
+role                        TEXT                    true - edit / false - view / NULL - Close

@@ -1,18 +1,8 @@
 <nav class="navbar">
-    <ul class="nav-links">
-        <li><a href="/dashboard.php">Главная</a></li>
-        <li><a href="/createtask.php">Создать задание</a></li>
-        <li><a href="/registrytask.php">Реестр заданий</a></li>
-        <li><a href="/hardware.php">Оборудование</a></li>
-        <li><a href="/incidentsrequests.php">Инциденты/Запросы</a></li>
-        <li class="dropdown"> <!-- Добавляем класс для выпадающего меню -->
-            <a href="#">Учетные записи</a>
-            <ul class="dropdown-menu">
-                <li><a href="/my_account.php">Моя учетная запись</a></li>
-                <li><a href="/all_accounts.php">Все учетные записи</a></li>
-                <li><a href="/FR_register.php">Зарегистрировать</a></li>
-            </ul>
-        </li>
-        <li class="push-right"><a href="include/logout.php">Выход</a></li>
+    <ul class="nav-links" id="navbar">
+      <!-- Сюда будет вставлено меню из JSON -->
     </ul>
-</nav>
+  </nav>
+  
+  <!-- Подключаем скрипт для генерации меню -->
+  <script src="/js/navbar.js"></script>

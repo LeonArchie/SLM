@@ -1,0 +1,106 @@
+{
+    "menu": [
+        {
+            "guid": "3ad33b50-360f-4c8a-b691-aca388b48a8b",
+            "title": "Дашборд",
+            "url": "/dashboard.php",
+            "icon": "",
+            "active": true,
+            "role": ["view"],   
+            "dropdown": []
+        },
+        {
+            "guid": "09c37bdb-90cb-4e96-8da3-177383bbb922",
+            "title": "Создать задание",
+            "url": "/createtask.php",
+            "icon": "",
+            "active": true,
+            "role": ["edit"],
+            "dropdown": []
+        },
+        {
+            "guid": "42abc527-dbdb-4524-b485-d0e5c662e82a",
+            "title": "Реестр заданий",
+            "url": "/registrytask.php",
+            "icon": "",
+            "active": true,
+            "role": ["view"],
+            "dropdown": []
+        },
+        {
+            "guid": "4c57985e-bafe-4dfb-ab21-1d65ec20d9c9",
+            "title": "Оборудование",
+            "url": "/hardware.php",
+            "icon": "",
+            "active": true,
+            "role": ["view", "edit"],
+            "dropdown": []
+        },
+        {
+            "guid": "1e1daaaf-7822-4ab9-b6c5-a456ceab208a",
+            "title": "Инциденты/Запросы",
+            "url": "/incidentsrequests.php",
+            "icon": "",
+            "active": true,
+            "role": ["view", "edit"],
+            "dropdown": []
+        },
+        {
+            "guid": "9bc70913-5e7b-4577-8918-cde4756b29a8",
+            "title": "Настройки",
+            "url": "",
+            "icon": "",
+            "active": true,
+            "role": ["view", "edit"],
+            "dropdown": [
+                {
+                    "guid": "da137713-83fe-4325-868f-14b967dbf17c",
+                    "title": "Все учетные записи",
+                    "url": "/all_accounts.php",
+                    "icon": "",
+                    "active": true,
+                    "role": ["view", "edit"],
+                    "dropdown": []
+                },
+                {
+                    "guid": "ada7e553-6d5f-4444-8eec-29e008139ecd",
+                    "title": "Добавить пользователя",
+                    "url": "/FR_register.php",
+                    "icon": "",
+                    "active": true,
+                    "role":["edit"],
+                    "dropdown": []
+                },
+                {
+                    "guid": "aeef82b7-5083-480e-a59e-507a083a16be",
+                    "title": "Просмотреть/Назначить роли",
+                    "url": "/viev_edit_role.php",
+                    "icon": "",
+                    "active": true,
+                    "role": ["view", "edit"],
+                    "dropdown": []
+                }                
+            ]
+        },
+        {
+            "guid": "356a5297-1587-4d79-8f81-b3e1c7e21a73",
+            "title": "Моя учетная запись",
+            "url": "/my_account.php",
+            "icon": "",
+            "active": true,
+            "role": ["edit"],
+            "dropdown": []
+        },
+        {
+            "guid": "a5366719-a2ec-4cc8-a1a6-f8a0f78e1238",
+            "title": "Выход",
+            "url": "/include/logout.php",
+            "icon": "",
+            "active": true,
+            "align": "right",
+            "role": ["view"],
+            "dropdown": []
+            
+        }
+    ]
+}

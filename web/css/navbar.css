@@ -1,81 +1,78 @@
-/* Стили для навигационной панели */
+/* Стили для навбара */
 .navbar {
-    background-color: #7CB68C; /* Цвет фона меню */
-    padding: 3px 15px; /* Внутренние отступы */
-    position: fixed; /* Фиксированное положение */
-    top: 3.48em; /* Прижато к хедеру (высота хедера) */
+    background-color: #7CB68C;
+    padding: 3px 15px;
+    position: fixed;
+    top: 3.48em;
     left: 0;
     right: 0;
-    z-index: 999; /* Меню под хедером */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Тень */
-}
-
-.nav-links {
-    list-style: none; /* Убираем маркеры списка */
+    z-index: 999;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .nav-links {
+    list-style: none;
     display: flex;
     margin: 0;
     padding: 0;
-    align-items: center; /* Выравниваем элементы по вертикали */
-}
-
-.nav-links li {
-    margin-left: 10px; /* Отступ между пунктами меню */
-    position: relative; /* Для позиционирования выпадающего меню */
-}
-
-/* Выравниваем последний элемента по правому краю */
-.nav-links li.push-right {
-    margin-left: auto; /* Автоматический отступ слева */
-}
-
-.nav-links a {
-    color: #000000; /* текст для контраста */
+    align-items: center;
+  }
+  
+  .nav-links li {
+    margin-left: 10px;
+    position: relative;
+  }
+  
+  .nav-links li.push-right {
+    margin-left: auto;
+  }
+  
+  .nav-links a {
+    color: #000000;
     text-decoration: none;
     font-size: 1em;
-    padding: 8px 10px; /* Отступы для ссылок */
-    transition: background-color 0.3s ease; /* Плавное изменение цвета */
-    border-radius: 5px; /* Закругленные углы */
+    padding: 8px 10px;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
     display: flex;
-    align-items: center; /* Выравниваем иконки и текст по вертикали */
-}
-
-/* Эффект при наведении на ссылки */
-.nav-links a:hover {
-    background-color: #f5f5f55e  ;
-}
-
-/* Активная ссылка */
-.nav-links a.active {
+    align-items: center;
+  }
+  
+  .nav-links a:hover {
+    background-color: #f5f5f55e;
+  }
+  
+  .nav-links a.active {
     background-color: #f5f5f55e;
     font-weight: bold;
-}
-
-/* Стили для выпадающего меню */
-.dropdown-menu {
-    display: none; /* Скрываем выпадающее меню по умолчанию */
+  }
+  
+  /* Стили для выпадающего меню */
+  .dropdown-menu {
+    display: none;
     position: absolute;
-    top: 100%; /* Позиционируем ниже родительского элемента */
+    top: 100%;
     left: 0;
-    background-color: #7CB68C; /* Тот же цвет, что и у навигационного бара */
+    background-color: #7CB68C;
     list-style: none;
     margin: 0;
     padding: 0;
-    min-width: 200px; /* Минимальная ширина выпадающего меню */
-    border-radius: 5px; /* Закругленные углы */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Тень */
-    z-index: 1000; /* Убедимся, что меню поверх других элементов */
-}
-
-.dropdown-menu li {
-    margin: 0; /* Убираем отступы между пунктами */
-}
-
-.dropdown-menu a {
-    padding: 10px 20px; /* Отступы для ссылок в выпадающем меню */
-    display: block; /* Ссылки занимают всю ширину */
-}
-
-/* Показываем выпадающее меню при наведении */
-.dropdown:hover .dropdown-menu {
+    min-width: 200px;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+  }
+  
+  .dropdown-menu li {
+    margin: 0;
+  }
+  
+  .dropdown-menu a {
+    padding: 10px 20px;
     display: block;
-}
+  }
+  
+  /* Показываем выпадающее меню при наведении */
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
