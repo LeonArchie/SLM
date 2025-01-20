@@ -1,8 +1,6 @@
 <?php
-// Настройка логгирования
-ini_set('error_log', '/var/app.log'); // Указываем путь к файлу логов
-ini_set('log_errors', 1); // Включаем запись ошибок в лог
-ini_set('display_errors', 0); // Отключаем вывод ошибок на экран (для production)
+	require_once 'include/function.php';
+	    logger(); // Логирование
 
 // Основной блок кода
 try {

@@ -1,58 +1,23 @@
 <?php
-session_start();
-
-// Генерация CSRF-токена, если он еще не создан
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
-
-// Проверка, есть ли сообщение об ошибке
-$error_message = "";
-if (isset($_GET['error'])) {
-    $error_message = htmlspecialchars($_GET['error']);
-}
+	require_once 'include/function.php';
+		logger(); // Логирование
+		startSessionIfNotStarted(); // Запуск сессии
+		csrf_token(); // Генерация CSRF-токена
+	// Проверка, есть ли сообщение об ошибке
+	$error_message = "";
+	if (isset($_GET['error'])) {
+		$error_message = htmlspecialchars($_GET['error']);
+	}
 ?>
 <!DOCTYPE html> 											
 <html lang="ru">
 	<head>
-		<!--Заголовок-->
-		<title>SLM</title>	
-		<!--Кодировка-->
-		<meta charset="utf-8">							
-		 <!-- Адаптивность -->
-		<meta											
-			name="viewport"
-			content="width=device-width, initial-scale=1.0"
-		/>
-		<!--Ключевые слова-->
-		<meta
-			name="description"
-			content="Управление жизненным циклом серверов и приложений"
-		/>
-		<!--Минус роботы-->
-		<meta 
-			name="robots"
-			content="noindex, nofollow" 
-		/>
+		<?php include 'include/all_head.html'; ?>	
 		<!-- Подключение стилей -->
-		<link 
-			rel="stylesheet" 
-			href="/css/login.css"
-		/>
-		<link 
-			rel="stylesheet" 
-			href="/css/all.css"
-		/>
-		<!-- Фавикон -->
-		<link
-			rel="icon"
-			sizes="16x16 32x32 48x48"
-			type="image/png"
-			href="/img/icon.png"
-		/>
+		<link rel="stylesheet" href="/css/login.css"/>
 	</head>
 	<body>
-		<?php include 'header.html'; ?>
+		<?php include 'include/header.html'; ?>
 		<!-- Основной контент -->
 		<main class="authorization ">
 				<h2>Авторизация</h2>

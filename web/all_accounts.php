@@ -1,9 +1,14 @@
 <?php
 	require_once 'include/function.php';
-	logger(); // Логирование
-	startSessionIfNotStarted(); // Запуск сессии
-	checkAuth(); // Проверка авторизации
-	csrf_token(); // Генерация CSRF-токена
+		logger(); // Логирование
+		startSessionIfNotStarted(); // Запуск сессии
+		checkAuth(); // Проверка авторизации
+		csrf_token(); // Генерация CSRF-токена
+	// Проверка, есть ли сообщение об ошибке
+	$error_message = "";
+	if (isset($_GET['error'])) {
+		$error_message = htmlspecialchars($_GET['error']);
+	}	
 ?>
 <!DOCTYPE html> 											
 <html lang="ru">

@@ -1,10 +1,8 @@
 <?php
     // Блок переменных
     define('LOGOUT_PATH', '/include/logout.php');
-    define('LOGGER_PATH', '/var/app.log');
-
-
-
+    define('LOGGER_PATH', '/../app.log');
+    define('CONFIG_PATH', '/config/config.json');
 
     //Проверка запуска сесии
     function startSessionIfNotStarted() {
