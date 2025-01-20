@@ -1,0 +1,116 @@
+Файл register.css содержит стили для страницы регистрации пользователя в веб-приложении. 
+Он отвечает за оформление формы регистрации, включая поля для ввода данных, кнопки, 
+сообщения об ошибках и уведомления.
+
+Основные стили:
+    Контейнер для формы регистрации (.register):
+        background-color: #ffffff: Фон контейнера — белый.
+        border: 2px solid #333: Добавляет рамку вокруг контейнера.
+        border-radius: 20px: Закругляет углы контейнера.
+        padding: 30px: Добавляет внутренние отступы.
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1): Добавляет тень для эффекта "поднятости".
+        width: 500px: Устанавливает ширину контейнера.
+        text-align: left: Выравнивает текст по левому краю.
+        margin: 0 auto: Центрирует контейнер по горизонтали.
+    
+    Заголовок формы (.register h2):
+        margin-top: 0: Убирает отступ сверху у заголовка.
+        margin-bottom: 15px: Добавляет отступ снизу для заголовка.
+        font-size: 1.5em: Устанавливает размер шрифта заголовка.
+        color: #333: Цвет текста — темно-серый.
+        text-align: center: Выравнивает текст заголовка по центру.
+    
+    Форма (.register form):
+        display: flex: Использует Flexbox для размещения элементов формы.
+        flex-direction: column: Элементы формы располагаются в колонку.
+        gap: 15px: Добавляет отступы между элементами формы.
+    
+    Группа ввода (.register .input-group):
+        display: flex: Использует Flexbox для размещения label и input в строке.
+        flex-direction: row: Элементы располагаются в строке.
+        align-items: center: Выравнивает элементы по вертикали по центру.
+        gap: 10px: Добавляет отступ между label и input.
+    
+    Метка (.register label):
+        font-size: 1em: Устанавливает размер шрифта.
+        color: #333: Цвет текста — темно-серый.
+        text-align: left: Выравнивает текст label по левому краю.
+        flex: 0 0 120px: Устанавливает фиксированную ширину для label (120 пикселей).
+    
+    Поля ввода (.register input[type="email"], .register input[type="text"], .register input[type="password"], .register select):
+        padding: 10px: Добавляет внутренние отступы.
+        border: 1px solid #ccc: Добавляет рамку вокруг поля ввода.
+        border-radius: 5px: Закругляет углы поля ввода.
+        font-size: 1em: Устанавливает размер шрифта.
+        flex: 1: Поле ввода занимает всё оставшееся пространство.
+        box-sizing: border-box: Учитывает padding и border в ширине поля.
+    
+    Контейнер для пароля (.register .password-container):
+        display: flex: Использует Flexbox для размещения поля ввода и кнопки.
+        gap: 5px: Добавляет отступ между полем ввода и кнопкой.
+        flex: 1: Занимает всё оставшееся пространство.
+
+    Кнопка генерации пароля (.register .password-container button):
+        padding: 10px: Добавляет внутренние отступы.
+        background-color: #007bff: Фон кнопки — синий.
+        color: white: Цвет текста — белый.
+        border: none: Убирает рамку вокруг кнопки.
+        border-radius: 5px: Закругляет углы кнопки.
+        cursor: pointer: Изменяет курсор на указатель при наведении.
+        transition: background-color 0.3s ease: Добавляет плавное изменение цвета фона при наведении.
+    
+    Эффект при наведении на кнопку (.register .password-container button:hover):
+        background-color: #0056b3: Изменяет цвет фона кнопки на более темный синий при наведении.
+        Кнопка отправки (.register input[type="submit"], .register button[type="submit"]):
+        padding: 10px: Добавляет внутренние отступы.
+        background-color: #007bff: Фон кнопки — синий.
+        color: white: Цвет текста — белый.
+        border: none: Убирает рамку вокруг кнопки.
+        border-radius: 5px: Закругляет углы кнопки.
+        font-size: 1.1em: Устанавливает размер шрифта.
+        cursor: pointer: Изменяет курсор на указатель при наведении.
+        transition: background-color 0.3s ease: Добавляет плавное изменение цвета фона при наведении.
+        width: 100%: Ширина кнопки равна ширине контейнера.
+    
+    Эффект при наведении на кнопку отправки (.register input[type="submit"]:hover, .register button[type="submit"]:hover):
+        background-color: #0056b3: Изменяет цвет фона кнопки на более темный синий при наведении.
+    
+    Сообщение об ошибке (.error-message):
+        color: red: Цвет текста — красный.
+        font-size: 1.1em: Устанавливает размер шрифта.
+        margin-top: 10px: Добавляет отступ сверху.
+        text-align: center: Выравнивает текст по центру.      
+        padding: 10px: Добавляет внутренние отступы.
+        background-color: #ffe6e6: Фон сообщения — светло-красный.
+        border-radius: 40px: Закругляет углы сообщения.
+        display: none: Скрывает блок по умолчанию.
+    
+    Индикаторы валидации (.validation-indicator):
+        display: inline-block: Отображает индикатор как блочный элемент.
+        width: 10px, height: 10px: Устанавливает размер индикатора.
+        border-radius: 50%: Делает индикатор круглым.
+        margin-left: 10px: Добавляет отступ слева.
+    
+    .validation-indicator.valid: 
+        background-color: green; Зеленый цвет для валидного состояния.
+    .validation-indicator.invalid: 
+        background-color: red; Красный цвет для невалидного состояния.
+
+    Блок ошибок (#error-summary):
+        margin-top: 10px: Добавляет отступ сверху.
+        color: red: Цвет текста — красный.
+    
+    Уведомления (#notification):
+        display: none: Скрывает уведомление по умолчанию.
+        padding: 10px: Добавляет внутренние отступы.
+        margin-top: 10px: Добавляет отступ сверху.
+        border-radius: 5px: Закругляет углы.
+        text-align: center: Выравнивает текст по центру.
+    
+    #notification.success: 
+        background-color: #d4edda; Зеленый фон для успешного уведомления.
+        color: #155724;
+
+    #notification.error: 
+        background-color: #f8d7da; Красный фон для уведомления об ошибке.
+        color: #721c24;

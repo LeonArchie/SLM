@@ -1,0 +1,12 @@
+Таблица для хранения зарегистрированных пользователей
+
+
+NAME                        TYPE                    DESCRIPTION                     COOMMENT
+
+userid                      TEXT                    GUID user                       PRIMARY KEY
+userlogin                   TEXT                    user login
+password_hash               TEXT                    password user 
+usernames                   TEXT                    Qutput user NAME
+email                       TEXT                    email user
+roleid                      TEXT                    GUID user role
+regtimes                    TIMESTAMP               DATE TIME Register user

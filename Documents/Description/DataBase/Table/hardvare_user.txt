@@ -1,0 +1,8 @@
+Таблица управления привилегиями к объектам
+
+NAME                        TYPE                    DESCRIPTION                     COOMMENT
+
+id                          TEXT                    GUID entry                      PRIMARY KEY
+hwid                        TEXT                    GUID Hardvare (Hardvare)
+userid                      TEXT                    GUID user (users)
+role                        TEXT                    true - edit / false -edit / NULL - Close
