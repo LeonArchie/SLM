@@ -2,8 +2,7 @@
     "web": {
         "session_timeout": 3600,
         "host": "192.168.8.8",
-        "domain": "slm-psi.school59.ru",
-        "generator_url": "http://192.168.8.8/backend/generator.php"
+        "domain": "domain"
     },
     "db": {
         "host": "192.168.3.4",
