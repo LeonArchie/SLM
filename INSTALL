@@ -74,7 +74,7 @@
                 Добавьте следующий конфигурационный файл:
                     server {
                         listen 80;
-                        server_name slm-psi.school59.ru;  # Замените на ваш домен или IP-адрес
+                        server_name slm-psi.domain;  # Замените на ваш домен или IP-адрес
                         root /var/www/slm;
                         index index.php index.html index.htm;
 
