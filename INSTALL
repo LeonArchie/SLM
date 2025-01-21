@@ -1,0 +1,145 @@
+1. Подготовка сервера
+    Обновление системы:
+        Обновите пакеты системы:
+            sudo apt update && sudo apt upgrade -y
+    Установка необходимого ПО:
+        Установите NGINX, PHP и PostgreSQL:
+            sudo apt install nginx php-fpm php-pgsql postgresql postgresql-contrib
+        Настройка PostgreSQL:
+            Создайте базу данных и пользователя:
+                sudo -u postgres psql
+                CREATE DATABASE "RLM-PSI";
+                CREATE USER "RLM_PSI_USER" WITH PASSWORD 'vbngrjemd#mf!';
+                GRANT ALL PRIVILEGES ON DATABASE "RLM-PSI" TO "RLM_PSI_USER";
+                \q
+
+                -- Создание таблицы для хранения оборудования (hardvare)
+                CREATE TABLE hardvare (
+                    hwid TEXT PRIMARY KEY,          -- GUID оборудования
+                    name TEXT NOT NULL,             -- Название оборудования
+                    status TEXT,                    -- Статус оборудования
+                    domain TEXT,                    -- Домен оборудования
+                    ip_addr TEXT,                   -- IP-адрес или MAC-адрес оборудования
+                    ssh_key TEXT,                   -- SSH-ключ оборудования
+                    system TEXT                     -- Операционная система оборудования
+                );
+
+                -- Создание таблицы для управления привилегиями к объектам (hardvare_user)
+                CREATE TABLE hardvare_user (
+                    id TEXT PRIMARY KEY,            -- GUID записи
+                    hwid TEXT REFERENCES hardvare(hwid) ON DELETE CASCADE,  -- Ссылка на оборудование
+                    userid TEXT REFERENCES users(userid) ON DELETE CASCADE, -- Ссылка на пользователя
+                    role TEXT                       -- Права доступа: true - редактирование, false - просмотр, NULL - закрыт
+                );
+
+                -- Создание таблицы для хранения ролей в системе (name_rol)
+                CREATE TABLE name_rol (
+                    roleid TEXT PRIMARY KEY,        -- GUID роли
+                    names_rol TEXT NOT NULL         -- Название роли
+                );
+
+                -- Создание таблицы для хранения привилегий ролей (privileges)
+                CREATE TABLE privileges (
+                    roleid TEXT REFERENCES name_rol(roleid) ON DELETE CASCADE,  -- Ссылка на роль
+                    idmenu TEXT NOT NULL,           -- GUID меню (из JSON)
+                    role TEXT,                      -- Права доступа: true - редактирование, false - просмотр, NULL - закрыт
+                    PRIMARY KEY (roleid, idmenu)    -- Составной первичный ключ
+                );
+
+                -- Создание таблицы для хранения статусов (status)
+                CREATE TABLE status (
+                    stid TEXT PRIMARY KEY,          -- GUID статуса
+                    name TEXT NOT NULL,             -- Название статуса
+                    hardvare BOOLEAN,               -- Флаг разрешения для оборудования
+                    incident BOOLEAN,               -- Флаг разрешения для инцидентов
+                    tack BOOLEAN,                   -- Флаг разрешения для задач
+                    request BOOLEAN                 -- Флаг разрешения для запросов
+                );
+
+                -- Создание таблицы для хранения зарегистрированных пользователей (users)
+                CREATE TABLE users (
+                    userid TEXT PRIMARY KEY,        -- GUID пользователя
+                    userlogin TEXT NOT NULL UNIQUE, -- Логин пользователя
+                    password_hash TEXT NOT NULL,    -- Хэш пароля пользователя
+                    usernames TEXT NOT NULL,        -- Имя пользователя
+                    email TEXT NOT NULL UNIQUE,     -- Email пользователя
+                    roleid TEXT REFERENCES name_rol(roleid) ON DELETE SET NULL,  -- Ссылка на роль пользователя
+                    regtimes TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Дата и время регистрации пользователя
+                );
+
+2. Настройка NGINX
+    Создание конфигурационного файла для проекта:
+        Создайте новый конфигурационный файл для вашего проекта:
+            sudo nano /etc/nginx/sites-available/slm
+                Добавьте следующий конфигурационный файл:
+                    server {
+                        listen 80;
+                        server_name slm-psi.school59.ru;  # Замените на ваш домен или IP-адрес
+                        root /var/www/slm;
+                        index index.php index.html index.htm;
+
+                        location / {
+                            try_files $uri $uri/ =404;
+                        }
+
+                        location ~ \.php$ {
+                            include snippets/fastcgi-php.conf;
+                            fastcgi_pass unix:/var/run/php/php-fpm.sock;  # Убедитесь, что путь к сокету PHP-FPM корректен
+                            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                            include fastcgi_params;
+                        }
+
+                        location ~ /\.ht {
+                            deny all;
+                        }
+
+                        error_page 404 /404.html;
+                        error_page 500 502 503 504 /50x.html;
+                        location = /50x.html {
+                            root /usr/share/nginx/html;
+                        }
+                    }
+        Активация конфигурации:
+            Создайте символическую ссылку для активации конфигурации:
+                sudo ln -s /etc/nginx/sites-available/slm /etc/nginx/sites-enabled/
+            Проверьте конфигурацию NGINX на ошибки:
+                sudo nginx -t
+            Перезапустите NGINX для применения изменений:
+                sudo systemctl restart nginx
+3. Развертывание проекта
+    Клонирование репозитория:
+        Склонируйте проект в директорию /var/www/slm:
+            sudo git clone <репозиторий> /var/www/slm
+    Настройка прав доступа:
+        Установите правильные права доступа для директории проекта:
+            sudo chown -R www-data:www-data /var/www/slm
+            sudo chmod -R 755 /var/www/slm
+    Настройка конфигурации:
+        Отредактируйте файл config/config.json для настройки подключения к базе данных:
+        {
+            "web": {
+                "session_timeout": 3600,
+                "host": "ip-addreses",
+                "domain": "slm-psi.domain.ru",
+                "generator_url": "http:/domain/backend/generator.php"
+            },
+            "db": {
+                "host": "domain",
+                "port": "5432",
+                "name": "RLM-PSI",
+                "user": "RLM_PSI_USER",
+                "password": "vbngrjemd#mf!"
+            }
+        }
+4. Настройка PHP-FPM
+    Настройка php.ini:
+        Откройте файл php.ini для редактирования:
+            sudo nano /etc/php/7.4/fpm/php.ini
+        Убедитесь, что следующие параметры настроены правильно:
+            error_log = /var/log/php_errors.log
+            log_errors = On
+            display_errors = Off
+            session.save_path = "/var/lib/php/sessions"
+        Перезапуск PHP-FPM:
+            Перезапустите PHP-FPM для применения изменений:
+                sudo systemctl restart php7.4-fpm
