@@ -10,23 +10,43 @@
             "dropdown": []
         },
         {
-            "guid": "09c37bdb-90cb-4e96-8da3-177383bbb922",
-            "title": "Создать задание",
-            "url": "/createtask.php",
+            "guid": "db0126bf-9cfb-46ef-8978-6c750a1ce4ee",
+            "title": "Задания",
+            "url": "",
             "icon": "",
             "active": true,
-            "role": ["edit"],
-            "dropdown": []
+            "role": ["view"],   
+            "dropdown": [
+                {
+                    "guid": "09c37bdb-90cb-4e96-8da3-177383bbb922",
+                    "title": "Создать задание",
+                    "url": "/createtask.php",
+                    "icon": "",
+                    "active": true,
+                    "role": ["edit"],
+                    "dropdown": []
+                },
+                {
+                    "guid": "9ff65e1a-1eb8-4761-9f59-098a9458a3f6",
+                    "title": "Реестр заданий",
+                    "url": "/registrytask.php",
+                    "icon": "",
+                    "active": true,
+                    "role": ["view"],
+                    "dropdown": []
+                },
+                {
+                    "guid": "42abc527-dbdb-4524-b485-d0e5c662e82a",
+                    "title": "Согласование",
+                    "url": "/agreement.php",
+                    "icon": "",
+                    "active": true,
+                    "role": ["view"],
+                    "dropdown": []
+                }
+            ]
         },
-        {
-            "guid": "42abc527-dbdb-4524-b485-d0e5c662e82a",
-            "title": "Реестр заданий",
-            "url": "/registrytask.php",
-            "icon": "",
-            "active": true,
-            "role": ["view"],
-            "dropdown": []
-        },
+
         {
             "guid": "4c57985e-bafe-4dfb-ab21-1d65ec20d9c9",
             "title": "Оборудование",
@@ -38,12 +58,59 @@
         },
         {
             "guid": "1e1daaaf-7822-4ab9-b6c5-a456ceab208a",
-            "title": "Инциденты/Запросы",
-            "url": "/incidentsrequests.php",
+            "title": "Поддержка",
+            "url": "",
             "icon": "",
             "active": true,
             "role": ["view", "edit"],
-            "dropdown": []
+            "dropdown": [
+                {
+                    "guid": "fead5334-3da9-4a1a-8ae3-ba687d4211b8",
+                    "title": "Создать",
+                    "url": "/create.php",
+                    "icon": "",
+                    "active": true,
+                    "role": ["view", "edit"],
+                    "dropdown": []
+                },
+                {
+                    "guid": "eb95aef2-b478-4567-a66b-c7ae71c0a100",
+                    "title": "Инциденты",
+                    "url": "/incidents.php",
+                    "icon": "",
+                    "active": true,
+                    "role": ["view", "edit"],
+                    "dropdown": []
+                },
+                {
+                    "guid": "47c419f8-1f8f-4fc5-a200-a2cb4a6cdd4c",
+                    "title": "Запросы",
+                    "url": "/requests.php",
+                    "icon": "",
+                    "active": true,
+                    "role": ["view", "edit"],
+                    "dropdown": []
+                },
+                {
+                    "guid": "06d73430-f85a-448a-b008-c18e5686d716",
+                    "title": "Риски",
+                    "url": "/risk.php",
+                    "icon": "",
+                    "active": true,
+                    "role": ["view", "edit"],
+                    "dropdown": []
+                },
+                {
+                    "guid": "f4343168-d52c-48bc-9616-f13fa4b50aa5",
+                    "title": "Регламентные работы",
+                    "url": "/routinemaintenance.php",
+                    "icon": "",
+                    "active": true,
+                    "role": ["view", "edit"],
+                    "dropdown": []
+                }
+
+            ]
         },
         {
             "guid": "9bc70913-5e7b-4577-8918-cde4756b29a8",
@@ -79,7 +146,16 @@
                     "active": true,
                     "role": ["view", "edit"],
                     "dropdown": []
-                }                
+                },
+                {
+                    "guid": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                    "title": "Модули",
+                    "url": "/modules.php",
+                    "icon": "",
+                    "active": true,
+                    "role": ["view", "edit"],
+                    "dropdown": []
+                }                  
             ]
         },
         {
