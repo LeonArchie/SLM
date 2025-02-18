@@ -1,4 +1,8 @@
 {
+    "version": {
+        "current_version": "0.2.22b",
+        "level": "DEV"
+    },
     "web": {
         "session_timeout": 3600,
         "host": "192.168.8.8",
@@ -10,5 +14,10 @@
         "name": "RLM-PSI",
         "user": "RLM_PSI_USER",
         "password": "vbngrjemd#mf!"
+    },
+    "app": {
+        "frod": true,
+        "frod_ingnore": ["/authorization.php", "BC_register.php", "db_connect.php", "index.php", "info.php"]
     }
+
 }

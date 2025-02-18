@@ -1,0 +1,113 @@
+/* Основной фон */
+body {
+    background-color: rgba(253, 245, 230, 0.9); /* Полупрозрачный молочный цвет */
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Отступы для main, чтобы не залезало на header и footer */
+main {
+    padding-top: 1em; /* Увеличиваем отступ сверху */
+    padding-bottom: 0em; /* Отступ для footer */
+    margin-top: 14em; /* Увеличиваем отступ для navbar */
+    max-width: 100%; /* Растягиваем на всю ширину экрана */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.8); /* Прозрачный фон для формы */
+    border-radius: 10px; /* Скругление углов */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Тень для формы */
+}
+
+/* Стили для таблицы */
+.table-container {
+    overflow-x: auto; /* Горизонтальная прокрутка, если таблица не помещается */
+    margin-top: 10px; /* Уменьшаем расстояние между кнопками и таблицей */
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; /* Минимальная ширина таблицы */
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Стили для кнопки */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-bottom: 10px; /* Уменьшаем расстояние между кнопками и таблицей */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.button:disabled {
+    background-color: #ccc; /* Серая кнопка, если неактивна */
+    cursor: not-allowed;
+}
+
+.button.save {
+    background-color: #28a745; /* Зелёный цвет для кнопки "Сохранить" */
+}
+
+.button.save:hover {
+    background-color: #218838;
+}
+
+.button.save:disabled {
+    background-color: #ccc; /* Серая кнопка, если неактивна */
+    cursor: not-allowed;
+}
+
+.button.add {
+    background-color: #ffc107; /* Жёлтый цвет для кнопки "Добавить модуль" */
+}
+
+.button.add:hover {
+    background-color: #e0a800;
+}
+
+.button.add:disabled {
+    background-color: #ccc; /* Серая кнопка, если неактивна */
+    cursor: not-allowed;
+}
+/* Стили для режима редактирования */
+.edit-mode input:not([type="checkbox"]) {
+    background-color: white; /* Белый фон для редактируемых полей */
+    pointer-events: auto; /* Разрешаем редактирование */
+    border: 1px solid #007BFF; /* Синяя рамка для активных полей */
+}
+
+.edit-mode .role-checkbox input[type="checkbox"] {
+    pointer-events: auto; /* Разрешаем */
+}
