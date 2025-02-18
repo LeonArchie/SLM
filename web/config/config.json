@@ -1,6 +1,6 @@
 {
     "version": {
-        "current_version": "0.2.13",
+        "current_version": "0.2.22",
         "level": "DEV"
     },
     "web": {
@@ -16,7 +16,8 @@
         "password": "vbngrjemd#mf!"
     },
     "app": {
-        "frod": "false"
+        "frod": true,
+        "frod_ingnore": ["/authorization.php", "BC_register.php", "db_connect.php", "index.php", "info.php"]
     }
 
 }

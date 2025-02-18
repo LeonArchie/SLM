@@ -150,90 +150,125 @@
 
 
 
-
     function frod($strGuid) {
+        // Получаем текущий URL
+        $currentUrl = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'UNKNOWN';
+    
         // Проверяем, определена ли константа CONFIG_PATH
         if (!defined('CONFIG_PATH')) {
-            logger("ERROR", "Переменная CONFIG_PATH не определена.");
-            header("Location: /403.php");
+            logger("ERROR", "Переменная CONFIG_PATH не определена. [URL: $currentUrl]");
+            header("Location:/err/403.html");
             exit();
         }
-
+    
         // Проверяем существование файла config.json
         if (!file_exists(CONFIG_PATH)) {
             logger("ERROR", "Файл config.json не найден: " . CONFIG_PATH);
-            header("Location: /403.php");
+            header("Location:/err/403.html");
             exit();
         }
-
+    
         // Чтение файла config.json
         $configJson = file_get_contents(CONFIG_PATH);
         if ($configJson === false) {
             logger("ERROR", "Ошибка при чтении файла config.json: " . CONFIG_PATH);
-            header("Location: /403.php");
+            header("Location:/err/403.html");
             exit();
         }
-
+    
         // Декодирование JSON
         $configData = json_decode($configJson, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
             logger("ERROR", "Ошибка при декодировании config.json: " . json_last_error_msg());
-            header("Location: /403.php");
+            header("Location:/err/403.html");
             exit();
         }
-
+    
         // Проверяем наличие и значение ключа app.frod
-        $frodEnabled = isset($configData['app']['frod']) && strtolower($configData['app']['frod']) === 'true';
-
+        $frodEnabled = isset($configData['app']['frod']) && (strtolower((string)$configData['app']['frod']) === 'true' || $configData['app']['frod'] === true);
+    
         // Если frod отключен или отсутствует, пропускаем выполнение функции
         if (!$frodEnabled) {
-            logger("INFO", "Функция frod пропущена, так как app.frod отключен или отсутствует.");
-            return; // Просто выходим из функции без выполнения дальнейших действий
+            logger("INFO", "Функция frod пропущена, так как app.frod отключен или отсутствует. [URL: $currentUrl]");
+            return;
         }
-
-        // Остальная логика функции
-
+    
+        // Проверяем, есть ли текущий URL в списке frod_ignore
+        $frodIgnore = isset($configData['app']['frod_ignore']) ? $configData['app']['frod_ignore'] : [];
+        if (in_array($currentUrl, $frodIgnore, true)) {
+            logger("INFO", "Проверка frod пропущена для URL: $currentUrl (находится в списке frod_ignore).");
+            return; // Пропускаем проверку, если URL в списке игнорирования
+        }
+    
+        // Подключение к базе данных через db_connect.php
+        require_once __DIR__ . '/../db_connect.php'; // Выполняем скрипт db_connect.php
+    
+        try {
+            // Предполагается, что после выполнения db_connect.php глобальная переменная $pdo создана
+            if (!isset($pdo) || !$pdo instanceof PDO) {
+                throw new Exception("Объект PDO не был создан.");
+            }
+    
+            // Выполнение запроса для получения roleid для роли 'Администратор'
+            $stmt = $pdo->prepare("SELECT roleid FROM name_rol WHERE names_rol = :role_name");
+            $stmt->execute([':role_name' => 'Администратор']);
+            $adminRole = $stmt->fetchColumn();
+    
+            // Проверка наличия значения roleid в сессии
+            if (isset($_SESSION['roleid']) && $_SESSION['roleid'] == $adminRole) {
+                logger("INFO", "Доступ разрешен для администратора. [URL: $currentUrl]");
+                return; // Завершаем функцию для администратора
+            } else {
+                // Логируем, что пользователь не является администратором
+                logger("INFO", "Пользователь не является администратором. Продолжение проверки frod. [URL: $currentUrl]");
+            }
+        } catch (Exception $e) {
+            logger("ERROR", "Ошибка при проверке прав администратора: " . $e->getMessage());
+            header("Location: /50x.html");
+            exit();
+        }
+    
         // Проверяем STR_GUID
         if (empty($strGuid)) {
-            logger("ERROR", "STR_GUID не передан.");
-            header("Location: /403.php");
+            logger("ERROR", "STR_GUID не передан. [URL: $currentUrl]");
+            header("Location:/err/403.html");
             exit();
         }
-
+    
         // Проверяем, определена ли переменная CONFIG_MENU
         if (!defined('CONFIG_MENU')) {
-            logger("ERROR", "Переменная CONFIG_MENU не определена.");
-            header("Location: /403.php");
+            logger("ERROR", "Переменная CONFIG_MENU не определена. [URL: $currentUrl]");
+            header("Location:/err/403.html");
             exit();
         }
-
+    
         // Проверяем существование файла menu.json
         if (!file_exists(CONFIG_MENU)) {
             logger("ERROR", "Файл menu.json не найден: " . CONFIG_MENU);
-            header("Location: /403.php");
+            header("Location:/err/403.html");
             exit();
         }
-
+    
         // Чтение файла menu.json
         $menuJson = file_get_contents(CONFIG_MENU);
         if ($menuJson === false) {
             logger("ERROR", "Ошибка при чтении файла menu.json: " . CONFIG_MENU);
-            header("Location: /403.php");
+            header("Location:/err/403.html");
             exit();
         }
-
+    
         // Декодирование JSON
         $menuData = json_decode($menuJson, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
             logger("ERROR", "Ошибка при декодировании menu.json: " . json_last_error_msg());
-            header("Location: /403.php");
+            header("Location:/err/403.html");
             exit();
         }
-
+    
         // Поиск элемента с нужным GUID
         $found = false;
         $active = false;
-
+    
         // Рекурсивная функция для поиска GUID в меню
         function findGuid($items, $strGuid, &$found, &$active) {
             foreach ($items as $item) {
@@ -247,25 +282,25 @@
                 }
             }
         }
-
+    
         // Ищем GUID в меню
         findGuid($menuData['menu'], $strGuid, $found, $active);
-
+    
         // Если GUID не найден
         if (!$found) {
-            logger("ERROR", "GUID не найден: " . $strGuid);
-            header("Location: /403.php");
+            logger("ERROR", "GUID не найден: " . $strGuid . " [URL: $currentUrl]");
+            header("Location:/err/403.html");
             exit();
         }
-
+    
         // Проверка значения active
         if ($active === false) {
-            logger("INFO", "Доступ запрещен для GUID: " . $strGuid);
-            header("Location: /403.php");
+            logger("INFO", "Доступ запрещен для GUID: " . $strGuid . " [URL: $currentUrl]");
+            header("Location:/err/403.html");
             exit();
         }
-
+    
         // Если всё в порядке, продолжаем выполнение
-        logger("INFO", "Доступ разрешен для GUID: " . $strGuid);
+        logger("INFO", "Доступ разрешен для GUID: " . $strGuid . " [URL: $currentUrl]");
     }
 ?>

@@ -152,7 +152,7 @@
                     "title": "Модули",
                     "url": "/modules.php",
                     "icon": "",
-                    "active": true,
+                    "active": false,
                     "role": ["view", "edit"],
                     "dropdown": []
                 }                  

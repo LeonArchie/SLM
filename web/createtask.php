@@ -16,6 +16,9 @@ logger("INFO", "Пользователь авторизован. Username: " . $
 csrf_token();
 logger("INFO", "CSRF-токен сгенерирован.");
 
+//Проверка на Фрод
+frod('');
+
 // Проверка, есть ли сообщение об ошибке
 $error_message = "";
 if (isset($_GET['error'])) {
