@@ -1,6 +1,6 @@
 {
     "version": {
-        "current_version": "0.2.11",
+        "current_version": "0.2.13",
         "level": "DEV"
     },
     "web": {
@@ -14,5 +14,9 @@
         "name": "RLM-PSI",
         "user": "RLM_PSI_USER",
         "password": "vbngrjemd#mf!"
+    },
+    "app": {
+        "frod": "false"
     }
+
 }
