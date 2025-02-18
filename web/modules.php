@@ -134,7 +134,7 @@ function loadMenu() {
             </div>
         <?php endif; ?>
     </main>
-    <?php include 'include/footer.html'; ?>
+    <?php include 'include/footer.php'; ?>
 
     <!-- Подключаем скрипт -->
     <script src="/js/modules.js"></script>

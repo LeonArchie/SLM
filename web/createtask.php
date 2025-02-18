@@ -38,6 +38,6 @@ if (isset($_GET['error'])) {
 			<p> Страница в разработке</p>
 			<p>ID вашей сессии: <?php echo htmlspecialchars($_SESSION['session_id']); ?></p>
 		</main>
-		<?php include 'include/footer.html'; ?>	
+		<?php include 'include/footer.php'; ?>
 	</body>
 </html>

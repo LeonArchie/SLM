@@ -1,4 +1,8 @@
 {
+    "version": {
+        "current_version": "0.2.11",
+        "level": "DEV"
+    },
     "web": {
         "session_timeout": 3600,
         "host": "192.168.8.8",
