@@ -2,7 +2,7 @@
     // Блок переменных
     define('LOGOUT_PATH', '/include/logout.php');
     define('LOGGER_PATH', '/var/log/slm/web/web.log');
-    define('CONFIG_PATH', '/config/config.json');
+    define('CONFIG_PATH', __DIR__ . '/../config/config.json');
 
     // Функция для запуска сессии, если она еще не запущена
     function startSessionIfNotStarted() {

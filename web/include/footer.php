@@ -1,38 +1,37 @@
 <?php
-// Путь к JSON-файлу конфигурации
-$configFilePath = '/config/config.json';
-
 // Логирование начала загрузки футера
 logger("INFO", "Начало загрузки футера.");
 
 // Проверка существования файла конфигурации
-if (file_exists($configFilePath)) {
-    logger("INFO", "Файл конфигурации найден: $configFilePath");
-
-    // Чтение содержимого файла
-    $configJson = file_get_contents($configFilePath);
-    if ($configJson === false) {
-        logger("ERROR", "Ошибка при чтении файла конфигурации: $configFilePath");
-        $currentVersion = '0.0.0'; // Используем значение по умолчанию
-    } else {
-        logger("INFO", "Файл конфигурации успешно прочитан.");
-
-        // Декодирование JSON
-        $config = json_decode($configJson, true);
-        if (json_last_error() === JSON_ERROR_NONE) {
-            logger("INFO", "JSON успешно декодирован.");
-
-            // Получение текущей версии
-            $currentVersion = $config['version']['current_version'] ?? '0.0.0'; // Если версия не найдена, используем значение по умолчанию
-            logger("INFO", "Текущая версия загружена: $currentVersion");
-        } else {
-            logger("ERROR", "Ошибка при декодировании JSON: " . json_last_error_msg());
-            $currentVersion = '0.0.0'; // Используем значение по умолчанию
-        }
-    }
-} else {
-    logger("ERROR", "Файл конфигурации не найден: $configFilePath");
+if (!defined('CONFIG_PATH')) {
+    logger("ERROR", "Переменная CONFIG_PATH не определена.");
     $currentVersion = '0.0.0'; // Используем значение по умолчанию
+} else {
+    logger("INFO", "Путь к конфигурации: " . CONFIG_PATH);
+
+    if (file_exists(CONFIG_PATH)) {
+        logger("INFO", "Файл конфигурации найден: " . CONFIG_PATH);
+
+        // Чтение содержимого файла
+        $configJson = file_get_contents(CONFIG_PATH);
+        if ($configJson === false) {
+            logger("ERROR", "Ошибка при чтении файла конфигурации: " . CONFIG_PATH);
+            $currentVersion = '0.0.0'; // Используем значение по умолчанию
+        } else {
+            // Декодирование JSON
+            $config = json_decode($configJson, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $currentVersion = $config['version']['current_version'] ?? '0.0.0'; // Если версия не найдена, используем значение по умолчанию
+                logger("INFO", "Текущая версия загружена: $currentVersion");
+            } else {
+                logger("ERROR", "Ошибка при декодировании JSON: " . json_last_error_msg());
+                $currentVersion = '0.0.0';
+            }
+        }
+    } else {
+        logger("ERROR", "Файл конфигурации не найден: " . CONFIG_PATH);
+        $currentVersion = '0.0.0'; // Используем значение по умолчанию
+    }
 }
 
 // Логирование завершения загрузки футера
