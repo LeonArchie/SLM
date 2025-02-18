@@ -35,6 +35,6 @@ if (isset($_GET['error'])) {
 		<main>
             <?php phpinfo(); ?>
 		</main>
-		<?php include 'include/footer.html'; ?>	
+		<?php include 'include/footer.php'; ?>
 	</body>
 </html>

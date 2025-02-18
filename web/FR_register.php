@@ -95,7 +95,7 @@ if ($stmt->rowCount() > 0) {
         <!-- Уведомление о результате регистрации -->
         <div id="notification" style="display: none;"></div>
     </main>
-    <?php include 'include/footer.html'; ?>    
+    <?php include 'include/footer.php'; ?>   
     <!-- Подключаем внешние скрипты -->
     <script src="/js/generator_pass.js"></script>
     <script src="/js/register.js"></script>
