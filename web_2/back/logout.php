@@ -1,6 +1,6 @@
 <?php
 // Подключение функции логирования
-require_once 'function.php';
+require_once __DIR__ . '/../include/function.php';
 
 // Логирование начала выполнения скрипта
 logger("INFO", "Начало выполнения скрипта logout.php.");
@@ -62,6 +62,6 @@ $ipAddress = $_SERVER['REMOTE_ADDR'] ?? 'неизвестный IP';
 logger("INFO", "Перенаправление на страницу авторизации. IP пользователя: " . $ipAddress);
 
 // Перенаправление на страницу авторизации
-header("Location: /login.php");
+header("Location: /../login.php");
 exit();
 ?>

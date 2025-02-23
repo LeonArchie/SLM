@@ -14,7 +14,7 @@
             "title": "Задания",
             "url": "",
             "icon": "",
-            "active": true,
+            "active": false,
             "role": ["view"],   
             "dropdown": [
                 {
@@ -22,7 +22,7 @@
                     "title": "Создать задание",
                     "url": "/createtask.php",
                     "icon": "",
-                    "active": true,
+                    "active": false,
                     "role": ["edit"],
                     "dropdown": []
                 },
@@ -31,7 +31,7 @@
                     "title": "Реестр заданий",
                     "url": "/registrytask.php",
                     "icon": "",
-                    "active": true,
+                    "active": false,
                     "role": ["view"],
                     "dropdown": []
                 },
@@ -40,7 +40,7 @@
                     "title": "Согласование",
                     "url": "/agreement.php",
                     "icon": "",
-                    "active": true,
+                    "active": false,
                     "role": ["view"],
                     "dropdown": []
                 }
@@ -52,7 +52,7 @@
             "title": "Оборудование",
             "url": "/hardware.php",
             "icon": "",
-            "active": true,
+            "active": false,
             "role": ["view", "edit"],
             "dropdown": []
         },
@@ -61,7 +61,7 @@
             "title": "Поддержка",
             "url": "",
             "icon": "",
-            "active": true,
+            "active": false,
             "role": ["view", "edit"],
             "dropdown": [
                 {
@@ -69,7 +69,7 @@
                     "title": "Создать",
                     "url": "/create.php",
                     "icon": "",
-                    "active": true,
+                    "active": false,
                     "role": ["view", "edit"],
                     "dropdown": []
                 },
@@ -78,7 +78,7 @@
                     "title": "Инциденты",
                     "url": "/incidents.php",
                     "icon": "",
-                    "active": true,
+                    "active": false,
                     "role": ["view", "edit"],
                     "dropdown": []
                 },
@@ -87,7 +87,7 @@
                     "title": "Запросы",
                     "url": "/requests.php",
                     "icon": "",
-                    "active": true,
+                    "active": false,
                     "role": ["view", "edit"],
                     "dropdown": []
                 },
@@ -96,7 +96,7 @@
                     "title": "Риски",
                     "url": "/risk.php",
                     "icon": "",
-                    "active": true,
+                    "active": false,
                     "role": ["view", "edit"],
                     "dropdown": []
                 },
@@ -105,7 +105,7 @@
                     "title": "Регламентные работы",
                     "url": "/routinemaintenance.php",
                     "icon": "",
-                    "active": true,
+                    "active": false,
                     "role": ["view", "edit"],
                     "dropdown": []
                 }
