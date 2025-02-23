@@ -17,6 +17,14 @@
         "user": "RLM_PSI_USER",
         "password": "vbngrjemd#mf!"
     },
+    "ldap": {
+        "domain_master":"",
+        "domain_slave":"",
+        "port":"",
+        "DN":"",
+        "username":"",
+        "password":""    
+    },
     "app": {
 
     },
