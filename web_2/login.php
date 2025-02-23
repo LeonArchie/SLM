@@ -27,7 +27,7 @@ if (isset($_GET['error'])) {
     <link rel="stylesheet" href="/css/login.css"/>
 </head>
 <body>
-    <?php include 'include/platform_header.html'; ?>
+    <?php include 'include/eos_header.html'; ?>
     <!-- Основной контент -->
     <main class="authorization">
         <h2>Авторизация</h2>
