@@ -25,6 +25,7 @@ if (isset($_GET['error'])) {
     <?php include 'include/all_head.html'; ?>
     <!-- Подключение стилей -->
     <link rel="stylesheet" href="css/login.css"/>
+    <?php include 'css/error.css'; ?>
 </head>
 <body>
     <?php include 'include/eos_header.html'; ?>
@@ -47,8 +48,9 @@ if (isset($_GET['error'])) {
             <input type="submit" value="Войти">
         </form>
     </main>
+    <?php include 'include/error.html'; ?>
     <?php include 'include/footer.php'; ?>
     <!-- Подключаем внешний скрипт -->
-    <script src="js/input_err.js"></script>
+    <script src="js/error.js"></script>
 </body>
 </html>

@@ -1,0 +1,42 @@
+/* Стили для окна ошибок */
+#error-window {
+    display: none; /* Сначала скрыто */
+    position: fixed; /* Фиксированное позиционирование */
+    bottom: 20px; /* Расположение внизу */
+    right: 20px; /* Расположение справа */
+    background-color: #f8d7da; /* Цвет фона */
+    border: 1px solid #f5c6cb; /* Граница */
+    border-radius: 4px; /* Скругленные углы */
+    padding: 10px; /* Отступы внутри */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень для выделения */
+    z-index: 9999; /* Поверх всех элементов */
+    width: calc(5vw + 7vw); /* Адаптивная ширина (5-7 см) */
+    max-width: 300px; /* Максимальная ширина для больших экранов */
+    height: auto; /* Высота автоматическая */
+}
+
+#error-window.show {
+    display: flex; /* Показываем окно */
+    flex-direction: column; /* Вертикальное расположение элементов */
+}
+
+#error-message {
+    font-size: 14px; /* Размер шрифта */
+    color: #721c24; /* Цвет текста */
+    margin-bottom: 5px; /* Отступ снизу */
+}
+
+#progress-bar-container {
+    width: 100%; /* Ширина контейнера полосы прогресса */
+    height: 5px; /* Высота полосы */
+    background-color: #f5c6cb; /* Фон контейнера */
+    border-radius: 2px; /* Скругленные углы */
+    overflow: hidden; /* Скрываем лишнее */
+}
+
+#progress-bar {
+    height: 100%; /* Полная высота контейнера */
+    width: 100%; /* Начальная ширина */
+    background-color: #f03e3e; /* Цвет полосы */
+    border-radius: 2px; /* Скругленные углы */
+}
