@@ -2,7 +2,7 @@
 require_once 'include/function.php';
 
 // Логирование начала выполнения скрипта
-logger("INFO", "Начало выполнения скрипта all_accounts.php.");
+logger("INFO", "Начало выполнения скрипта dashboard.php.");
 
 // Запуск сессии
 startSessionIfNotStarted();
