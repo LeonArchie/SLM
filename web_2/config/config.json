@@ -1,12 +1,14 @@
 {
     "version": {
-        "current_version": "0.2.22b",
+        "current_version": "0.3.0",
         "level": "DEV"
     },
     "web": {
         "session_timeout": 3600,
         "host": "192.168.8.8",
-        "domain": "domain"
+        "domain": "domain",
+        "frod": true,
+        "frod_ingnore": ["/authorization.php", "BC_register.php", "db_connect.php", "index.php", "info.php"]
     },
     "db": {
         "host": "192.168.3.4",
@@ -16,8 +18,13 @@
         "password": "vbngrjemd#mf!"
     },
     "app": {
-        "frod": true,
-        "frod_ingnore": ["/authorization.php", "BC_register.php", "db_connect.php", "index.php", "info.php"]
+
+    },
+    "win_client": {
+
+    },
+    "unix_client": {
+        
     }
 
 }
