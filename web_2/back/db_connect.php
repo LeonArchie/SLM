@@ -1,5 +1,4 @@
 <?php
-require_once '/../include/function.php';
 
 // Логирование начала выполнения скрипта
 logger("INFO", "Начало выполнения скрипта db_connect.php.");

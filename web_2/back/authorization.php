@@ -1,39 +1,71 @@
 <?php
-require_once 'include/function.php';
+// Инициализация вызваемых функций
+$file_path = __DIR__ . '/../include/function.php';
+if (!file_exists($file_path)) {
+    echo json_encode(['success' => false, 'message' => 'Ошибка сервера: файл function.php не найден.']);
+    exit();
+}
 
-// Логирование начала выполнения скрипта
+require_once $file_path;
+
 logger("INFO", "Начало выполнения скрипта authorization.php.");
-
-// Начало сессии
 startSessionIfNotStarted();
-logger("INFO", "Сессия успешно запущена. ID сессии: " . session_id());
+
+// Получение времени жизни сессии из конфигурации
+$config_path = CONFIG_PATH; // Путь к config.json определен в function.php
+if (!file_exists($config_path)) {
+    logger("ERROR", "Файл конфигурации config.json не найден.");
+    echo json_encode(['success' => false, 'message' => 'Ошибка сервера: файл конфигурации не найден.']);
+    exit();
+}
+
+// Чтение и декодирование JSON-конфигурации
+$config_content = file_get_contents($config_path);
+$config_data = json_decode($config_content, true);
+
+if (json_last_error() !== JSON_ERROR_NONE) {
+    logger("ERROR", "Ошибка чтения конфигурации: " . json_last_error_msg());
+    echo json_encode(['success' => false, 'message' => 'Ошибка сервера: неверный формат конфигурации.']);
+    exit();
+}
+
+// Получение session_timeout
+$session_timeout = $config_data['web']['session_timeout'] ?? 3600; // Значение по умолчанию: 3600 секунд
+logger("DEBUG", "Получено время жизни сессии из конфигурации: $session_timeout секунд.");
+
+// Установка времени жизни сессии
+session_set_cookie_params($session_timeout);
+session_regenerate_id(true); // Пересоздание ID сессии для безопасности
 
 // Проверка CSRF-токена
 if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-    $error_message = "Ошибка безопасности: неверный CSRF-токен.";
-    logger("ERROR", $error_message . " Ожидаемый токен: " . $_SESSION['csrf_token'] . ", Полученный токен: " . $_POST['csrf_token']);
-    header("Location: login.php?error=" . urlencode($error_message));
+    logger("ERROR", "Ошибка безопасности: неверный CSRF-токен.");
+    echo json_encode(['success' => false, 'message' => 'Ошибка безопасности: неверный CSRF-токен.']);
     exit();
 }
 
 // Подключение к базе данных
-require_once 'db_connect.php'; // Файл с подключением к PostgreSQL
-logger("INFO", "Подключение к базе данных успешно установлено.");
+$file_path = __DIR__ . '/db_connect.php';
+if (!file_exists($file_path)) {
+    logger("ERROR", "Ошибка подключения db_connect.php");
+    echo json_encode(['success' => false, 'message' => 'Ошибка сервера: база данных недоступна.']);
+    exit();
+}
+
+require_once $file_path;
 
 // Проверка, была ли отправлена форма
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     logger("INFO", "Начало обработки формы авторизации. Метод запроса: POST.");
 
     // Получение данных из формы
-    $login = trim($_POST['login']); // Удаляем лишние пробелы
+    $login = trim($_POST['login']);
     $password = trim($_POST['password']);
-    logger("DEBUG", "Получены данные из формы. Логин: " . $login . ", Пароль: [скрыт].");
 
     // Проверка на пустые поля
     if (empty($login) || empty($password)) {
-        $error_message = "Логин и пароль обязательны для заполнения!";
-        logger("ERROR", $error_message . " Логин: " . (empty($login) ? "пустой" : "заполнен") . ", Пароль: " . (empty($password) ? "пустой" : "заполнен"));
-        header("Location: login.php?error=" . urlencode($error_message));
+        logger("ERROR", "Логин и пароль обязательны для заполнения!");
+        echo json_encode(['success' => false, 'message' => 'Логин и пароль обязательны для заполнения!']);
         exit();
     }
 
@@ -45,7 +77,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['userlogin' => $login]);
         $user = $stmt->fetch();
-        logger("DEBUG", "Запрос к базе данных выполнен. Найден пользователь: " . ($user ? "да" : "нет"));
 
         // Проверка пароля
         if ($user && password_verify($password, $user['password_hash'])) {
@@ -59,36 +90,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Сохранение данных пользователя в сессии
             $_SESSION['username'] = htmlspecialchars($user['usernames']);
             $_SESSION['userid'] = $user['userid'];
-            $_SESSION['session_id'] = $session_id;
             $_SESSION['roleid'] = $user['roleid'];
-            logger("DEBUG", "Данные пользователя сохранены в сессии. Username: " . $_SESSION['username'] . ", UserID: " . $_SESSION['userid'] . ", RoleID: " . $_SESSION['roleid']);
+            $_SESSION['session_id'] = $session_id;
+            logger("DEBUG", "Данные пользователя сохранены в сессии. Username: " . $_SESSION['username'] . ", UserID: " . $_SESSION['userid'] . ", RoleID: " . $_SESSION['roleid'] . ", RoleID: " . $_SESSION['session_id']);
 
-            // Запись ID сессии в куки
-            setcookie("session_id", $session_id, time() + 3600, "/"); // Куки действует 1 час
-            logger("DEBUG", "ID сессии записан в куки. Время жизни куки: 1 час.");
+            // Установка времени жизни сессии
+            setcookie("session_id", $session_id, time() + $session_timeout, "/");
 
-            // Перенаправление на защищенную страницу
-            logger("INFO", "Перенаправление на dashboard.php.");
-            header("Location: dashboard.php");
+            // Успешная авторизация
+            echo json_encode(['success' => true, 'message' => 'Успешная авторизация.', 'redirect' => '/dashboard.php']);
             exit();
         } else {
             // Неудачная авторизация
             logger("ERROR", "Неверный логин или пароль для пользователя: " . $login);
             sleep(2); // Задержка для защиты от брутфорса
-            $error_message = "Неверный логин или пароль!";
-            header("Location: login.php?error=" . urlencode($error_message));
+            echo json_encode(['success' => false, 'message' => 'Неверный логин или пароль!']);
             exit();
         }
     } catch (PDOException $e) {
-        logger("ERROR", "Ошибка выполнения запроса: " . $e->getMessage() . ". SQL: " . $sql);
-        $error_message = "Произошла ошибка. Пожалуйста, попробуйте позже.";
-        header("Location: login.php?error=" . urlencode($error_message));
+        logger("ERROR", "Ошибка выполнения запроса: " . $e->getMessage());
+        echo json_encode(['success' => false, 'message' => 'Произошла ошибка. Пожалуйста, попробуйте позже.']);
         exit();
     }
 } else {
-    // Если форма не была отправлена, перенаправляем на страницу авторизации
+    // Если форма не была отправлена, возвращаем ошибку
     logger("INFO", "Попытка доступа к authorization.php без отправки формы. Метод запроса: " . $_SERVER["REQUEST_METHOD"]);
-    header("Location: login.php");
+    echo json_encode(['success' => false, 'message' => 'Недопустимый метод запроса.']);
     exit();
 }
-?>

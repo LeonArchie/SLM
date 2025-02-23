@@ -1,6 +1,6 @@
 {
     "version": {
-        "current_version": "0.3.1",
+        "current_version": "0.3.6",
         "level": "DEV"
     },
     "web": {
@@ -8,7 +8,7 @@
         "host": "192.168.8.8",
         "domain": "domain",
         "frod": true,
-        "frod_ingnore": ["/authorization.php", "BC_register.php", "db_connect.php", "index.php", "info.php"]
+        "frod_ingnore": ["/back/authorization.php", "BC_register.php", "/back/db_connect.php", "index.php", "info.php"]
     },
     "db": {
         "host": "192.168.3.4",
