@@ -1,12 +1,12 @@
 <?php
-require_once 'include/function.php';
+require_once '/../include/function.php';
 
 // Логирование начала выполнения скрипта
 logger("INFO", "Начало выполнения скрипта db_connect.php.");
 
 try {
     // Путь к конфигурационному файлу
-    $configFile = __DIR__ . '/config/config.json';
+    $configFile = __DIR__ . '/../config/config.json';
     logger("DEBUG", "Попытка чтения конфигурационного файла: " . $configFile);
 
     // Проверка, существует ли файл конфигурации
@@ -89,7 +89,7 @@ try {
 
     // Перенаправление на страницу 50x.html
     logger("ERROR", "Перенаправление на страницу 50x.html.");
-    header("Location: /50x.html");
+    header("Location: " . SERVER_ERROR);
     exit(); // Завершаем выполнение скрипта
 }
 ?>

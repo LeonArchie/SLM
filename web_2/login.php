@@ -43,11 +43,6 @@ if (isset($_GET['error'])) {
                 <label for="password">Пароль:</label>
                 <input type="password" id="password" name="password" placeholder="Введите пароль" required>
             </div>
-            <?php if (!empty($error_message)): ?>
-                <div class="error-message">
-                    <?php echo $error_message; ?>
-                </div>
-            <?php endif; ?>
             <!-- Кнопка отправки -->
             <input type="submit" value="Войти">
         </form>

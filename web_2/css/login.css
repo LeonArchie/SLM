@@ -62,13 +62,3 @@
 .authorization input[type="submit"]:hover {
     background-color: #0056b3; /* Цвет фона при наведении */
 }
-
-.error-message {
-    color: red;
-    font-size: 1.1em;
-    margin-top: 10px;
-    text-align: center;
-    padding: 10px;
-    background-color: #ffe6e6; /* Светло-красный фон */
-    border-radius: 40px;
-}
