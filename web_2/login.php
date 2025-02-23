@@ -24,7 +24,7 @@ if (isset($_GET['error'])) {
 <head>
     <?php include 'include/all_head.html'; ?>
     <!-- Подключение стилей -->
-    <link rel="stylesheet" href="/css/login.css"/>
+    <link rel="stylesheet" href="css/login.css"/>
 </head>
 <body>
     <?php include 'include/eos_header.html'; ?>
