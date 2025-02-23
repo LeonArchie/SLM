@@ -27,11 +27,11 @@ if (isset($_GET['error'])) {
     <link rel="stylesheet" href="/css/login.css"/>
 </head>
 <body>
-    <?php include 'include/header.html'; ?>
+    <?php include 'include/platform_header.html'; ?>
     <!-- Основной контент -->
     <main class="authorization">
         <h2>Авторизация</h2>
-        <form action="authorization.php" method="POST">
+        <form action="back/authorization.php" method="POST">
             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
             <!-- Поле для логина -->
             <div class="input-group">
