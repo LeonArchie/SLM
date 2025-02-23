@@ -2,7 +2,7 @@
     // Блок переменных
         define('LOGOUT_PATH', '/../back/logout.php');
         define('LOGGER_PATH', '/var/log/slm/web/web.log');
-        define('CONFIG_PATH', '/../config/config.json');
+        define('CONFIG_PATH', __DIR__ . '/../config/config.json');
         define('CONFIG_MENU', '/../config/modules.json');
         define('FORBIDDEN', '/../err/403.html');
         define('NOT_FOUND', '/../err/404.html');
