@@ -10,6 +10,9 @@
     // Подключаем файл, так как он существует
     require_once $file_path;
     
+    logger("DEBUG", "Фрод готов к запуску");
+    frod('3ad33b50-360f-4c8a-b691-aca388b48a8b');
+
     // Логирование начала выполнения скрипта
     logger("INFO", "Начало выполнения скрипта dashboard.php.");
 
@@ -21,7 +24,7 @@
         logger("DEBUG", "Сырое значение параметра error: " . $raw_error);
         logger("ERROR", "Получено сообщение об ошибке: " . $error_message);
     } else {
-        logger("WARNING", "Параметр 'error' не передан.");
+        logger("INFO", "Параметр 'error' не передан.");
     }
 ?>
 <!DOCTYPE html>
@@ -34,7 +37,7 @@
     </head>
     <body>
         <?php include 'include/eos_header.html'; ?>
-        <?php include 'include/navbar.html'; ?>
+        <?php include 'include/generate_menu.php'; ?>
         <main>
             <h1>Добро пожаловать, <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Гость'; ?>!</h1>
             <p>Главный дашборд</p>
