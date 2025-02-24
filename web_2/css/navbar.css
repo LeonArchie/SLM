@@ -1,0 +1,105 @@
+/* Стили для навбара */
+.navbar {
+    background-color: #6b7a8f;
+    padding: 10px;
+    position: fixed;
+    top: 2.5em; /* Отступ от header */
+    left: 0;
+    width: 30vh; /* Ширина меню */
+    height: 100%; /* Высота до нижней части экрана */
+    z-index: 999;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    overflow-y: auto; /* Добавляем прокрутку, если пунктов много */
+}
+
+/* Стили для пунктов меню */
+.navbar li {
+    list-style: none;
+    margin: 5px 0;
+}
+
+.navbar a {
+    display: block;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #4a5568;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-align: center;
+    width: 100%; /* Все кнопки имеют одинаковую ширину */
+    box-sizing: border-box; /* Учитываем padding в ширине */
+}
+
+/* Ховер эффект для кнопок */
+.navbar a:hover {
+    background-color: #314154;
+    transform: scale(1.05); /* Немного увеличиваем размер при наведении */
+}
+
+/* Активный пункт меню */
+.navbar a.active {
+    background-color: #2b6cb0;
+    border-radius: 5px;
+}
+
+/* Стили для выпадающего меню */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none; /* Сначала скрыто */
+    background-color: #4a5568;
+    width: 100%; /* Ширина выпадающего меню такая же, как у родительской кнопки */
+    margin-top: 5px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    padding: 0; /* Убираем внутренние отступы */
+}
+
+/* Пункты вложенного меню как кнопки */
+.dropdown-menu li {
+    list-style: none; /* Убираем маркеры списка */
+    margin: 0; /* Убираем отступы между пунктами */
+    padding: 0; /* Убираем внутренние отступы */
+    border-bottom: 1px solid #3c4858; /* Разделитель между кнопками */
+}
+
+.dropdown-menu li:last-child {
+    border-bottom: none; /* Убираем разделитель у последнего элемента */
+}
+
+.dropdown-menu a {
+    display: block; /* Каждый пункт как блочный элемент */
+    padding: 10px 15px; /* Отступы как у основных кнопок */
+    border-radius: 0; /* Без радиуса углов внутри выпадающего меню */
+    width: 100%; /* Занимают всю доступную ширину */
+    box-sizing: border-box; /* Учитываем padding в ширине */
+    text-align: center; /* Текст по центру */
+}
+
+/* Эффекты для выпадающего меню */
+.dropdown-menu a:hover {
+    background-color: #314154;
+}
+
+/* Общее выделение для кнопки и выпадающего меню */
+.dropdown.open .dropdown-toggle {
+    background-color: #2b6cb0;
+    border-radius: 5px 5px 0 0; /* Изменяем радиус углов */
+}
+
+.dropdown.open .dropdown-menu {
+    display: block;
+    max-height: 200px; /* Максимальная высота выпадающего меню */
+    opacity: 1;
+    border-radius: 0 0 5px 5px; /* Радиус только для нижних углов */
+}

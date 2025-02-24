@@ -3,15 +3,22 @@
         define('LOGOUT_PATH', '/../back/logout.php');
         define('LOGGER_PATH', '/var/log/slm/web/web.log');
         define('CONFIG_PATH', __DIR__ . '/../config/config.json');
-        define('CONFIG_MENU', '/../config/modules.json');
+        define('CONFIG_MENU',  __DIR__ . '/../config/modules.json');
         define('FORBIDDEN', '/../err/403.html');
         define('NOT_FOUND', '/../err/404.html');
         define('SERVER_ERROR', '/../err/50x.html');
-        define('DB_CONNECT', '/../back/db_connect.php');
+        define('DB_CONNECT',  __DIR__ . '/../back/db_connect.php');
     
     //Отбрасываем построенные переменные в лог
     logger("INFO", "Начато подключение function.php");
-
+    logger("DEBUG", "Константа LOGOUT_PATH = " . LOGOUT_PATH);
+    logger("DEBUG", "Константа LOGGER_PATH = " . LOGGER_PATH);
+    logger("DEBUG", "Константа CONFIG_PATH = " . CONFIG_PATH);
+    logger("DEBUG", "Константа CONFIG_MENU = " . CONFIG_MENU);
+    logger("DEBUG", "Константа FORBIDDEN = " . FORBIDDEN);
+    logger("DEBUG", "Константа NOT_FOUND = " . NOT_FOUND);
+    logger("DEBUG", "Константа SERVER_ERROR = " . SERVER_ERROR);
+    logger("DEBUG", "Константа DB_CONNECT = " . DB_CONNECT);
 
     // Функция для запуска сессии, если она еще не запущена
         function startSessionIfNotStarted() {
@@ -136,6 +143,7 @@
 
     // Проверка на FROD - Нелегитимный доступ
         function frod($strGuid) {
+            logger("DEBUG", "Запущена проверка на фрод для: $strGuid");
             // Получаем текущий URL
             $currentUrl = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'UNKNOWN';
         
@@ -144,6 +152,8 @@
                 logger("ERROR", "Переменная CONFIG_PATH не определена. [URL: $currentUrl]");
                 header("Location: " . SERVER_ERROR);
                 exit();
+            } else {
+                logger("DEBUG", "Переменная CONFIG_PATH определена. [URL: $currentUrl]");
             }
         
             // Проверяем существование файла config.json
@@ -151,6 +161,8 @@
                 logger("ERROR", "Файл config.json не найден: " . CONFIG_PATH);
                 header("Location: " . SERVER_ERROR);
                 exit();
+            } else {
+                logger("DEBUG", "Файл config.json найден: " . CONFIG_PATH);
             }
         
             // Чтение файла config.json
@@ -159,6 +171,8 @@
                 logger("ERROR", "Ошибка при чтении файла config.json: " . CONFIG_PATH);
                 header("Location: " . SERVER_ERROR);
                 exit();
+            } else {
+                logger("DEBUG", "Чтение файла config.json успешно: " . CONFIG_PATH);
             }
         
             // Декодирование JSON
@@ -167,15 +181,25 @@
                 logger("ERROR", "Ошибка при декодировании config.json: " . json_last_error_msg());
                 header("Location: " . SERVER_ERROR);
                 exit();
+            } else {
+                logger("DEBUG", "Декодирование config.json успешно ");
             }
         
-            // Проверяем наличие и значение ключа app.frod
-            $frodEnabled = isset($configData['web']['frod']) && (strtolower((string)$configData['app']['frod']) === 'true' || $configData['app']['frod'] === true);
-        
-            // Если frod отключен или отсутствует, пропускаем выполнение функции
-            if (!$frodEnabled) {
-                logger("INFO", "Функция frod пропущена, так как app.frod отключен или отсутствует. [URL: $currentUrl]");
-                return;
+            if (empty($configData['web']['frod'])) {
+                logger("ERROR", "Ключ 'frod' не найден в конфигурации.");
+                $frodEnabled = false;
+            } else {
+                // Проверяем значение frod
+                $frodEnabled = isset($configData['web']['frod']) && 
+                               (strtolower((string)$configData['web']['frod']) === 'true' || 
+                                $configData['web']['frod'] === true);
+            
+                // Логирование значения frod
+                if ($frodEnabled) {
+                    logger("INFO", "FROD включен.");
+                } else {
+                    logger("WARNING", "FROD выключен.");
+                }
             }
         
             // Проверяем, есть ли текущий URL в списке frod_ignore
@@ -184,35 +208,42 @@
                 logger("INFO", "Проверка frod пропущена для URL: $currentUrl (находится в списке frod_ignore).");
                 return; // Пропускаем проверку, если URL в списке игнорирования
             }
-        
-            // Подключение к базе данных через db_connect.php
-            require_once 'DB_CONNECT'; // Выполняем скрипт db_connect.php
-        
-            try {
-                // Предполагается, что после выполнения db_connect.php глобальная переменная $pdo создана
-                if (!isset($pdo) || !$pdo instanceof PDO) {
-                    throw new Exception("Объект PDO не был создан.");
+            
+            // Инициализация вызвываемых функции
+            $file_path = DB_CONNECT;
+            logger("DEBUG", "Путь до файла подключения к БД: $file_path");
+            if (file_exists($file_path)) {
+                // Подключаем файл, так как он существует
+                require_once $file_path;
+                
+                try {
+                    
+                    // Предполагается, что после выполнения db_connect.php глобальная переменная $pdo создана
+                    if (!isset($pdo) || !$pdo instanceof PDO) {
+                        throw new Exception("Объект PDO не был создан.");
+                    }
+            
+                    // Выполнение запроса для получения roleid для роли 'Администратор'
+                    $stmt = $pdo->prepare("SELECT roleid FROM name_rol WHERE names_rol = :role_name");
+                    $stmt->execute([':role_name' => 'Администратор']);
+                    $adminRole = $stmt->fetchColumn();
+            
+                    // Проверка наличия значения roleid в сессии
+                    if (isset($_SESSION['roleid']) && $_SESSION['roleid'] == $adminRole) {
+                        logger("INFO", "Доступ разрешен для администратора. [URL: $currentUrl]");
+                        return; // Завершаем функцию для администратора
+                    } else {
+                        // Логируем, что пользователь не является администратором
+                        logger("INFO", "Пользователь не является администратором. Продолжение проверки frod. [URL: $currentUrl]");
+                    }
+                } catch (Exception $e) {
+                    logger("ERROR", "Ошибка при проверке прав администратора: " . $e->getMessage());
                 }
-        
-                // Выполнение запроса для получения roleid для роли 'Администратор'
-                $stmt = $pdo->prepare("SELECT roleid FROM name_rol WHERE names_rol = :role_name");
-                $stmt->execute([':role_name' => 'Администратор']);
-                $adminRole = $stmt->fetchColumn();
-        
-                // Проверка наличия значения roleid в сессии
-                if (isset($_SESSION['roleid']) && $_SESSION['roleid'] == $adminRole) {
-                    logger("INFO", "Доступ разрешен для администратора. [URL: $currentUrl]");
-                    return; // Завершаем функцию для администратора
-                } else {
-                    // Логируем, что пользователь не является администратором
-                    logger("INFO", "Пользователь не является администратором. Продолжение проверки frod. [URL: $currentUrl]");
-                }
-            } catch (Exception $e) {
-                logger("ERROR", "Ошибка при проверке прав администратора: " . $e->getMessage());
-                header("Location: " . SERVER_ERROR);
-                exit();
+
+            } else {
+                logger("ERROR", "Проверка на администратора невозможна DB_CONNECT недоступен");
             }
-        
+    
             // Проверяем STR_GUID
             if (empty($strGuid)) {
                 logger("ERROR", "STR_GUID не передан. [URL: $currentUrl]");
