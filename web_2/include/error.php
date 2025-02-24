@@ -5,3 +5,6 @@
     </div>
     <div id="error-message"></div>
 </div>
+<script>
+    window.errorMessage = "<?php echo $error_message; ?>";
+</script>

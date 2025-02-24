@@ -170,7 +170,7 @@
         {
             "guid": "a5366719-a2ec-4cc8-a1a6-f8a0f78e1238",
             "title": "Выход",
-            "url": "/include/logout.php",
+            "url": "/back/logout.php",
             "icon": "",
             "active": true,
             "align": "right",

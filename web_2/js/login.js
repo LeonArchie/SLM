@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('authForm');
     const overlay = document.querySelector('.overlay'); // Подложка
+    const loading = document.getElementById('loading');
 
     // Предотвращаем стандартную отправку формы
     form.addEventListener('submit', async (event) => {
@@ -8,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Показываем подложку с загрузочной анимацией
-            overlay.classList.remove('hidden'); // Показываем подложку
+            loading.style.display = 'flex'
 
             // Собираем данные формы
             const formData = new FormData(form);
@@ -43,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showErrorMessage('Не удалось подключиться к серверу. Попробуйте позже.');
         } finally {
             // Скрываем подложку после завершения загрузки
-            overlay.classList.add('hidden'); // Скрываем подложку
+            loading.style.display = 'none'
         }
     });
 });
