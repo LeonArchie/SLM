@@ -1,5 +1,7 @@
 <?php
 
+logger("INFO", "Генерация меню подключена.");
+
 // Функция для создания пунктов меню
 function createMenuItem($item) {
     if (!$item['active']) {
@@ -7,8 +9,18 @@ function createMenuItem($item) {
         return '';
     }
 
-    $html = '<li>';
-    $html .= '<a href="' . htmlspecialchars($item['url']) . '">';
+    $html = '<li';
+    if (!empty($item['dropdown'])) {
+        $html .= ' class="dropdown"';
+    }
+    $html .= '>';
+
+    // Ссылка для пункта меню
+    $html .= '<a href="' . htmlspecialchars($item['url']) . '"';
+    if (!empty($item['dropdown'])) {
+        $html .= ' class="dropdown-toggle"';
+    }
+    $html .= '>';
     if (!empty($item['icon'])) {
         $html .= '<i class="material-icons">' . htmlspecialchars($item['icon']) . '</i> ';
     }
@@ -17,7 +29,7 @@ function createMenuItem($item) {
 
     // Если есть выпадающее меню
     if (!empty($item['dropdown'])) {
-        $dropdownHtml = '';
+        $dropdownHtml = '<ul class="dropdown-menu">';
         foreach ($item['dropdown'] as $dropdownItem) {
             if (!$dropdownItem['active']) {
                 logger("DEBUG", "Вложенный пункт меню '{$dropdownItem['title']}' пропущен, так как active = false.");
@@ -29,11 +41,8 @@ function createMenuItem($item) {
             }
             $dropdownHtml .= htmlspecialchars($dropdownItem['title']) . '</a></li>';
         }
-
-        if (!empty($dropdownHtml)) {
-            $html .= '<ul class="dropdown-menu">' . $dropdownHtml . '</ul>';
-            $html = '<li class="dropdown">' . $html;
-        }
+        $dropdownHtml .= '</ul>';
+        $html .= $dropdownHtml;
     }
 
     $html .= '</li>';
@@ -42,24 +51,23 @@ function createMenuItem($item) {
 
 // Функция для генерации всего меню
 function generateMenu() {
-    global $CONFIG_MENU; // Используем глобальную переменную CONFIG_MENU
 
     logger("INFO", "Начало создания навбара.");
 
     // Читаем данные меню из JSON-файла
-    if (!file_exists($CONFIG_MENU)) {
-        logger("ERROR", "Файл меню не найден: $CONFIG_MENU");
+    if (!file_exists(CONFIG_MENU)) {
+        logger("ERROR", "Файл меню не найден:" . CONFIG_MENU);
         return '';
     }
 
-    $menuData = json_decode(file_get_contents($CONFIG_MENU), true);
+    $menuData = json_decode(file_get_contents(CONFIG_MENU), true);
 
     if (empty($menuData['menu'])) {
         logger("ERROR", "Данные меню не найдены.");
         return '';
     }
 
-    $menuHtml = '<ul id="navbar">';
+    $menuHtml = '<ul class="navbar">';
     foreach ($menuData['menu'] as $item) {
         $menuItem = createMenuItem($item);
         if (!empty($menuItem)) {
@@ -76,3 +84,5 @@ function generateMenu() {
 echo generateMenu();
 
 ?>
+
+<script src="js/navbar.js"></script>

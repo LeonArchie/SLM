@@ -34,10 +34,11 @@
         <!-- Подключение стилей -->
         <link rel="stylesheet" href="css/login.css"/>
         <link rel="stylesheet" href="css/error.css"/>
+        <link rel="stylesheet" href="css/navbar.css"/>
     </head>
     <body>
         <?php include 'include/eos_header.html'; ?>
-        <?php include 'include/generate_menu.php'; ?>
+        <?php include 'include/navbar.php'; ?>
         <main>
             <h1>Добро пожаловать, <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Гость'; ?>!</h1>
             <p>Главный дашборд</p>
