@@ -26,7 +26,7 @@
         logger("DEBUG", "Сырое значение параметра error: " . $raw_error);
         logger("ERROR", "Получено сообщение об ошибке: " . $error_message);
     } else {
-        logger("WARNING", "Параметр 'error' не передан.");
+        logger("INFO", "Параметр 'error' не передан.");
     }
 ?>
 <!DOCTYPE html>
@@ -57,10 +57,7 @@
                 <!-- Кнопка отправки -->
                 <input type="submit" value="Войти">
             </form>
-            <!-- Подложка для загрузочной анимации -->
-            <div class="overlay" style="display: none;">
-                <img src="img/loading.gif" alt="Загрузка" class="loading-image">
-            </div>
+            <?php include 'include/loading.html'; ?>
         </main>
         <?php include 'include/error.php'; ?>
         <?php include 'include/footer.php'; ?>

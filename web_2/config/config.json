@@ -1,6 +1,6 @@
 {
     "version": {
-        "current_version": "0.3.6",
+        "current_version": "0.3.17",
         "level": "DEV"
     },
     "web": {
@@ -17,7 +17,8 @@
         "user": "RLM_PSI_USER",
         "password": "vbngrjemd#mf!"
     },
-    "ldap": {
+    "LDAP": {
+        "active": false,
         "domain_master":"",
         "domain_slave":"",
         "port":"",

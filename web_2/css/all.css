@@ -46,6 +46,7 @@ body {
 main {
     padding-top: 6em; /* Отступ для header */
     padding-bottom: 6em; /* Отступ для footer */
+	padding-left: 30vh;
 }
 
 
@@ -61,6 +62,7 @@ main {
     right: 0;
     height: auto; /* Автоматическая высота */
     width: 100%;
+	z-index: 1000;
     background-color: #f8f9fa; /* Цвет фона footer */
     border-top: 1px solid #ddd; /* Граница сверху */
 }

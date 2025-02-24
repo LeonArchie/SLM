@@ -19,7 +19,7 @@
         logger("DEBUG", "Сырое значение параметра error: " . $raw_error);
         logger("ERROR", "Получено сообщение об ошибке: " . $error_message);
     } else {
-        logger("WARNING", "Параметр 'error' не передан.");
+        logger("INFO", "Параметр 'error' не передан.");
     }
 ?>
 <!DOCTYPE html> 											
