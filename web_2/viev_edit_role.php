@@ -14,7 +14,7 @@
     require_once $file_path;
     
     logger("DEBUG", "Фрод готов к запуску");
-    frod_pages($modules, $pages);
+    FROD($module, $pages);
 
     // Логирование начала выполнения скрипта
     logger("INFO", "Начало выполнения скрипта dashboard.php.");
