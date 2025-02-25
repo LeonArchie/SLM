@@ -35,16 +35,17 @@
         <link rel="stylesheet" href="css/login.css"/>
         <link rel="stylesheet" href="css/error.css"/>
         <link rel="stylesheet" href="css/navbar.css"/>
+        <link rel="stylesheet" href="css/dashboard.css"/>
     </head>
     <body>
         <?php include 'include/eos_header.html'; ?>
         <?php include 'include/navbar.php'; ?>
         <main>
-            <h1>Добро пожаловать, <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Гость'; ?>!</h1>
-            <p>Главный дашборд</p>
-            <p> Страница в разработке</p>
-            <p>ID вашей сессии: <?php echo htmlspecialchars($_SESSION['session_id']); ?></p>
-        
+            <div class="message">
+                <h1>Добро пожаловать, <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Гость'; ?>!</h1>
+                <p>Единое окно сотрудника в разработке</p>
+                <p> Скоро мы добавим информацию для Вас</p>
+            </div>
             <?php include 'include/loading.html'; ?>
         </main>
         <?php include 'include/error.php'; ?>
