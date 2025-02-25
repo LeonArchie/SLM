@@ -8,3 +8,4 @@
 <script>
     window.errorMessage = "<?php echo $error_message; ?>";
 </script>
+<script src="js/error.js"></script>

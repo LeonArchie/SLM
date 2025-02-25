@@ -1,6 +1,6 @@
 <?php
-    $modules = "3ad33b50-360f-4c8a-b691-aca388b48a8b";
-    $pages = "62583be6-530e-42b2-b490-b0b082d47e66";
+    $modules = 'da137713-83fe-4325-868f-14b967dbf17c';
+    $pages = '62583be6-530e-42b2-b490-b0b082d47e66';
 
     // Инициализация вызвываемых функции
     $file_path = 'include/init.php';
@@ -14,7 +14,7 @@
     require_once $file_path;
     
     logger("DEBUG", "Фрод готов к запуску");
-    frod($modules);
+    FROD($module, $pages);
 
     // Логирование начала выполнения скрипта
     logger("INFO", "Начало выполнения скрипта dashboard.php.");
@@ -35,24 +35,18 @@
     <head>
         <?php include 'include/all_head.html'; ?>
         <!-- Подключение стилей -->
-        <link rel="stylesheet" href="css/login.css"/>
         <link rel="stylesheet" href="css/error.css"/>
         <link rel="stylesheet" href="css/navbar.css"/>
-        <link rel="stylesheet" href="css/dashboard.css"/>
+        <link rel="stylesheet" href="css/all_accounts.css"/>
     </head>
     <body>
         <?php include 'include/eos_header.html'; ?>
         <?php include 'include/navbar.php'; ?>
         <main>
-            <div class="message">
-                <h1>Добро пожаловать, <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Гость'; ?>!</h1>
-                <p>Единое окно сотрудника в разработке</p>
-                <p> Скоро мы добавим информацию для Вас</p>
-            </div>
-            <?php include 'include/loading.html'; ?>
+
+
         </main>
         <?php include 'include/error.php'; ?>
         <?php include 'include/footer.php'; ?>
     </body>
-    
 </html>
