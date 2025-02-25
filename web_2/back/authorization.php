@@ -5,9 +5,7 @@ if (!file_exists($file_path)) {
     echo json_encode(['success' => false, 'message' => 'Ошибка сервера: файл function.php не найден.']);
     exit();
 }
-
 require_once $file_path;
-
 logger("INFO", "Начало выполнения скрипта authorization.php.");
 startSessionIfNotStarted();
 
@@ -22,7 +20,6 @@ if (!file_exists($config_path)) {
 // Чтение и декодирование JSON-конфигурации
 $config_content = file_get_contents($config_path);
 $config_data = json_decode($config_content, true);
-
 if (json_last_error() !== JSON_ERROR_NONE) {
     logger("ERROR", "Ошибка чтения конфигурации: " . json_last_error_msg());
     echo json_encode(['success' => false, 'message' => 'Ошибка сервера: неверный формат конфигурации.']);
@@ -44,23 +41,25 @@ if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
     exit();
 }
 
-// Подключение к базе данных
-$file_path = __DIR__ . '/db_connect.php';
-if (!file_exists($file_path)) {
-    logger("ERROR", "Ошибка подключения db_connect.php");
+// Подключение к базе данных через connectToDatabase()
+try {
+    $pdo = connectToDatabase(); // Вызов функции для подключения к БД
+    if (!$pdo instanceof PDO) {
+        throw new Exception("Объект PDO не создан.");
+    }
+} catch (Exception $e) {
+    logger("ERROR", "Ошибка подключения к базе данных: " . $e->getMessage());
     echo json_encode(['success' => false, 'message' => 'Ошибка сервера: база данных недоступна.']);
     exit();
 }
-
-require_once $file_path;
 
 // Проверка, была ли отправлена форма
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     logger("INFO", "Начало обработки формы авторизации. Метод запроса: POST.");
 
     // Получение данных из формы
-    $login = trim($_POST['login']);
-    $password = trim($_POST['password']);
+    $login = trim($_POST['login'] ?? '');
+    $password = trim($_POST['password'] ?? '');
 
     // Проверка на пустые поля
     if (empty($login) || empty($password)) {
@@ -73,16 +72,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         logger("INFO", "Попытка авторизации пользователя: " . $login);
 
         // Поиск пользователя в базе данных
-        $sql = "SELECT userid, userlogin, password_hash, roleid, usernames FROM users WHERE userlogin = :userlogin";
+        $sql = "SELECT userid, userlogin, password_hash, roleid, usernames, active FROM users WHERE userlogin = :userlogin";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['userlogin' => $login]);
-        $user = $stmt->fetch();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Проверка статуса активности пользователя
+        if ($user && !$user['active']) {
+            logger("ERROR", "Пользователь заблокирован: " . $login);
+            echo json_encode(['success' => false, 'message' => 'Пользователь заблокирован']);
+            exit();
+        }
 
         // Проверка пароля
         if ($user && password_verify($password, $user['password_hash'])) {
             logger("INFO", "Успешная авторизация пользователя: " . $login);
 
-            // Успешная авторизация
             // Генерация уникального ID сессии
             $session_id = session_id();
             logger("DEBUG", "Сгенерирован ID сессии: " . $session_id);
@@ -92,7 +97,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['userid'] = $user['userid'];
             $_SESSION['roleid'] = $user['roleid'];
             $_SESSION['session_id'] = $session_id;
-            logger("DEBUG", "Данные пользователя сохранены в сессии. Username: " . $_SESSION['username'] . ", UserID: " . $_SESSION['userid'] . ", RoleID: " . $_SESSION['roleid'] . ", RoleID: " . $_SESSION['session_id']);
+
+            logger("DEBUG", "Данные пользователя сохранены в сессии. Username: " . $_SESSION['username'] . ", UserID: " . $_SESSION['userid'] . ", RoleID: " . $_SESSION['roleid'] . ", SessionID: " . $_SESSION['session_id']);
 
             // Установка времени жизни сессии
             setcookie("session_id", $session_id, time() + $session_timeout, "/");

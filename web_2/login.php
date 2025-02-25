@@ -32,8 +32,27 @@
 <!DOCTYPE html>
 <html lang="ru">
     <head>
-        <?php include 'include/all_head.html'; ?>
-        <!-- Подключение стилей -->
+        <!--Заголовок-->
+        <title>ЕОС</title>	
+        <!--Кодировка-->
+        <meta charset="utf-8">							
+        <!--Ключевые слова-->
+        <meta
+            name="description"
+            content="Единое окно сотрудникв"
+        />
+        <!--Минус роботы-->
+        <meta 
+            name="robots"
+            content="noindex, nofollow" 
+        />
+        <!-- Фавикон -->
+        <link
+            rel="icon"
+            sizes="16x16 32x32 48x48"
+            type="image/png"
+            href="/img/eos_icon.png"
+        />
         <link rel="stylesheet" href="css/login.css"/>
         <link rel="stylesheet" href="css/error.css"/>
     </head>
