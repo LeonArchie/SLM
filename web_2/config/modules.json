@@ -155,17 +155,17 @@
                     "active": false,
                     "role": ["view", "edit"],
                     "dropdown": []
+                },
+                {
+                    "guid": "356a5297-1587-4d79-8f81-b3e1c7e21a73",
+                    "title": "Моя учетная запись",
+                    "url": "/my_account.php",
+                    "icon": "",
+                    "active": true,
+                    "role": ["edit"],
+                    "dropdown": []
                 }                  
             ]
-        },
-        {
-            "guid": "356a5297-1587-4d79-8f81-b3e1c7e21a73",
-            "title": "Моя учетная запись",
-            "url": "/my_account.php",
-            "icon": "",
-            "active": true,
-            "role": ["edit"],
-            "dropdown": []
         },
         {
             "guid": "a5366719-a2ec-4cc8-a1a6-f8a0f78e1238",

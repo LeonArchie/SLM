@@ -141,9 +141,13 @@
             return $guid;
         }
 
-    // Проверка на FROD - Нелегитимный доступ
-        function frod($strGuid) {
-            logger("DEBUG", "Запущена проверка на фрод для: $strGuid");
+
+
+
+        function FROD($moduleId = null, $pageId = null) {
+            // Логирование начала выполнения функции
+            logger("INFO", "Начало выполнения функции FROD.");
+        
             // Получаем текущий URL
             $currentUrl = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'UNKNOWN';
         
@@ -152,18 +156,16 @@
                 logger("ERROR", "Переменная CONFIG_PATH не определена. [URL: $currentUrl]");
                 header("Location: " . SERVER_ERROR);
                 exit();
-            } else {
-                logger("DEBUG", "Переменная CONFIG_PATH определена. [URL: $currentUrl]");
             }
+            logger("DEBUG", "Переменная CONFIG_PATH определена. [URL: $currentUrl]");
         
             // Проверяем существование файла config.json
             if (!file_exists(CONFIG_PATH)) {
                 logger("ERROR", "Файл config.json не найден: " . CONFIG_PATH);
                 header("Location: " . SERVER_ERROR);
                 exit();
-            } else {
-                logger("DEBUG", "Файл config.json найден: " . CONFIG_PATH);
             }
+            logger("DEBUG", "Файл config.json найден: " . CONFIG_PATH);
         
             // Чтение файла config.json
             $configJson = file_get_contents(CONFIG_PATH);
@@ -171,9 +173,8 @@
                 logger("ERROR", "Ошибка при чтении файла config.json: " . CONFIG_PATH);
                 header("Location: " . SERVER_ERROR);
                 exit();
-            } else {
-                logger("DEBUG", "Чтение файла config.json успешно: " . CONFIG_PATH);
             }
+            logger("DEBUG", "Чтение файла config.json успешно: " . CONFIG_PATH);
         
             // Декодирование JSON
             $configData = json_decode($configJson, true);
@@ -181,146 +182,288 @@
                 logger("ERROR", "Ошибка при декодировании config.json: " . json_last_error_msg());
                 header("Location: " . SERVER_ERROR);
                 exit();
-            } else {
-                logger("DEBUG", "Декодирование config.json успешно ");
             }
+            logger("DEBUG", "Декодирование config.json успешно ");
         
-            if (empty($configData['web']['frod'])) {
-                logger("ERROR", "Ключ 'frod' не найден в конфигурации.");
-                $frodEnabled = false;
+            // Проверяем статус FROD
+            $frodEnabled = isset($configData['web']['frod']) && 
+                           (strtolower((string)$configData['web']['frod']) === 'true' || 
+                            $configData['web']['frod'] === true);
+        
+            if ($frodEnabled) {
+                logger("INFO", "FROD включен.");
             } else {
-                // Проверяем значение frod
-                $frodEnabled = isset($configData['web']['frod']) && 
-                               (strtolower((string)$configData['web']['frod']) === 'true' || 
-                                $configData['web']['frod'] === true);
-            
-                // Логирование значения frod
-                if ($frodEnabled) {
-                    logger("INFO", "FROD включен.");
-                } else {
-                    logger("WARNING", "FROD выключен.");
-                }
+                logger("WARNING", "FROD выключен.");
+                return; // Если FROD выключен, пропускаем все проверки
             }
         
             // Проверяем, есть ли текущий URL в списке frod_ignore
             $frodIgnore = isset($configData['web']['frod_ignore']) ? $configData['web']['frod_ignore'] : [];
             if (in_array($currentUrl, $frodIgnore, true)) {
-                logger("INFO", "Проверка frod пропущена для URL: $currentUrl (находится в списке frod_ignore).");
-                return; // Пропускаем проверку, если URL в списке игнорирования
+                logger("INFO", "Проверка FROD пропущена для URL: $currentUrl (находится в списке frod_ignore).");
+                return;
             }
-            
-            // Инициализация вызвываемых функции
-            $file_path = DB_CONNECT;
-            logger("DEBUG", "Путь до файла подключения к БД: $file_path");
-            if (file_exists($file_path)) {
-                // Подключаем файл, так как он существует
-                require_once $file_path;
-                
-                try {
-                    
-                    // Предполагается, что после выполнения db_connect.php глобальная переменная $pdo создана
-                    if (!isset($pdo) || !$pdo instanceof PDO) {
-                        throw new Exception("Объект PDO не был создан.");
-                    }
-            
-                    // Выполнение запроса для получения roleid для роли 'Администратор'
-                    $stmt = $pdo->prepare("SELECT roleid FROM name_rol WHERE names_rol = :role_name");
-                    $stmt->execute([':role_name' => 'Администратор']);
-                    $adminRole = $stmt->fetchColumn();
-            
-                    // Проверка наличия значения roleid в сессии
-                    if (isset($_SESSION['roleid']) && $_SESSION['roleid'] == $adminRole) {
-                        logger("INFO", "Доступ разрешен для администратора. [URL: $currentUrl]");
-                        return; // Завершаем функцию для администратора
-                    } else {
-                        // Логируем, что пользователь не является администратором
-                        logger("INFO", "Пользователь не является администратором. Продолжение проверки frod. [URL: $currentUrl]");
-                    }
-                } catch (Exception $e) {
-                    logger("ERROR", "Ошибка при проверке прав администратора: " . $e->getMessage());
+        
+            // Подключаемся к базе данных через функцию connectToDatabase()
+            try {
+                $pdo = connectToDatabase();
+                if (!$pdo instanceof PDO) {
+                    throw new Exception("Не удалось получить объект PDO.");
                 }
-
-            } else {
-                logger("ERROR", "Проверка на администратора невозможна DB_CONNECT недоступен");
-            }
-    
-            // Проверяем STR_GUID
-            if (empty($strGuid)) {
-                logger("ERROR", "STR_GUID не передан. [URL: $currentUrl]");
+            } catch (Exception $e) {
+                logger("ERROR", "Ошибка подключения к базе данных: " . $e->getMessage());
                 header("Location: " . SERVER_ERROR);
                 exit();
             }
         
-            // Проверяем, определена ли переменная CONFIG_MENU
-            if (!defined('CONFIG_MENU')) {
-                logger("ERROR", "Переменная CONFIG_MENU не определена. [URL: $currentUrl]");
+            // Проверка прав администратора
+            try {
+                // Выполнение запроса для получения roleid для роли 'Администратор'
+                $stmt = $pdo->prepare("SELECT roleid FROM name_rol WHERE names_rol = :role_name");
+                $stmt->execute([':role_name' => 'Администратор']);
+                $adminRole = $stmt->fetchColumn();
+        
+                // Проверка наличия значения roleid в сессии
+                if (isset($_SESSION['roleid']) && $_SESSION['roleid'] == $adminRole) {
+                    logger("INFO", "Доступ разрешен для администратора. [URL: $currentUrl]");
+                    return; // Завершаем функцию для администратора
+                } else {
+                    logger("INFO", "Пользователь не является администратором. Продолжение проверки FROD. [URL: $currentUrl]");
+                }
+            } catch (Exception $e) {
+                logger("ERROR", "Ошибка при проверке прав администратора: " . $e->getMessage());
                 header("Location: " . SERVER_ERROR);
                 exit();
             }
         
-            // Проверяем существование файла menu.json
-            if (!file_exists(CONFIG_MENU)) {
-                logger("ERROR", "Файл menu.json не найден: " . CONFIG_MENU);
-                header("Location: " . SERVER_ERROR);
-                exit();
-            }
+            // Сценарий FROD для одного параметра (moduleId)
+            if ($moduleId !== null && $pageId === null) {
+                logger("DEBUG", "Запущен сценарий FROD для модуля: $moduleId");
         
-            // Чтение файла menu.json
-            $menuJson = file_get_contents(CONFIG_MENU);
-            if ($menuJson === false) {
-                logger("ERROR", "Ошибка при чтении файла menu.json: " . CONFIG_MENU);
-                header("Location: " . SERVER_ERROR);
-                exit();
-            }
+                // Проверяем Module ID
+                if (empty($moduleId)) {
+                    logger("ERROR", "Module ID не передан. [URL: $currentUrl]");
+                    header("Location: " . FORBIDDEN);
+                    exit();
+                }
         
-            // Декодирование JSON
-            $menuData = json_decode($menuJson, true);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                logger("ERROR", "Ошибка при декодировании menu.json: " . json_last_error_msg());
-                header("Location: " . SERVER_ERROR);
-                exit();
-            }
+                // Проверяем, определена ли переменная CONFIG_MENU
+                if (!defined('CONFIG_MENU')) {
+                    logger("ERROR", "Переменная CONFIG_MENU не определена. [URL: $currentUrl]");
+                    header("Location: " . SERVER_ERROR);
+                    exit();
+                }
         
-            // Поиск элемента с нужным GUID
-            $found = false;
-            $active = false;
+                // Проверяем существование файла menu.json
+                if (!file_exists(CONFIG_MENU)) {
+                    logger("ERROR", "Файл menu.json не найден: " . CONFIG_MENU);
+                    header("Location: " . SERVER_ERROR);
+                    exit();
+                }
         
-            // Рекурсивная функция для поиска GUID в меню
-            function findGuid($items, $strGuid, &$found, &$active) {
-                foreach ($items as $item) {
-                    if (isset($item['guid']) && $item['guid'] === $strGuid) {
+                // Чтение файла menu.json
+                $menuJson = file_get_contents(CONFIG_MENU);
+                if ($menuJson === false) {
+                    logger("ERROR", "Ошибка при чтении файла menu.json: " . CONFIG_MENU);
+                    header("Location: " . SERVER_ERROR);
+                    exit();
+                }
+        
+                // Декодирование JSON
+                $menuData = json_decode($menuJson, true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    logger("ERROR", "Ошибка при декодировании menu.json: " . json_last_error_msg());
+                    header("Location: " . SERVER_ERROR);
+                    exit();
+                }
+        
+                // Поиск элемента с нужным guid
+                $found = false;
+                $active = false;
+        
+                // Рекурсивный поиск guid в меню
+                foreach ($menuData['menu'] as $item) {
+                    if (isset($item['guid']) && $item['guid'] === $moduleId) {
                         $found = true;
                         $active = $item['active'] ?? false;
-                        return;
+                        break;
                     }
                     if (isset($item['dropdown']) && !empty($item['dropdown'])) {
-                        findGuid($item['dropdown'], $strGuid, $found, $active);
+                        foreach ($item['dropdown'] as $dropdownItem) {
+                            if (isset($dropdownItem['guid']) && $dropdownItem['guid'] === $moduleId) {
+                                $found = true;
+                                $active = $dropdownItem['active'] ?? false;
+                                break 2; // Выходим из обоих циклов
+                            }
+                        }
                     }
                 }
+        
+                // Если guid не найден
+                if (!$found) {
+                    logger("ERROR", "GUID не найден: $moduleId [URL: $currentUrl]");
+                    header("Location: " . FORBIDDEN);
+                    exit();
+                }
+        
+                // Проверка значения active
+                if ($active === false) {
+                    logger("INFO", "Доступ запрещен для GUID: $moduleId [URL: $currentUrl]");
+                    header("Location: " . FORBIDDEN);
+                    exit();
+                }
+        
+                // Проверка прав доступа через privileges для module_id
+                try {
+                    $stmt = $pdo->prepare("SELECT COUNT(*) AS count FROM privileges WHERE userid = :userid AND module_id = :module_id");
+                    $stmt->execute([':userid' => $_SESSION['userid'], ':module_id' => $moduleId]);
+                    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+                    if ($result['count'] <= 0) {
+                        logger("ERROR", "У пользователя нет прав на доступ к GUID: $moduleId [URL: $currentUrl]");
+                        header("Location: " . FORBIDDEN);
+                        exit();
+                    }
+                } catch (Exception $e) {
+                    logger("ERROR", "Ошибка при проверке прав доступа: " . $e->getMessage());
+                    header("Location: " . SERVER_ERROR);
+                    exit();
+                }
+        
+                logger("INFO", "Доступ разрешен для GUID: $moduleId [URL: $currentUrl]");
+                return;
             }
         
-            // Ищем GUID в меню
-            findGuid($menuData['menu'], $strGuid, $found, $active);
+            // Сценарий FROD для двух параметров (moduleId и pageId)
+            if ($moduleId !== null && $pageId !== null) {
+                logger("DEBUG", "Запущен сценарий FROD для модуля: $moduleId и страницы: $pageId");
         
-            // Если GUID не найден
-            if (!$found) {
-                logger("ERROR", "GUID не найден: " . $strGuid . " [URL: $currentUrl]");
-                header("Location: " . FORBIDDEN);
-                exit();
+                // Проверка прав доступа через privileges для page_id
+                try {
+                    $stmt = $pdo->prepare("SELECT COUNT(*) AS count FROM privileges WHERE userid = :userid AND module_id = :module_id AND page_id = :page_id");
+                    $stmt->execute([':userid' => $_SESSION['userid'], ':module_id' => $moduleId, ':page_id' => $pageId]);
+                    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+                    if ($result['count'] <= 0) {
+                        logger("ERROR", "У пользователя нет прав на доступ к GUID: $moduleId и Page ID: $pageId [URL: $currentUrl]");
+                        header("Location: " . FORBIDDEN);
+                        exit();
+                    }
+                } catch (Exception $e) {
+                    logger("ERROR", "Ошибка при проверке прав доступа: " . $e->getMessage());
+                    header("Location: " . SERVER_ERROR);
+                    exit();
+                }
+        
+                logger("INFO", "Доступ разрешен для GUID: $moduleId и Page ID: $pageId [URL: $currentUrl]");
+                return;
             }
         
-            // Проверка значения active
-            if ($active === false) {
-                logger("INFO", "Доступ запрещен для GUID: " . $strGuid . " [URL: $currentUrl]");
-                header("Location: " . FORBIDDEN);
-                exit();
-            }
-        
-            // Если всё в порядке, продолжаем выполнение
-            logger("INFO", "Доступ разрешен для GUID: " . $strGuid . " [URL: $currentUrl]");
+            // Если ни один из параметров не передан
+            logger("ERROR", "Не переданы необходимые параметры для проверки FROD. [URL: $currentUrl]");
+            header("Location: " . FORBIDDEN);
+            exit();
         }
 
 
+
+
+
+
+        
+        function connectToDatabase() {
+            static $pdo = null; // Статическая переменная для хранения соединения
+        
+            if ($pdo !== null) {
+                logger("INFO", "Используется существующее соединение.");
+                return $pdo;
+            }
+        
+            try {
+                logger("INFO", "Начало выполнения функции connectToDatabase.");
+        
+                // Путь к конфигурационному файлу
+                $configFile = __DIR__ . '/../config/config.json';
+                logger("DEBUG", "Попытка чтения конфигурационного файла: " . $configFile);
+        
+                // Чтение конфигурации
+                $configContent = file_get_contents($configFile);
+                if ($configContent === false) {
+                    logger("ERROR", "Не удалось прочитать файл конфигурации: " . $configFile);
+                    throw new Exception("Не удалось прочитать файл конфигурации: " . $configFile);
+                }
+        
+                $config = json_decode($configContent, true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    logger("ERROR", "Ошибка при декодировании JSON: " . json_last_error_msg());
+                    throw new Exception("Ошибка при декодировании JSON: " . json_last_error_msg());
+                }
+        
+                // Проверка наличия раздела 'db' в конфигурации
+                if (!isset($config['db'])) {
+                    logger("ERROR", "Раздел 'db' отсутствует в конфигурационном файле.");
+                    throw new Exception("Раздел 'db' отсутствует в конфигурационном файле.");
+                }
+        
+                // Извлечение параметров подключения к базе данных из конфигурации
+                $dbConfig = $config['db'];
+                logger("INFO", "Раздел 'db' успешно извлечен из конфигурации.");
+        
+                // Проверка наличия всех необходимых параметров подключения
+                $requiredKeys = ['host', 'port', 'name', 'user', 'password'];
+                foreach ($requiredKeys as $key) {
+                    if (!isset($dbConfig[$key])) {
+                        logger("ERROR", "Не хватает параметра '$key' в конфигурации базы данных.");
+                        throw new Exception("Не хватает параметра '$key' в конфигурации базы данных.");
+                    }
+                }
+                logger("INFO", "Все необходимые параметры подключения присутствуют в конфигурации.");
+        
+                // Извлечение параметров подключения
+                $host = $dbConfig['host'];
+                $port = $dbConfig['port'];
+                $dbname = $dbConfig['name'];
+                $user = $dbConfig['user'];
+                $password = $dbConfig['password'];
+                logger("DEBUG", "Параметры подключения:");
+                logger("DEBUG", "Хост: " . $host);
+                logger("DEBUG", "Порт: " . $port);
+                logger("DEBUG", "Имя базы данных: " . $dbname);
+                logger("DEBUG", "Пользователь: " . $user);
+                logger("DEBUG", "Пароль: " . (empty($password) ? "не указан" : "указан"));
+        
+                // Формирование строки подключения к PostgreSQL
+                $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;options='--client_encoding=UTF8'";
+                logger("DEBUG", "Строка подключения к базе данных: " . $dsn);
+        
+                // Создание подключения к базе данных с использованием PDO
+                logger("INFO", "Попытка подключения к базе данных...");
+                $pdo = new PDO($dsn, $user, $password);
+        
+                // Настройка атрибутов PDO
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Исключения при ошибках
+                $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); // Ассоциативные массивы
+                $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // Отключение эмуляции подготовленных запросов
+                $pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false); // Сохранение числовых типов
+                $pdo->setAttribute(PDO::ATTR_CASE, PDO::CASE_LOWER); // Ключи в нижнем регистре
+                $pdo->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_NATURAL); // Корректная обработка NULL
+                $pdo->setAttribute(PDO::ATTR_TIMEOUT, 5); // Таймаут соединения
+        
+                // Дополнительные настройки PostgreSQL
+                $pdo->exec("SET CLIENT_ENCODING TO 'UTF8'"); // Установка кодировки
+                $pdo->exec("SET TIME ZONE 'Asia/Yekaterinburg'"); // Установка временной зоны Екатеринбург
+                $pdo->exec("SET SEARCH_PATH TO public"); // Установка схемы public
+              
+                logger("INFO", "Подключение к базе данных успешно установлено.");
+                logger("INFO", "Атрибуты PDO и настройки PostgreSQL настроены.");
+        
+                return $pdo;
+            } catch (Exception $e) {
+                logger("ERROR", "Ошибка подключения к базе данных: " . $e->getMessage());
+                header("Location: " . SERVER_ERROR);
+                exit();
+            }
+        }
 
         //Инфо о успешном подключении 
         logger("INFO", "function.php успешно подключен");
