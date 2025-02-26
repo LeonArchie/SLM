@@ -5,7 +5,8 @@
     position: fixed;
     top: 2.5em; /* Отступ от header */
     left: 0;
-    width: 30vh; /* Ширина меню */
+    width: 30vh; /* Ширина остается фиксированной */
+    height: calc(100vh - 2.5em); /* Высота равна высоте viewport минус высота header */
     z-index: 999;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
     overflow-y: auto; /* Добавляем прокрутку, если пунктов много */

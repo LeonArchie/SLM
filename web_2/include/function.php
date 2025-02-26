@@ -1,24 +1,27 @@
 <?php
+    // Определяем корень веб-сервера
+        define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT']);
+
     // Блок переменных
-        define('LOGOUT_PATH', '/../back/logout.php');
+        define('LOGOUT_PATH', '/back/logout.php');
         define('LOGGER_PATH', '/var/log/slm/web/web.log');
-        define('CONFIG_PATH', __DIR__ . '/../config/config.json');
-        define('CONFIG_MENU',  __DIR__ . '/../config/modules.json');
-        define('FORBIDDEN', '/../err/403.html');
-        define('NOT_FOUND', '/../err/404.html');
-        define('SERVER_ERROR', '/../err/50x.html');
-        define('DB_CONNECT',  __DIR__ . '/../back/db_connect.php');
-    
+        define('CONFIG_PATH', ROOT_PATH . '/config/config.json');
+        define('CONFIG_MENU',  ROOT_PATH . '/config/modules.json');
+        define('FORBIDDEN', 'err/403.html');
+        define('NOT_FOUND', 'err/404.html');
+        define('SERVER_ERROR', 'err/50x.html');
+        define('DB_CONNECT',  ROOT_PATH . '/back/db_connect.php');
+
     //Отбрасываем построенные переменные в лог
-    logger("INFO", "Начато подключение function.php");
-    logger("DEBUG", "Константа LOGOUT_PATH = " . LOGOUT_PATH);
-    logger("DEBUG", "Константа LOGGER_PATH = " . LOGGER_PATH);
-    logger("DEBUG", "Константа CONFIG_PATH = " . CONFIG_PATH);
-    logger("DEBUG", "Константа CONFIG_MENU = " . CONFIG_MENU);
-    logger("DEBUG", "Константа FORBIDDEN = " . FORBIDDEN);
-    logger("DEBUG", "Константа NOT_FOUND = " . NOT_FOUND);
-    logger("DEBUG", "Константа SERVER_ERROR = " . SERVER_ERROR);
-    logger("DEBUG", "Константа DB_CONNECT = " . DB_CONNECT);
+        logger("INFO", "Начато подключение function.php");
+        logger("DEBUG", "Константа LOGOUT_PATH = " . LOGOUT_PATH);
+        logger("DEBUG", "Константа LOGGER_PATH = " . LOGGER_PATH);
+        logger("DEBUG", "Константа CONFIG_PATH = " . CONFIG_PATH);
+        logger("DEBUG", "Константа CONFIG_MENU = " . CONFIG_MENU);
+        logger("DEBUG", "Константа FORBIDDEN = " . FORBIDDEN);
+        logger("DEBUG", "Константа NOT_FOUND = " . NOT_FOUND);
+        logger("DEBUG", "Константа SERVER_ERROR = " . SERVER_ERROR);
+        logger("DEBUG", "Константа DB_CONNECT = " . DB_CONNECT);
 
     // Функция для запуска сессии, если она еще не запущена
         function startSessionIfNotStarted() {
