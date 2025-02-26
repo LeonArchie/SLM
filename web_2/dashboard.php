@@ -35,7 +35,6 @@
     <head>
         <?php include 'include/all_head.html'; ?>
         <!-- Подключение стилей -->
-        <link rel="stylesheet" href="css/login.css"/>
         <link rel="stylesheet" href="css/error.css"/>
         <link rel="stylesheet" href="css/navbar.css"/>
         <link rel="stylesheet" href="css/dashboard.css"/>

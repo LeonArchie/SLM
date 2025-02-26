@@ -122,8 +122,8 @@
             "dropdown": [
                 {
                     "guid": "da137713-83fe-4325-868f-14b967dbf17c",
-                    "title": "Все учетные записи",
-                    "url": "/all_accounts.php",
+                    "title": "Управление учетными записями",
+                    "url": "modules/setting/all_accounts.php",
                     "icon": "",
                     "active": true,
                     "role": ["view", "edit"],
@@ -159,7 +159,7 @@
                 {
                     "guid": "356a5297-1587-4d79-8f81-b3e1c7e21a73",
                     "title": "Моя учетная запись",
-                    "url": "/my_account.php",
+                    "url": "modules/setting/my_account.php",
                     "icon": "",
                     "active": true,
                     "role": ["edit"],
