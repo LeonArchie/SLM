@@ -145,12 +145,16 @@ foreach ($menuData['menu'] as $item) {
     $html .= '</li>';
     $menuHtml .= $html;
 }
+$html .= '</ul>';
 // Завершение логирования
 logger("INFO", "Навбар успешно создан.");
 
 // Выводим сгенерированное меню
-echo $menuHtml;
 
-// Подключаем JavaScript для навбара
+
 ?>
-<script src="js/navbar.js"></script>
+    <div class="generate_navbar">
+        <?php echo $menuHtml; ?>
+        <script src="js/navbar.js"></script>
+    </div>
+
