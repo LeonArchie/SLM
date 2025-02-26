@@ -72,7 +72,7 @@
             logger("INFO", "Попытка авторизации пользователя: " . $login);
 
             // Поиск пользователя в базе данных
-            $sql = "SELECT userid, userlogin, password_hash, roleid, usernames, active FROM users WHERE userlogin = :userlogin";
+            $sql = "SELECT userid, userlogin, password_hash, roleid, full_name, active FROM users WHERE userlogin = :userlogin";
             $stmt = $pdo->prepare($sql);
             $stmt->execute(['userlogin' => $login]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -93,7 +93,7 @@
                 logger("DEBUG", "Сгенерирован ID сессии: " . $session_id);
 
                 // Сохранение данных пользователя в сессии
-                $_SESSION['username'] = htmlspecialchars($user['usernames']);
+                $_SESSION['username'] = htmlspecialchars($user['full_name']);
                 $_SESSION['userid'] = $user['userid'];
                 $_SESSION['roleid'] = $user['roleid'];
                 $_SESSION['session_id'] = $session_id;

@@ -2,7 +2,7 @@
     $modules = 'da137713-83fe-4325-868f-14b967dbf17c';
     $pages = '62583be6-530e-42b2-b490-b0b082d47e66';
 
-	$file_path = __DIR__ . '/platform.php';
+	$file_path = __DIR__ . '/include/platform.php';
     if (!file_exists($file_path)) {
         // Если файл не существует, переходим на страницу 503.php
         header("Location: /err/403.html");

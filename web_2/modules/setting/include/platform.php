@@ -8,7 +8,7 @@
     $file_path = INIT_PLATFORM;
     if (!file_exists($file_path)) {
         // Если файл не существует, переходим на страницу 503.php
-        header("Location: /err/404.html");
+        header("Location: /err/50x.html");
         exit();
     }
     
