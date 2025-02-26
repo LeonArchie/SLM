@@ -1,0 +1,208 @@
+/* Контейнер формы */
+.form-container {
+    background-color: #f3f3f3; /* Светло-серый, контрастный к молочному */
+    border-radius: 8px;
+    max-width: 90%; /* Максимальная ширина формы */
+    width: 100%;
+    margin: 50px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 100px); /* Высота формы с отступом */
+}
+
+/* Группа кнопок (фиксированная) */
+.fixed-buttons {
+    display: flex;
+    gap: 10px;
+    padding: 10px 20px;
+    background-color: #f3f3f3;
+    border-bottom: 1px solid #ccc;
+    z-index: 10;
+}
+
+/* Скроллируемая форма */
+.scrollable-form {
+    overflow-y: auto; /* Включаем вертикальную прокрутку */
+    padding: 20px;
+    flex: 1; /* Занимает оставшееся пространство */
+    max-height: calc(100vh - 150px); /* Ограничиваем высоту формы */
+}
+
+/* Кастомизация скроллбара для WebKit-браузеров (Chrome, Edge, Safari) */
+.scrollable-form::-webkit-scrollbar {
+    width: 10px; /* Ширина полосы прокрутки */
+}
+
+.scrollable-form::-webkit-scrollbar-track {
+    background: #eaeaea; /* Цвет фона трека */
+    border-radius: 5px; /* Закругление трека */
+}
+
+.scrollable-form::-webkit-scrollbar-thumb {
+    background: #888; /* Цвет ползунка */
+    border-radius: 5px; /* Закругление ползунка */
+    transition: background 0.3s ease; /* Плавный переход цвета */
+}
+
+.scrollable-form::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Цвет ползунка при наведении */
+}
+
+/* Кастомизация скроллбара для Firefox */
+.scrollable-form {
+    scrollbar-width: thin; /* Тонкая полоса прокрутки */
+    scrollbar-color: #888 #eaeaea; /* Цвет ползунка и трека */
+}
+
+/* Стили кнопок */
+.form-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-button:hover {
+    background-color: #45a049;
+}
+
+/* Секция профиля */
+.profile-section {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Информация о пользователе */
+.user-info {
+    flex: 1;
+    margin-right: 20px;
+}
+
+/* Аватар пользователя */
+.profile-picture {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: auto; /* Прижимаем к правой стороне */
+}
+
+.profile-picture img {
+    width: 15em;
+    height: 15em;
+    object-fit: cover;
+    border: 2px solid #ccc;
+    border-radius: 50%; /* Сделать круглой */
+}
+
+/* Чекбокс "Активен" */
+.active-status {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.active-status label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+/* Поле формы */
+.form-field {
+    margin-bottom: 15px;
+    display: flex; /* Используем flexbox для выравнивания */
+    align-items: center; /* Вертикальное центрирование */
+}
+
+.form-field label {
+    width: 150px; /* Фиксированная ширина для названий полей */
+    text-align: right; /* Выравниваем название по правому краю */
+    margin-right: 10px; /* Отступ между названием и полем */
+    font-weight: bold;
+}
+
+.form-field input[type="text"],
+.form-field input[type="email"],
+.form-field input[type="tel"] {
+    flex: 1; /* Поле ввода занимает оставшееся пространство */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 20px; /* Отступ справа, как у поля API */
+}
+
+.form-field input[readonly] {
+    background-color: #f9f9f9;
+}
+
+/* Ряды полей с большим отступом */
+.spaced-fields {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Увеличенный отступ между полями */
+    margin-bottom: 20px; /* Добавляем отступ снизу */
+}
+
+.spaced-fields .form-field {
+    flex: 1;
+    margin-right: 20px; /* Отступ справа, как у поля API */
+}
+
+.spaced-fields .form-field:last-child {
+    margin-right: 0;
+}
+
+/* LDAP секция */
+.ldap-section {
+    margin-top: 20px;
+    border-top: 1px solid #ccc;
+    padding-top: 20px; /* Увеличенный отступ сверху */
+    padding-bottom: 10px; /* Отступ снизу */
+}
+
+.ldap-section h3 {
+    margin-bottom: 15px; /* Отступ под заголовком */
+}
+
+/* Внешние взаимодействия */
+.external-interactions {
+    margin-top: 20px;
+    border-top: 1px solid #ccc;
+    padding-top: 20px; /* Увеличенный отступ сверху */
+    padding-bottom: 10px; /* Отступ снизу */
+}
+
+.external-interactions h3 {
+    margin-bottom: 15px; /* Отступ под заголовком */
+}
+
+/* Блок API */
+.api-key-field {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Отступ между кнопкой и полем */
+}
+
+.api-key-field button {
+    margin-right: 10px;
+}
+
+.api-key-field input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 20px; /* Отступ справа, как у остальных полей */
+}

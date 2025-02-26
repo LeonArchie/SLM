@@ -50,7 +50,7 @@ main {
     margin-left: 35vh; /* Отступ для header */
     margin-right: 3vh;
     margin-bottom: 3vh;
-    height: auto;
+    height: calc(100vh - 3em - 3em);
     width: 100%;
     overflow-y: auto;
     /* Добавляем flexbox для центрирования .message */
@@ -58,6 +58,7 @@ main {
     justify-content: center; /* Горизонтальное центрирование */
     align-items: center; /* Вертикальное центрирование */
     min-height: calc(100vh - 9vh - 3vh); /* Высота main должна занимать всю высоту экрана минус отступы */
+	overflow: hidden;
 }
 
 .footer {
