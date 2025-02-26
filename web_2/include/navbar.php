@@ -155,6 +155,6 @@ logger("INFO", "Навбар успешно создан.");
 ?>
     <div class="generate_navbar">
         <?php echo $menuHtml; ?>
-        <script src="js/navbar.js"></script>
+        <script src="/js/navbar.js"></script>
     </div>
 
