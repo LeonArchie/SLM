@@ -58,9 +58,9 @@
         <div class="form-container">
             <!-- Группа кнопок (фиксированная) -->
             <div class="button-group fixed-buttons">
-                <button class="form-button" id="updateButton" onclick="location.reload()">Обновить</button>
+                <button class="form-button" id="updateButton" onclick="location.reload()">Сбросить</button>
                 <button class="form-button" id="saveButton">Сохранить</button>
-                <button class="form-button" id="updatePassword">Сменить пароль</button>
+                <button class="form-button" id="changePasswordButton">Сменить пароль</button>
             </div>
             <!-- Скроллируемая форма -->
             <div class="scrollable-form">
@@ -234,6 +234,25 @@
                 </form>
             </div>
             <?php include ROOT_PATH . '/include/loading.html'; ?>
+            <!-- Подложка для формы -->
+            <div class="modal-overlay" id="modalOverlay">
+                <div class="passwd-form">
+                    <form id="passwdForm">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+                        <label for="current_password">Текущий пароль:</label>
+                        <input type="password" id="current_password" name="current_password" required>
+
+                        <label for="new_password">Новый пароль:</label>
+                        <input type="password" id="new_password" name="new_password" required>
+
+                        <label for="confirm_password">Повторите новый пароль:</label>
+                        <input type="password" id="confirm_password" name="confirm_password" required>
+
+                        <button type="button" class="cancel" onclick="closeForm()">Отменить</button>
+                        <button type="submit" class="save">Сохранить</button>
+                    </form>
+                </div>
+            </div>
         </div>
         
     </main>
@@ -241,5 +260,6 @@
     <?php include ROOT_PATH . '/include/footer.php'; ?>
         <!-- Скрипты -->
     <script src="js/my_acc_save.js"></script>
+    <script src="js/update_pass.js"></script>
 </body>
 </html>
