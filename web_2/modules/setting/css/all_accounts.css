@@ -1,0 +1,140 @@
+/* Главный контейнер */
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Контейнер формы */
+.form-container {
+    background-color: #f3f3f3;
+    border-radius: 8px;
+    max-width: 90%;
+    width: 100%;
+    margin: 50px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 100px);
+}
+
+/* Статичная полоса с кнопками */
+.button-bar {
+    background-color: #eaeaea;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+}
+
+.button-bar button {
+    margin-right: 10px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button-bar button:last-child {
+    margin-right: 0;
+}
+
+.button-bar button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Таблица */
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+th {
+    background-color: #f3f3f3;
+    font-weight: bold;
+}
+
+td.name-cell a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+td.name-cell a:hover {
+    text-decoration: underline;
+}
+
+/* Форма добавления пользователя */
+.add-form-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.add-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+.add-form label {
+    display: inline-block;
+    width: 120px;
+    text-align: right;
+    margin-right: 10px;
+    font-weight: bold;
+    vertical-align: top;
+}
+
+.add-form input[type="text"],
+.add-form input[type="password"] {
+    width: calc(100% - 130px);
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.add-form button {
+    padding: 10px 15px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add-form button.cancel {
+    background-color: #ffcccc;
+}
+
+.add-form button.create {
+    background-color: #ccffcc;
+}
