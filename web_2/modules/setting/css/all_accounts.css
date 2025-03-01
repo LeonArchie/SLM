@@ -82,15 +82,17 @@ td.name-cell a:hover {
     text-decoration: underline;
 }
 
+
+
 /* Форма добавления пользователя */
 .add-form-overlay {
-    display: none;
-    position: fixed;
+    display: none; /* Сначала скрыта */
+    position: fixed; /* Абсолютное позиционирование относительно окна браузера */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.7); /* Полупрозрачный темный фон */
     z-index: 10;
     align-items: center;
     justify-content: center;
@@ -98,43 +100,141 @@ td.name-cell a:hover {
 }
 
 .add-form {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 400px;
+    background-color: #ffffff; /* Белый фон */
+    border: 2px solid #333; /* Рамка */
+    border-radius: 20px; /* Закруглённые углы */
+    padding: 30px; /* Внутренние отступы */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Тень */
+    width: 500px; /* Ширина блока */
+    text-align: left; /* Выравнивание текста по левому краю */
+}
+
+.add-form h2 {
+    margin-top: 0; /* Убираем отступ сверху у заголовка */
+    margin-bottom: 15px; /* Отступ снизу для заголовка */
+    font-size: 1.5em; /* Размер шрифта заголовка */
+    color: #333; /* Цвет текста */
+    text-align: center; /* Выравнивание заголовка по центру */
+}
+
+.add-form form {
+    display: flex;
+    flex-direction: column; /* Элементы формы в колонку */
+    gap: 15px; /* Отступ между элементами формы */
+}
+
+.add-form .input-group {
+    display: flex;
+    flex-direction: row; /* Лейбл и поле ввода в строку */
+    align-items: center; /* Выравнивание по вертикали */
+    gap: 10px; /* Отступ между лейблом и полем ввода */
 }
 
 .add-form label {
-    display: inline-block;
-    width: 120px;
-    text-align: right;
-    margin-right: 10px;
-    font-weight: bold;
-    vertical-align: top;
+    font-size: 1em;
+    color: #333;
+    text-align: right; /* Лейбл выравнивается по правому краю */
+    flex: 0 0 120px; /* Фиксированная ширина для лейбла */
+    font-weight: bold; /* Жирный шрифт */
 }
 
 .add-form input[type="text"],
-.add-form input[type="password"] {
-    width: calc(100% - 130px);
-    padding: 8px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.add-form input[type="email"] {
+    padding: 10px; /* Внутренние отступы */
+    border: 1px solid #ccc; /* Рамка */
+    border-radius: 5px; /* Закруглённые углы */
+    font-size: 1em; /* Размер шрифта */
+    flex: 1; /* Занимает всё оставшееся пространство */
+    box-sizing: border-box; /* Учитываем padding и border в ширине */
 }
 
-.add-form button {
-    padding: 10px 15px;
-    margin-right: 10px;
+.add-form .password-container {
+    display: flex;
+    gap: 5px; /* Отступ между полем и кнопкой */
+    flex: 1; /* Занимает всё оставшееся пространство */
+}
+
+.add-form .password-container input[type="text"] {
+    flex: 1; /* Поле занимает всё доступное пространство */
+}
+
+.add-form .password-container button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.add-form button.cancel {
-    background-color: #ffcccc;
+.add-form .password-container button:hover {
+    background-color: #0056b3;
 }
 
-.add-form button.create {
-    background-color: #ccffcc;
+.add-form .button-group {
+    display: flex;
+    gap: 10px;
+}
+
+.add-form .button-group button {
+    padding: 10px; /* Внутренние отступы */
+    font-size: 1em; /* Размер шрифта */
+    border: none; /* Убираем рамку */
+    border-radius: 5px; /* Закруглённые углы */
+    cursor: pointer; /* Курсор в виде указателя */
+    transition: background-color 0.3s ease; /* Плавное изменение цвета */
+    flex: 1; /* Занимает равное пространство */
+}
+
+.add-form .button-group .cancel {
+    background-color: #ffcccc; /* Красный фон */
+    color: #333; /* Темный текст */
+}
+
+.add-form .button-group .cancel:hover {
+    background-color: #ff9999; /* Яркий красный при наведении */
+}
+
+.add-form .button-group .create {
+    background-color: #ccffcc; /* Зеленый фон */
+    color: #333; /* Темный текст */
+}
+
+.add-form .button-group .create:hover {
+    background-color: #99ff99; /* Яркий зеленый при наведении */   
+}
+
+/* Стиль для выпадающего списка */
+.add-form select {
+    padding: 10px; /* Внутренние отступы */
+    border: 1px solid #ccc; /* Рамка */
+    border-radius: 5px; /* Закругленные углы */
+    font-size: 1em; /* Размер шрифта */
+    flex: 1; /* Занимает всё оставшееся пространство */
+    box-sizing: border-box; /* Учитываем padding и border в ширине */
+    background-color: #fff; /* Белый фон */
+    color: #333; /* Темный текст */
+    cursor: pointer; /* Курсор в виде указателя */
+    appearance: none; /* Убираем стандартную стрелку браузера */
+    -webkit-appearance: none; /* Для WebKit-браузеров */
+    -moz-appearance: none; /* Для Firefox */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%236c757d" viewBox="0 0 16 16"><path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>'); /* Стрелка вниз */
+    background-repeat: no-repeat; /* Запрещаем повторение фона */
+    background-position: right 10px center; /* Позиция стрелки */
+    background-size: 16px; /* Размер стрелки */
+}
+
+/* Фокус на выпадающем списке */
+.add-form select:focus {
+    outline: none; /* Убираем стандартный фокус */
+    border-color: #007bff; /* Голубая рамка при фокусе */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Тень при фокусе */
+}
+
+/* Стиль для option (не всегда виден, но полезно для кастомизации) */
+.add-form select option {
+    background-color: #fff; /* Белый фон */
+    color: #333; /* Темный текст */
+    padding: 5px; /* Отступы */
 }

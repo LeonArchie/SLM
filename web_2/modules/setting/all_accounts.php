@@ -83,23 +83,52 @@
 <div class="add-form-overlay" id="addFormOverlay">
     <div class="add-form">
         <form id="addUserForm">
-            <label for="full_name">Полное ФИО:</label>
-            <input type="text" id="full_name" name="full_name" required>
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+            <div class="input-group">
+                <label for="full_name">Полное ФИО:</label>
+                <input type="text" id="full_name" name="full_name" required>
+            </div>
+            <div class="input-group">
+                <label for="userlogin">Логин:</label>
+                <input type="text" id="userlogin" name="userlogin" required>
+            </div>
+            <div class="input-group password-container">
+                <label for="password">Пароль:</label>
+                <input type="text" id="password" name="password" required>
+                <button type="button" id="generate-password">Сгенерировать</button>
+            </div>
+            <div class="input-group">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <!-- Новое поле "Роль" -->
+            <div class="input-group">
+                <label for="role">Роль:</label>
+                <select id="role" name="role" required>
+                    <option value="" disabled selected>Выберите роль</option>
+                    <?php
+                    // Подключение к базе данных
+                    $pdo = connectToDatabase();
 
-            <label for="userlogin">Логин:</label>
-            <input type="text" id="userlogin" name="userlogin" required>
+                    // Получение списка ролей из таблицы name_rol
+                    $stmt = $pdo->prepare("SELECT names_rol FROM name_rol");
+                    $stmt->execute();
+                    $roles = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-            <label for="password">Пароль:</label>
-            <input type="text" id="password" name="password" required>
-            <button type="button" id="generatePassword">Сгенерировать пароль</button>
-
-            <label for="email">E-mail:</label>
-            <input type="text" id="email" name="email" required>
-
-            <button type="button" class="cancel" onclick="closeAddForm()">Отменить</button>
-            <button type="submit" class="create">Создать</button>
+                    // Генерация <option> для каждой роли
+                    foreach ($roles as $role) {
+                        echo '<option value="' . htmlspecialchars($role) . '">' . htmlspecialchars($role) . '</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="button-group">
+                <button type="button" class="cancel">Отменить</button>
+                <button type="submit" class="create">Создать</button>
+            </div>
         </form>
     </div>
+</div>
 
         </main>
         <?php include ROOT_PATH . '/include/error.php'; ?>

@@ -9,11 +9,6 @@ function closeForm() {
     document.getElementById('passwdForm').reset();
 }
 
-// Функция для показа сообщений об ошибках (только для пользователя)
-function showErrorMessage(message) {
-    alert(message); // Показываем ошибку через alert
-}
-
 // Обработчик отправки формы
 document.getElementById('passwdForm').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -52,7 +47,7 @@ document.getElementById('passwdForm').addEventListener('submit', function (e) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert('Пароль успешно изменен!');
+            showErrorMessage('Пароль успешно изменен!');
             closeForm();
         } else {
             showErrorMessage(data.message || 'Ошибка при изменении пароля.');
