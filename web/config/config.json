@@ -1,0 +1,47 @@
+{
+    "version": {
+        "current_version": "0.4.4",
+        "level": "DEV"
+    },
+    "web": {
+        "session_timeout": 3600,
+        "host": "192.168.8.8",
+        "domain": "domain",
+        "frod": true,
+        "frod_ingnore": ["/back/authorization.php", "BC_register.php", "/back/db_connect.php", "index.php", "info.php"]
+    },
+    "db": {
+        "host": "192.168.3.4",
+        "port": "5432",
+        "name": "RLM-PSI",
+        "user": "RLM_PSI_USER",
+        "password": "vbngrjemd#mf!"
+    },
+    "LDAP": {
+        "active": false,
+        "domain_master":"",
+        "domain_slave":"",
+        "port":"",
+        "DN":"",
+        "username":"",
+        "password":""    
+    },
+    "app": {
+
+    },
+    "win_client": {
+
+    },
+    "unix_client": {
+        
+    },
+    "roles": {
+        "default": [
+            "3ad33b50-360f-4c8a-b691-aca388b48a8b",
+            "9bc70913-5e7b-4577-8918-cde4756b29a8",
+            "356a5297-1587-4d79-8f81-b3e1c7e21a73",
+            "a5366719-a2ec-4cc8-a1a6-f8a0f78e1238"
+        ]
+    }
+
+}
