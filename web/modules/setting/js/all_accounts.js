@@ -1,28 +1,150 @@
-document.getElementById('selectAll').addEventListener('change', function () {
-    const checkboxes = document.querySelectorAll('.userCheckbox');
-    checkboxes.forEach(cb => cb.checked = this.checked);
-    updateButtonStates();
-});
+document.addEventListener("DOMContentLoaded", function () {
+    // Получаем все кнопки
+    const editButton = document.getElementById('editButton');
+    const blockButton = document.getElementById('blockButton');
+    const deleteButton = document.getElementById('deleteButton');
 
-document.querySelectorAll('.userCheckbox').forEach(cb => {
-    cb.addEventListener('change', updateButtonStates);
-});
+    // Начальное состояние кнопок
+    editButton.disabled = true;
+    blockButton.disabled = true;
+    deleteButton.disabled = true;
 
-document.querySelectorAll('.name-cell a').forEach(link => {
-    link.addEventListener('click', function (e) {
-        e.preventDefault();
-        const userId = this.dataset.userid;
-        window.location.href = `edituser.php?userid=${userId}`;
+    // Обработчик изменения состояния чекбоксов
+    function updateButtonStates() {
+        const selectedCheckboxes = Array.from(document.querySelectorAll('.userCheckbox:checked'));
+
+        if (selectedCheckboxes.length === 1) {
+            // Если выбран один пользователь, активируем все кнопки
+            editButton.disabled = false;
+            blockButton.disabled = false;
+            deleteButton.disabled = false;
+        } else if (selectedCheckboxes.length > 1) {
+            // Если выбрано несколько пользователей, активируем только "Блокировать" и "Удалить"
+            editButton.disabled = true;
+            blockButton.disabled = false;
+            deleteButton.disabled = false;
+        } else {
+            // Если ни один пользователь не выбран, отключаем все кнопки
+            editButton.disabled = true;
+            blockButton.disabled = true;
+            deleteButton.disabled = true;
+        }
+    }
+
+    // Добавляем обработчик события для всех чекбоксов пользователей
+    document.querySelectorAll('.userCheckbox').forEach(checkbox => {
+        checkbox.addEventListener('change', updateButtonStates);
     });
-});
 
-document.getElementById('refreshButton').addEventListener('click', function () {
-    location.reload();
-});
+    // Обработчик для кнопки "Выбрать все"
+    document.getElementById('selectAll').addEventListener('change', function () {
+        const checkboxes = document.querySelectorAll('.userCheckbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+        updateButtonStates(); // Обновляем состояние кнопок после выбора/снятия всех чекбоксов
+    });
 
-function updateButtonStates() {
-    const checkedCount = document.querySelectorAll('.userCheckbox:checked').length;
-    document.getElementById('editButton').disabled = checkedCount !== 1;
-    document.getElementById('blockButton').disabled = checkedCount === 0;
-    document.getElementById('deleteButton').disabled = checkedCount === 0;
-}
+    // Обработчик для кнопки "Редактировать"
+    editButton.addEventListener('click', function () {
+        const selectedCheckbox = document.querySelector('.userCheckbox:checked');
+        if (selectedCheckbox) {
+            const userId = selectedCheckbox.dataset.userid;
+            redirectToEditUser(userId); // Перенаправление на страницу редактирования
+        }
+    });
+
+    // Обработчик для кнопки "Блокировать"
+    blockButton.addEventListener('click', function () {
+        const selectedCheckboxes = Array.from(document.querySelectorAll('.userCheckbox:checked'));
+        const userIds = selectedCheckboxes.map(checkbox => checkbox.dataset.userid);
+
+        if (userIds.length > 0) {
+            blockUsers(userIds); // Блокировка выбранных пользователей
+        }
+    });
+
+    // Обработчик для кнопки "Удалить"
+    deleteButton.addEventListener('click', function () {
+        const selectedCheckboxes = Array.from(document.querySelectorAll('.userCheckbox:checked'));
+        const userIds = selectedCheckboxes.map(checkbox => checkbox.dataset.userid);
+
+        if (userIds.length > 0) {
+            deleteUserAccounts(userIds); // Удаление выбранных пользователей
+        }
+    });
+
+    // Функция для перенаправления на страницу редактирования
+    function redirectToEditUser(userid) {
+        fetch('edituser.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `userid=${encodeURIComponent(userid)}`
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = 'edituser.php';
+            } else {
+                showErrorMessage('Ошибка при переходе на страницу редактирования.');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            showErrorMessage('Произошла ошибка при отправке запроса.');
+        });
+    }
+
+    // Функция для блокировки пользователей
+    function blockUsers(userIds) {
+        if (confirm('Вы уверены, что хотите заблокировать выбранных пользователей?')) {
+            fetch('block_users.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_ids: userIds })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showErrorMessage('Пользователи успешно заблокированы.');
+                    location.reload(); // Обновляем страницу после успешной операции
+                } else {
+                    showErrorMessage('Ошибка при блокировке пользователей.');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                showErrorMessage('Произошла ошибка при выполнении операции.');
+            });
+        }
+    }
+
+    // Функция для удаления пользователей
+    function deleteUserAccounts(userIds) {
+        if (confirm('Вы уверены, что хотите удалить выбранных пользователей? Это действие нельзя отменить.')) {
+            fetch('delete_users.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_ids: userIds })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showErrorMessage('Пользователи успешно удалены.');
+                    location.reload(); // Обновляем страницу после успешной операции
+                } else {
+                    showErrorMessage('Ошибка при удалении пользователей.');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                showErrorMessage('Произошла ошибка при выполнении операции.');
+            });
+        }
+    }
+});

@@ -15,11 +15,69 @@
 /* Группа кнопок (фиксированная) */
 .fixed-buttons {
     display: flex;
-    gap: 10px;
-    padding: 10px 20px;
-    background-color: #f3f3f3;
-    border-bottom: 1px solid #ccc;
+    gap: 10px; /* Равномерные отступы между кнопками */
+    padding: 10px 20px; /* Внутренние отступы */
+    background-color: #f9f9f9; /* Более светлый фон */
+    border-bottom: 1px solid #e0e0e0; /* Светлая граница */
     z-index: 10;
+}
+
+/* Общие стили для кнопок */
+.form-button {
+    padding: 12px 20px; /* Увеличиваем размер кнопок */
+    font-size: 14px; /* Размер шрифта */
+    font-weight: 500; /* Немного жирнее текст */
+    border: none; /* Убираем рамку */
+    border-radius: 6px; /* Закругленные углы */
+    cursor: pointer; /* Курсор указателя */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* Анимация при наведении */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Мягкая тень */
+}
+
+/* Цвета для разных типов кнопок */
+
+/* Кнопка "Сбросить" */
+#updateButton {
+    background-color: #ffe0e0; /* Нежно-розовый */
+    color: #b71c1c; /* Темно-красный текст */
+}
+
+#updateButton:hover {
+    background-color: #ffcdd2; /* Темнее нежно-розовый при наведении */
+    transform: translateY(-2px); /* Приподнимаем кнопку */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Увеличиваем тень */
+}
+
+/* Кнопка "Сохранить" */
+#saveButton {
+    background-color: #c8e6c9; /* Нежно-зеленый */
+    color: #38761d; /* Темно-зеленый текст */
+}
+
+#saveButton:hover {
+    background-color: #a8d8a4; /* Темнее нежно-зеленый при наведении */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Кнопка "Сменить пароль" */
+#changePasswordButton {
+    background-color: #d1e7fd; /* Более заметный нежно-голубой */
+    color: #0b5345; /* Темно-синий текст */
+}
+
+#changePasswordButton:hover {
+    background-color: #a5d8ff; /* Темнее нежно-голубой при наведении */
+    transform: translateY(-2px); /* Приподнимаем кнопку */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Увеличиваем тень */
+}
+
+/* Стиль для отключенных кнопок */
+.form-button:disabled {
+    background-color: #eaeaea; /* Серый фон */
+    color: #a1a1a1; /* Более светлый текст */
+    cursor: not-allowed; /* Изменяем курсор */
+    box-shadow: none; /* Убираем тень */
 }
 
 /* Скроллируемая форма */
@@ -54,21 +112,6 @@
 .scrollable-form {
     scrollbar-width: thin; /* Тонкая полоса прокрутки */
     scrollbar-color: #888 #eaeaea; /* Цвет ползунка и трека */
-}
-
-/* Стили кнопок */
-.form-button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.form-button:hover {
-    background-color: #45a049;
 }
 
 /* Секция профиля */
@@ -274,3 +317,16 @@
 .passwd-form button.save {
     background-color: #ccffcc;
 }
+
+
+/* Стиль для выделенной строки */
+tbody tr.selected {
+    background-color: #e0f7fa; /* Светло-голубой фон */
+    transition: background-color 0.3s ease; /* Плавное изменение цвета */
+}
+
+/* Стиль для чекбокса */
+.userCheckbox {
+    cursor: pointer;
+}
+
