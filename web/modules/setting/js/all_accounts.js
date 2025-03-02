@@ -45,6 +45,19 @@ document.addEventListener("DOMContentLoaded", function () {
         updateButtonStates(); // Обновляем состояние кнопок после выбора/снятия всех чекбоксов
     });
 
+    // Обработчик для строк таблицы
+    document.querySelectorAll('tbody tr').forEach(row => {
+        row.addEventListener('click', function (event) {
+            // Игнорируем клики по чекбоксам, чтобы не было конфликтов
+            if (event.target.type === 'checkbox') return;
+
+            const checkbox = row.querySelector('.userCheckbox');
+            checkbox.checked = !checkbox.checked; // Переключаем состояние чекбокса
+            row.classList.toggle('selected', checkbox.checked); // Добавляем/убираем класс для подсветки
+            updateButtonStates(); // Обновляем состояние кнопок
+        });
+    });
+
     // Обработчик для кнопки "Редактировать"
     editButton.addEventListener('click', function () {
         const selectedCheckbox = document.querySelector('.userCheckbox:checked');
