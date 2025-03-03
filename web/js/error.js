@@ -5,7 +5,7 @@ function showErrorMessage(message) {
     const errorMessageElement = document.getElementById('error-message');
 
     if (!errorWindow || !progressBar || !errorMessageElement) {
-        console.error('Ошибка: Элементы error-window, progress-bar или error-message не найдены.');
+        //console.error('Ошибка: Элементы error-window, progress-bar или error-message не найдены.');
         return;
     }
 

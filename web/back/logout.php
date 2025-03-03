@@ -7,7 +7,7 @@ logger("INFO", "Начало выполнения скрипта logout.php.");
 
 // Запуск сессии
 session_start();
-logger("INFO", "Сессия успешно запущена. ID сессии: " . session_id());
+//logger("INFO", "Сессия успешно запущена. ID сессии: " . session_id());
 
 // Логирование информации о пользователе перед выходом
 if (isset($_SESSION['username'])) {

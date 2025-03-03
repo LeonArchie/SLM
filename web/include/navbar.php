@@ -1,6 +1,6 @@
 <?php
 logger("INFO", "Генерация меню подключена.");
-logger("INFO", "Начало создания навбара.");
+//logger("INFO", "Начало создания навбара.");
 
 // Проверяем наличие файла меню
 if (!file_exists(CONFIG_MENU)) {
@@ -33,7 +33,7 @@ if (!isset($_SESSION['userid'])) {
     header("Location: " . FORBIDDEN);
     exit();
 }
-logger("DEBUG", "Используемое значение userid: " . $_SESSION['userid']);
+//logger("DEBUG", "Используемое значение userid: " . $_SESSION['userid']);
 
 // Получаем список разрешенных module_id для текущего пользователя
 $allowedModules = [];
@@ -83,13 +83,13 @@ foreach ($menuData['menu'] as $item) {
 
     // Проверяем, активен ли пункт меню
     if (!$item['active']) {
-        logger("DEBUG", "Пункт меню '{$item['title']}' пропущен, так как он отключен (active = false).");
+        //logger("DEBUG", "Пункт меню '{$item['title']}' пропущен, так как он отключен (active = false).");
         continue;
     }
 
     // Проверяем, есть ли права доступа к этому пункту
     if (!in_array($item['guid'], $allowedModules)) {
-        logger("DEBUG", "Пункт меню '{$item['title']}' пропущен, так как у пользователя нет прав на guid: {$item['guid']}");
+        //logger("DEBUG", "Пункт меню '{$item['title']}' пропущен, так как у пользователя нет прав на guid: {$item['guid']}");
         continue;
     }
 
@@ -123,13 +123,13 @@ foreach ($menuData['menu'] as $item) {
 
             // Проверяем, активен ли вложенный пункт меню
             if (!$dropdownItem['active']) {
-                logger("DEBUG", "Вложенный пункт меню '{$dropdownItem['title']}' пропущен, так как он отключен (active = false).");
+                //logger("DEBUG", "Вложенный пункт меню '{$dropdownItem['title']}' пропущен, так как он отключен (active = false).");
                 continue;
             }
 
             // Проверяем, есть ли права доступа к вложенному пункту
             if (!in_array($dropdownItem['guid'], $allowedModules)) {
-                logger("DEBUG", "Вложенный пункт меню '{$dropdownItem['title']}' пропущен, так как у пользователя нет прав на guid: {$dropdownItem['guid']}");
+                //logger("DEBUG", "Вложенный пункт меню '{$dropdownItem['title']}' пропущен, так как у пользователя нет прав на guid: {$dropdownItem['guid']}");
                 continue;
             }
 
