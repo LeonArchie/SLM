@@ -205,6 +205,7 @@
             <?php include ROOT_PATH . '/include/error.php'; ?>
             <?php include ROOT_PATH . '/include/footer.php'; ?>
             <script src="js/all_accounts.js"></script>
+            <script src="js/button_edit_all_acc.js"></script>
             <script src="js/createuser.js"></script>
             <script src="js/delete.js"></script>
             <script src="js/block.js"></script>

@@ -22,7 +22,7 @@
     FROD($modules);
 
     // Логирование начала выполнения скрипта
-    logger("INFO", "Начало выполнения скрипта dashboard.php.");
+    logger("INFO", "Начало выполнения скрипта my_account.php.");
 
     // Проверка, есть ли сообщение об ошибке
     $error_message = "";
@@ -202,7 +202,7 @@
                     <div class="external-interactions">
                         <h3>Внешние взаимодействия</h3>
                         <div class="form-field api-key-field">
-                            <button class="form-button" id="getAPIKey">Получить ключ API</button>
+                            <button class="form-button" disabled id="getAPIKey">Получить ключ API</button>
                             <input 
                                 type="text" 
                                 id="apiKey" 
@@ -260,6 +260,6 @@
     <?php include ROOT_PATH . '/include/footer.php'; ?>
         <!-- Скрипты -->
     <script src="js/my_acc_save.js"></script>
-    <script src="js/update_pass.js"></script>
+    <script src="js/user_update_pass.js"></script>
 </body>
 </html>
