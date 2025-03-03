@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const data = {
             csrf_token: csrfToken,
-            userID: document.getElementById('userid')?.value || '',
+            userID: document.getElementById('userID')?.value || '',
             login: document.getElementById('login')?.value || '',
             lastName: document.getElementById('lastName')?.value || '',
             firstName: document.getElementById('firstName')?.value || '',

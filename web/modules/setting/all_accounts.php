@@ -75,6 +75,8 @@
                         <button id="syncLdapButton">Принудительная синхронизация LDAP</button>
                         <button id="ldapSettingsButton">Настройки LDAP</button>
                         <button id="refreshButton" onclick="location.reload()">Обновить</button>
+                        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                        <input type="hidden" name="userid" value="<?php echo $_SESSION['userid']; ?>">
                     </div>
                     <div class="table-container">
                         <table>
@@ -207,7 +209,7 @@
             <script src="js/all_accounts.js"></script>
             <script src="js/button_edit_all_acc.js"></script>
             <script src="js/createuser.js"></script>
-            <script src="js/delete.js"></script>
-            <script src="js/block.js"></script>
+            <script src="js/all_acc_delete.js"></script>
+            <script src="js/all_acc_block.js"></script>
         </body>
     </html>

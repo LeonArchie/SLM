@@ -76,6 +76,7 @@
             <!-- Скроллируемая форма -->
             <div class="scrollable-form">
                 <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                <input type="hidden" name="userid" value="<?php echo $_SESSION['userid']; ?>">
                 <!-- Секция профиля -->
                 <div class="profile-section">
                     <div class="user-info">
@@ -270,6 +271,7 @@
     <?php include ROOT_PATH . '/include/footer.php'; ?>
         <!-- Скрипты -->
     <script src="js/user_acc_save.js"></script>
+    <script src="js/user_block.js"></script>
     <script src="js/admin_user_update_pass.js"></script>
 </body>
 </html>

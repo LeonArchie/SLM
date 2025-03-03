@@ -212,7 +212,7 @@ logger("DEBUG", "Декодированные данные: " . json_encode($dat
             tg_id = :tg_id, 
             email = :email, 
             telephone = :telephone,
-            api_key = :apiKey,
+            api_key = :apiKey
             WHERE userid = :userid");
 
         logger("INFO", "Выполнение SQL-запроса...");
@@ -226,7 +226,7 @@ logger("DEBUG", "Декодированные данные: " . json_encode($dat
             ':email' => $data['email'] ?? null,
             ':telephone' => $data['phone'] ?? null,
             ':apiKey' => $data['apiKey'] ?? null,
-            ':userid' =>  $data['userid'] ?? null
+            ':userid' =>  $data['userID'] ?? null
         ]);
 
         // Логирование результата выполнения запроса
