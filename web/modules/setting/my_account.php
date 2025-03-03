@@ -10,7 +10,7 @@
     }
 	require_once $file_path;
     
-    $file_path = __DIR__ . '/back/load_my_account.php';
+    $file_path = __DIR__ . '/back/load_account.php';
     if (!file_exists($file_path)) {
         // Если файл не существует, переходим на страницу 503.php
         header("Location: /err/50x.html");
@@ -34,8 +34,13 @@
     } else {
         logger("INFO", "Параметр 'error' не передан.");
     }
+    
+    // Получаем userid из сессии
+    $userid = $_SESSION['userid'];
+    logger("DEBUG", "Получен User ID: " . $userid);
     // Получаем данные пользователя при загрузке страницы
-    $userData = getUserData();
+    
+    $userData = getUserData($userid);
     
     // Если произошла ошибка при получении данных
     if (isset($userData['error'])) {
@@ -259,7 +264,7 @@
     <?php include ROOT_PATH . '/include/error.php'; ?>
     <?php include ROOT_PATH . '/include/footer.php'; ?>
         <!-- Скрипты -->
-    <script src="js/my_acc_save.js"></script>
-    <script src="js/user_update_pass.js"></script>
+    <script src="js/user_acc_save.js"></script>
+    <script src="js/my_pass_update.js"></script>
 </body>
 </html>

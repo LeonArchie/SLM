@@ -74,7 +74,7 @@
                         <button id="deleteButton" disabled>Удалить</button>
                         <button id="syncLdapButton">Принудительная синхронизация LDAP</button>
                         <button id="ldapSettingsButton">Настройки LDAP</button>
-                        <button id="refreshButton">Обновить</button>
+                        <button id="refreshButton" onclick="location.reload()">Обновить</button>
                     </div>
                     <div class="table-container">
                         <table>

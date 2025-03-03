@@ -1,5 +1,5 @@
 <?php
-    function getUserData() {
+    function getUserData($userid) {
         try {
             // Логируем начало функции
             logger("DEBUG", "Начало выполнения функции getUserData()");
@@ -7,10 +7,6 @@
             // Открываем соединение с базой данных
             $pdo = connectToDatabase();
             logger("DEBUG", "Успешное подключение к базе данных");
-
-            // Получаем userid из сессии
-            $userid = $_POST['userid'];
-            logger("DEBUG", "Получен User ID из сессии: " . $userid);
 
             // Подготавливаем SQL-запрос для выборки данных пользователя
             $query = "SELECT userlogin, family, name, full_name, email, roleid, active, add_ldap, tg_username, tg_id, telephone, dn 

@@ -39,8 +39,13 @@
         logger("INFO", "Параметр 'error' не передан.");
     }
 
+    
+     // Получаем userid из POST
+    $userid = $_POST['userid'];
+    logger("DEBUG", "Получен User ID: " . $userid);
+
     // Получаем данные пользователя при загрузке страницы
-    $userData = getUserData();
+    $userData = getUserData($userid);
     
     // Если произошла ошибка при получении данных
     if (isset($userData['error'])) {
@@ -264,7 +269,7 @@
     <?php include ROOT_PATH . '/include/error.php'; ?>
     <?php include ROOT_PATH . '/include/footer.php'; ?>
         <!-- Скрипты -->
-    <script src="js/admin_user_acc_save.js"></script>
+    <script src="js/user_acc_save.js"></script>
     <script src="js/admin_user_update_pass.js"></script>
 </body>
 </html>
