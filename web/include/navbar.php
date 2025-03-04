@@ -48,7 +48,7 @@ try {
     if (empty($allowedModules)) {
         logger("WARNING", "Список разрешенных модулей пуст для пользователя с userid: " . $_SESSION['userid']);
     } else {
-        logger("DEBUG", "Список разрешенных модулей: " . implode(', ', $allowedModules));
+        //logger("DEBUG", "Список разрешенных модулей: " . implode(', ', $allowedModules));
     }
 } catch (Exception $e) {
     logger("ERROR", "Ошибка при получении списка разрешенных модулей: " . $e->getMessage());
