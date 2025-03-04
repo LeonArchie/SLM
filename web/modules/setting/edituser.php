@@ -76,7 +76,7 @@
             <!-- Скроллируемая форма -->
             <div class="scrollable-form">
                 <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-                <input type="hidden" name="userid" value="<?php echo $_SESSION['userid']; ?>">
+                <input type="hidden" name="admin_userid" value="<?php echo $_SESSION['userid']; ?>">
                 <!-- Секция профиля -->
                 <div class="profile-section">
                     <div class="user-info">
@@ -249,8 +249,7 @@
             <div class="modal-overlay" id="modalOverlay">
                 <div class="passwd-form">
                     <form id="passwdForm">
-                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
-                        <label for="current_password">Текущий пароль:</label>
+                        <label for="current_password">Пароль администратора:</label>
                         <input type="password" id="current_password" name="current_password" required>
 
                         <label for="new_password">Новый пароль:</label>
@@ -272,6 +271,6 @@
         <!-- Скрипты -->
     <script src="js/user_acc_save.js"></script>
     <script src="js/user_block.js"></script>
-    <script src="js/admin_user_update_pass.js"></script>
+    <script src="js/user_update_pass.js"></script>
 </body>
 </html>
