@@ -1,6 +1,6 @@
 <?php
     $modules = '356a5297-1587-4d79-8f81-b3e1c7e21a73';
-    $pages = '62583be6-530e-42b2-b490-b0b082d47e66';
+    $pages = '627e1927-a95f-4805-8466-41f332364ad4';
 
     $file_path = __DIR__ . '/include/platform.php';
     if (!file_exists($file_path)) {
