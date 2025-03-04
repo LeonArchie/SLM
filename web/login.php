@@ -11,7 +11,7 @@
     require_once $file_path;
     
     // Логирование начала выполнения скрипта
-    logger("INFO", "Начало выполнения скрипта login.php.");
+    //logger("INFO", "Начало выполнения скрипта login.php.");
 
     // Запуск сессии
     startSessionIfNotStarted();

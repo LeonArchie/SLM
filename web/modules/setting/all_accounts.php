@@ -10,19 +10,19 @@
     }
     require_once $file_path;
     
-    logger("DEBUG", "Фрод готов к запуску");
+    //logger("DEBUG", "Фрод готов к запуску");
     FROD($modules);
 
     // Логирование начала выполнения скрипта
-    logger("INFO", "Начало выполнения скрипта all_accounts.php.");
+    //logger("INFO", "Начало выполнения скрипта all_accounts.php.");
 
     // Подключение к базе данных
     $pdo = connectToDatabase();
-    logger("INFO", "Успешное подключение к базе данных.");
+    //logger("INFO", "Успешное подключение к базе данных.");
 
     // Запрос к таблице users для получения всех пользователей
     $stmt = $pdo->prepare("SELECT userlogin, full_name, active, add_ldap, userid FROM users");
-    logger("DEBUG", "Выполняется запрос к таблице users: SELECT userlogin, full_name, active, add_ldap, userid FROM users");
+    //logger("DEBUG", "Выполняется запрос к таблице users: SELECT userlogin, full_name, active, add_ldap, userid FROM users");
 
     if (!$stmt->execute()) {
         logger("ERROR", "Ошибка при выполнении запроса к таблице users.");
@@ -31,8 +31,8 @@
     }
 
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    logger("DEBUG", "Получено " . count($users) . " записей из таблицы users.");
-    logger("DEBUG", "Получены данные: " . print_r($users, true));
+    //logger("DEBUG", "Получено " . count($users) . " записей из таблицы users.");
+    //logger("DEBUG", "Получены данные: " . print_r($users, true));
 
     // Проверка, есть ли сообщение об ошибке
     $error_message = "";
@@ -42,7 +42,7 @@
         logger("DEBUG", "Сырое значение параметра error: " . $raw_error);
         logger("ERROR", "Получено сообщение об ошибке: " . $error_message);
     } else {
-        logger("INFO", "Параметр 'error' не передан.");
+        //logger("INFO", "Параметр 'error' не передан.");
     }
 ?>
 <!DOCTYPE html>
@@ -60,10 +60,10 @@
             <main>
                 <?php
                 // Логируем начало формирования таблицы
-                logger("INFO", "=== НАЧАЛО ФОРМИРОВАНИЯ ТАБЛИЦЫ ПОЛЬЗОВАТЕЛЕЙ ===");
+                //logger("INFO", "=== НАЧАЛО ФОРМИРОВАНИЯ ТАБЛИЦЫ ПОЛЬЗОВАТЕЛЕЙ ===");
 
                 // Логируем количество пользователей
-                logger("DEBUG", "Количество пользователей для отображения: " . count($users));
+                //logger("DEBUG", "Количество пользователей для отображения: " . count($users));
                 ?>
 
                 <div class="form-container">
@@ -93,16 +93,16 @@
                             <tbody>
                                 <?php
                                 // Логируем структуру данных пользователей
-                                logger("DEBUG", "Данные пользователей: " . print_r($users, true));
+                                //logger("DEBUG", "Данные пользователей: " . print_r($users, true));
                                 $users = array_values($users);
-                                logger("DEBUG", "Данные пользователей: " . print_r($users, true));
+                                //logger("DEBUG", "Данные пользователей: " . print_r($users, true));
                                 foreach ($users as $index => $user):
                                     
                                     // Логируем начало обработки строки таблицы
-                                    logger("INFO", "--- Обработка строки таблицы для пользователя #" . ($index + 1) . " ---");
+                                    //logger("INFO", "--- Обработка строки таблицы для пользователя #" . ($index + 1) . " ---");
 
                                     // Логируем данные текущего пользователя
-                                    logger("DEBUG", "Данные пользователя #" . ($index + 1) . ": " . print_r($user, true));
+                                    //logger("DEBUG", "Данные пользователя #" . ($index + 1) . ": " . print_r($user, true));
 
                                     // Логируем проверку наличия данных
                                     $fullName = htmlspecialchars($user['full_name'] ?? 'Без имени');
@@ -110,36 +110,36 @@
                                     $isActive = !empty($user['active']) ? 'checked' : '';
                                     $isLdap = !empty($user['add_ldap']) ? 'checked' : '';
 
-                                    logger("DEBUG", "Полное ФИО: " . $fullName);
-                                    logger("DEBUG", "Логин: " . $userLogin);
-                                    logger("DEBUG", "Активен: " . ($isActive ? 'Да' : 'Нет'));
-                                    logger("DEBUG", "LDAP: " . ($isLdap ? 'Да' : 'Нет'));
+                                    //logger("DEBUG", "Полное ФИО: " . $fullName);
+                                    //logger("DEBUG", "Логин: " . $userLogin);
+                                    //logger("DEBUG", "Активен: " . ($isActive ? 'Да' : 'Нет'));
+                                    //logger("DEBUG", "LDAP: " . ($isLdap ? 'Да' : 'Нет'));
                                     ?>
                                     <tr>
                                         <td>
                                             <input type="checkbox" class="userCheckbox" data-userid="<?= htmlspecialchars($user['userid']) ?>">
-                                            <?php logger("DEBUG", "Добавлен чекбокс для пользователя #" . ($index + 1) . " с userid: " . $user['userid']); ?>
+                                            <?php //logger("DEBUG", "Добавлен чекбокс для пользователя #" . ($index + 1) . " с userid: " . $user['userid']); ?>
                                         </td>
                                         <td class="name-cell">
                                             <a href="#" onclick="event.preventDefault(); redirectToEditUser(<?= json_encode($user['userid']) ?>);">
                                                 <?= $fullName ?>
                                             </a>
-                                            <?php logger("DEBUG", "Добавлена ссылка на редактирование для пользователя #" . ($index + 1) . " с userid: " . $user['userid']); ?>
+                                            <?php //logger("DEBUG", "Добавлена ссылка на редактирование для пользователя #" . ($index + 1) . " с userid: " . $user['userid']); ?>
                                         </td>
                                         <td><?= $userLogin ?></td>
                                         <td>Не указано</td> <!-- Оставляем поле для роли, но не заполняем его -->
                                         <td>
                                             <input type="checkbox" disabled <?= $isActive ?> class="custom-checkbox status-indicator">
-                                            <?php logger("DEBUG", "Добавлен чекбокс активности для пользователя #" . ($index + 1)); ?>
+                                            <?php //logger("DEBUG", "Добавлен чекбокс активности для пользователя #" . ($index + 1)); ?>
                                         </td>
                                         <td>
                                             <input type="checkbox" disabled <?= $isLdap ?> class="custom-checkbox ldap-indicator">
-                                            <?php logger("DEBUG", "Добавлен чекбокс LDAP для пользователя #" . ($index + 1)); ?>
+                                            <?php //logger("DEBUG", "Добавлен чекбокс LDAP для пользователя #" . ($index + 1)); ?>
                                         </td>
                                     </tr>
                                     <?php
                                     // Логируем завершение обработки строки таблицы
-                                    logger("INFO", "--- Завершение обработки строки таблицы для пользователя #" . ($index + 1) . " ---");
+                                    //logger("INFO", "--- Завершение обработки строки таблицы для пользователя #" . ($index + 1) . " ---");
                                     ?>
                                 <?php endforeach; ?>
                             </tbody>
@@ -149,7 +149,7 @@
 
                 <?php
                 // Логируем завершение формирования таблицы
-                logger("INFO", "=== ЗАВЕРШЕНИЕ ФОРМИРОВАНИЯ ТАБЛИЦЫ ПОЛЬЗОВАТЕЛЕЙ ===");
+                //logger("INFO", "=== ЗАВЕРШЕНИЕ ФОРМИРОВАНИЯ ТАБЛИЦЫ ПОЛЬЗОВАТЕЛЕЙ ===");
                 ?>
 
                 <!-- Форма добавления -->
