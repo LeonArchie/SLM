@@ -25,25 +25,140 @@
     background-color: #eaeaea;
     padding: 10px;
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap; /* Разрешаем перенос кнопок на новую строку */
+    justify-content: center; /* Центрируем кнопки по горизонтали */
+    gap: 10px; /* Добавляем равномерные отступы между кнопками */
     border-bottom: 1px solid #ccc;
+    box-shadow: inset 0 -2px 5px rgba(0, 0, 0, 0.1); /* Добавляем внутреннюю тень */
 }
 
+/* Общие стили для кнопок */
 .button-bar button {
-    margin-right: 10px;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    padding: 12px 20px; /* Увеличиваем размер кнопок */
+    font-size: 14px; /* Размер шрифта */
+    border: none; /* Убираем рамку */
+    border-radius: 6px; /* Закругленные углы */
+    cursor: pointer; /* Курсор указателя */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* Анимация при наведении */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Небольшая тень */
 }
 
-.button-bar button:last-child {
-    margin-right: 0;
+/* Статичная полоса с кнопками */
+.button-bar {
+    background-color: #f9f9f9; /* Более светлый фон */
+    padding: 10px;
+    display: flex;
+    justify-content: center; /* Центрируем кнопки */
+    gap: 10px; /* Равномерные отступы между кнопками */
+    border-bottom: 1px solid #e0e0e0; /* Более светлая граница */
+    flex-wrap: wrap; /* Разрешаем перенос на новую строку */
 }
 
+/* Общие стили для кнопок */
+.button-bar button {
+    padding: 12px 20px; /* Увеличиваем размер кнопок */
+    font-size: 14px; /* Размер шрифта */
+    font-weight: 500; /* Немного жирнее текст */
+    color: #333; /* Темно-серый текст */
+    border: none; /* Убираем рамку */
+    border-radius: 6px; /* Закругленные углы */
+    cursor: pointer; /* Курсор указателя */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* Анимация при наведении */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Мягкая тень */
+}
+
+/* Цвета для разных типов кнопок */
+
+/* Кнопка "Добавить" */
+#addButton {
+    background-color: #c8e6c9; /* Нежно-зеленый */
+    color: #38761d; /* Темно-зеленый текст */
+}
+
+#addButton:hover {
+    background-color: #a8d8a4; /* Темнее нежно-зеленый при наведении */
+    transform: translateY(-2px); /* Приподнимаем кнопку */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Увеличиваем тень */
+}
+
+/* Кнопка "Редактировать" */
+#editButton {
+    background-color: #e0f2f1; /* Нежно-голубой */
+    color: #0b5345; /* Темно-синий текст */
+}
+
+#editButton:hover {
+    background-color: #b2ebd1; /* Темнее нежно-голубой при наведении */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Кнопка "Заблокировать" */
+#blockButton {
+    background-color: #ffebee; /* Нежно-розовый */
+    color: #b71c1c; /* Темно-красный текст */
+}
+
+#blockButton:hover {
+    background-color: #ffcdd2; /* Темнее нежно-розовый при наведении */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Кнопка "Удалить" */
+#deleteButton {
+    background-color: #ffebcc; /* Нежно-оранжевый */
+    color: #f4511e; /* Темно-оранжевый текст */
+}
+
+#deleteButton:hover {
+    background-color: #ffe0b2; /* Темнее нежно-оранжевый при наведении */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Кнопка "Принудительная синхронизация LDAP" */
+#syncLdapButton {
+    background-color: #e8f5e9; /* Нежно-мятный */
+    color: #1b5e20; /* Темно-зеленый текст */
+}
+
+#syncLdapButton:hover {
+    background-color: #c8e6c9; /* Темнее нежно-мятный при наведении */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Кнопка "Настройки LDAP" */
+#ldapSettingsButton {
+    background-color: #f3f3f3; /* Серо-белый */
+    color: #616161; /* Темно-серый текст */
+}
+
+#ldapSettingsButton:hover {
+    background-color: #e0e0e0; /* Темнее серо-белый при наведении */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Кнопка "Обновить" */
+#refreshButton {
+    background-color: #e8f5e9; /* Нежно-голубой */
+    color: #0d47a1; /* Темно-синий текст */
+}
+
+#refreshButton:hover {
+    background-color: #c8e6c9; /* Темнее нежно-голубой при наведении */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Стиль для отключенных кнопок */
 .button-bar button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+    background-color: #eaeaea; /* Серый фон */
+    color: #a1a1a1; /* Более светлый текст */
+    cursor: not-allowed; /* Изменяем курсор */
+    box-shadow: none; /* Убираем тень */
 }
 
 /* Таблица */
@@ -237,4 +352,49 @@ td.name-cell a:hover {
     background-color: #fff; /* Белый фон */
     color: #333; /* Темный текст */
     padding: 5px; /* Отступы */
+}
+
+/* Стиль для кастомных чекбоксов */
+.custom-checkbox {
+    appearance: none; /* Убираем стандартный вид чекбокса */
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc; /* Граница */
+    border-radius: 4px; /* Закругленные углы */
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Чекбокс при наведении */
+.custom-checkbox:hover {
+    border-color: #999;
+}
+
+/* Активный чекбокс */
+.custom-checkbox:checked {
+    background-color: #28a745; /* Зеленый фон */
+    border-color: #28a745; /* Зеленая граница */
+}
+
+/* Отметка внутри активного чекбокса */
+.custom-checkbox:checked::after {
+    content: ''; /* Добавляем отметку */
+    display: block;
+    width: 10px;
+    height: 5px;
+    border: 2px solid #fff; /* Белая отметка */
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg); /* Поворачиваем отметку */
+    position: absolute;
+    top: 4px;
+    left: 6px;
+}
+
+/* Неактивный чекбокс */
+.custom-checkbox:not(:checked) {
+    background-color: #f44336; /* Красный фон */
+    border-color: #f44336; /* Красная граница */
 }

@@ -330,3 +330,20 @@ tbody tr.selected {
     cursor: pointer;
 }
 
+/* Кнопка "Заблокировать" */
+#blockButton {
+    background-color: #ffebee; /* Нежно-розовый */
+    color: #b71c1c; /* Темно-красный текст */
+}
+
+/* Кнопка "Сохранить" */
+#getAPIKey {
+    background-color: #c8e6c9; /* Нежно-зеленый */
+    color: #38761d; /* Темно-зеленый текст */
+}
+
+#getAPIKey:hover {
+    background-color: #a8d8a4; /* Темнее нежно-зеленый при наведении */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}

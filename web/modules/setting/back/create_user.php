@@ -32,12 +32,18 @@ logger("INFO", "Начало выполнения скрипта create-user.php
         exit();
     }
 
+// Проверка CSRF-токена
+if (empty($data['csrf_token']) || $data['csrf_token'] !== $_SESSION['csrf_token']) {
+    logger("ERROR", "Ошибка безопасности: неверный CSRF-токен.");
+    echo json_encode(['success' => false, 'message' => 'Ошибка безопасности: неверный CSRF-токен.'], JSON_UNESCAPED_UNICODE);
+    exit();
+}
+
 if (empty($data['full_name']) || empty($data['userlogin']) || empty($data['password']) || empty($data['email'])) {
     logger("ERROR", "Отсутствуют обязательные данные.");
     echo json_encode(['success' => false, 'message' => 'Необходимо заполнить все поля.'], JSON_UNESCAPED_UNICODE);
     exit();
 }
-
 
 $validationIssues = [];
 
