@@ -20,7 +20,7 @@
     $pdo = connectToDatabase();
     //logger("INFO", "Успешное подключение к базе данных.");
 
-    // Запрос к таблице users для получения всех пользователей
+    // Запрос к таблице users для получения пользователей
     $stmt = $pdo->prepare("SELECT userlogin, full_name, active, add_ldap, userid FROM users");
     //logger("DEBUG", "Выполняется запрос к таблице users: SELECT userlogin, full_name, active, add_ldap, userid FROM users");
 
@@ -50,9 +50,9 @@
         <head>
             <?php include ROOT_PATH . '/include/all_head.html'; ?>
             <!-- Подключение стилей -->
-            <link rel="stylesheet" href="/css/error.css"/>
             <link rel="stylesheet" href="/css/navbar.css"/>
             <link rel="stylesheet" href="css/all_accounts.css"/>
+            <link rel="stylesheet" href="/css/error.css"/>
         </head>
         <body>
             <?php include ROOT_PATH . '/include/eos_header.html'; ?>
