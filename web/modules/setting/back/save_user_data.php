@@ -204,17 +204,20 @@ logger("DEBUG", "Декодированные данные: " . json_encode($dat
         // Обновление данных пользователя
         logger("INFO", "Подготовка SQL-запроса для обновления данных пользователя.");
         $stmt = $pdo->prepare("UPDATE users SET 
+            userlogin = :login,
             family = :family, 
             name = :name, 
             full_name = :full_name, 
             tg_username = :tg_username, 
             tg_id = :tg_id, 
             email = :email, 
-            telephone = :telephone 
+            telephone = :telephone,
+            api_key = :apiKey
             WHERE userid = :userid");
 
         logger("INFO", "Выполнение SQL-запроса...");
         $stmt->execute([
+            ':login' => $data['login'] ?? null,
             ':family' => $data['lastName'] ?? null,
             ':name' => $data['firstName'] ?? null,
             ':full_name' => $data['fullName'] ?? null,
@@ -222,12 +225,13 @@ logger("DEBUG", "Декодированные данные: " . json_encode($dat
             ':tg_id' => $data['telegramID'] ?? null,
             ':email' => $data['email'] ?? null,
             ':telephone' => $data['phone'] ?? null,
-            ':userid' =>  $_SESSION['userid'] ?? null
+            ':apiKey' => $data['apiKey'] ?? null,
+            ':userid' =>  $data['userID'] ?? null
         ]);
 
         // Логирование результата выполнения запроса
         if ($stmt->rowCount() > 0) {
-            logger("INFO", "Данные пользователя с UserID=" . htmlspecialchars($_SESSION['userid'] ?? 'не указано') . " успешно обновлены.");
+            logger("INFO", "Данные пользователя с UserID=" . htmlspecialchars($data['userid'] ?? 'не указано') . " успешно обновлены.");
         } else {
             logger("WARNING", "Обновление данных не затронуло ни одной записи. Возможно, UserID не найден.");
             echo json_encode(['success' => false, 'message' => 'Данные не были обновлены. Возможно, UserID не найден.']);

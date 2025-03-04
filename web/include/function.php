@@ -12,19 +12,19 @@
         define('SERVER_ERROR', 'err/50x.html');
 
     //Отбрасываем построенные переменные в лог
-        logger("INFO", "Начато подключение function.php");
-        logger("DEBUG", "Константа LOGOUT_PATH = " . LOGOUT_PATH);
-        logger("DEBUG", "Константа LOGGER_PATH = " . LOGGER_PATH);
-        logger("DEBUG", "Константа CONFIG_PATH = " . CONFIG_PATH);
-        logger("DEBUG", "Константа CONFIG_MENU = " . CONFIG_MENU);
-        logger("DEBUG", "Константа FORBIDDEN = " . FORBIDDEN);
-        logger("DEBUG", "Константа NOT_FOUND = " . NOT_FOUND);
-        logger("DEBUG", "Константа SERVER_ERROR = " . SERVER_ERROR);
+        //logger("INFO", "Начато подключение function.php");
+        //logger("DEBUG", "Константа LOGOUT_PATH = " . LOGOUT_PATH);
+        //logger("DEBUG", "Константа LOGGER_PATH = " . LOGGER_PATH);
+        //logger("DEBUG", "Константа CONFIG_PATH = " . CONFIG_PATH);
+        //logger("DEBUG", "Константа CONFIG_MENU = " . CONFIG_MENU);
+        //logger("DEBUG", "Константа FORBIDDEN = " . FORBIDDEN);
+        //logger("DEBUG", "Константа NOT_FOUND = " . NOT_FOUND);
+        //logger("DEBUG", "Константа SERVER_ERROR = " . SERVER_ERROR);
 
 
     // Функция для запуска сессии, если она еще не запущена
         function startSessionIfNotStarted() {
-            logger("INFO", "Попытка запуска сессии.");
+            //logger("INFO", "Попытка запуска сессии.");
             
             if (session_status() === PHP_SESSION_DISABLED) {
                 logger("ERROR", "Сессии отключены. Невозможно запустить сессию.");
@@ -32,7 +32,7 @@
             }
         
             if (session_status() === PHP_SESSION_NONE) {
-                logger("INFO", "Сессия не активна. Запуск сессии...");
+                //logger("INFO", "Сессия не активна. Запуск сессии...");
                 session_start();
                 logger("INFO", "Сессия успешно запущена. ID сессии: " . session_id());
             } else {
@@ -46,14 +46,14 @@
 
             // Проверка наличия имени пользователя в сессии
             if (!isset($_SESSION['username'])) {
-                logger("INFO", "Пользователь не авторизован: отсутствует username в сессии.");
+                logger("WARNING", "Пользователь не авторизован: отсутствует username в сессии.");
                 header("Location: " . LOGOUT_PATH);
                 exit();
             }
 
             // Проверка наличия cookie с session_id
             if (!isset($_COOKIE['session_id'])) {
-                logger("INFO", "Пользователь не авторизован: отсутствует session_id в cookie.");
+                logger("WARNING", "Пользователь не авторизован: отсутствует session_id в cookie.");
                 header("Location: " . LOGOUT_PATH);
                 exit();
             }
@@ -61,8 +61,8 @@
             // Проверка совпадения session_id из cookie и текущей сессии
             if ($_COOKIE['session_id'] !== session_id()) {
                 logger("ERROR", "Пользователь не авторизован: session_id из cookie не совпадает с текущей сессией.");
-                logger("DEBUG", "session_id из cookie: " . $_COOKIE['session_id']);
-                logger("DEBUG", "session_id из сессии: " . session_id());
+                //logger("DEBUG", "session_id из cookie: " . $_COOKIE['session_id']);
+                //logger("DEBUG", "session_id из сессии: " . session_id());
                 header("Location: " . LOGOUT_PATH);
                 exit();
             }
@@ -125,7 +125,7 @@
             }
         
             // Логирование начала ручной генерации GUID
-            logger("INFO", "Встроенная функция com_create_guid недоступна. Начало ручной генерации GUID.");
+            logger("WARNING", "Встроенная функция com_create_guid недоступна. Начало ручной генерации GUID.");
         
             // Генерация 16 байт случайных данных
             $data = random_bytes(16);
@@ -138,7 +138,7 @@
         
             // Форматирование GUID в стандартный вид
             $guid = vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
-            logger("INFO", "Сгенерирован GUID вручную: " . $guid);
+            logger("WARNING", "Сгенерирован GUID вручную: " . $guid);
         
             return $guid;
         }
@@ -159,7 +159,7 @@
                 header("Location: " . SERVER_ERROR);
                 exit();
             }
-            logger("DEBUG", "Переменная CONFIG_PATH определена. [URL: $currentUrl]");
+           //logger("DEBUG", "Переменная CONFIG_PATH определена. [URL: $currentUrl]");
         
             // Проверяем существование файла config.json
             if (!file_exists(CONFIG_PATH)) {
@@ -167,7 +167,7 @@
                 header("Location: " . SERVER_ERROR);
                 exit();
             }
-            logger("DEBUG", "Файл config.json найден: " . CONFIG_PATH);
+            //logger("DEBUG", "Файл config.json найден: " . CONFIG_PATH);
         
             // Чтение файла config.json
             $configJson = file_get_contents(CONFIG_PATH);
@@ -176,7 +176,7 @@
                 header("Location: " . SERVER_ERROR);
                 exit();
             }
-            logger("DEBUG", "Чтение файла config.json успешно: " . CONFIG_PATH);
+            //logger("DEBUG", "Чтение файла config.json успешно: " . CONFIG_PATH);
         
             // Декодирование JSON
             $configData = json_decode($configJson, true);
@@ -185,7 +185,7 @@
                 header("Location: " . SERVER_ERROR);
                 exit();
             }
-            logger("DEBUG", "Декодирование config.json успешно ");
+            //logger("DEBUG", "Декодирование config.json успешно ");
         
             // Проверяем статус FROD
             $frodEnabled = isset($configData['web']['frod']) && 
@@ -230,7 +230,7 @@
                     logger("INFO", "Доступ разрешен для администратора. [URL: $currentUrl]");
                     return; // Завершаем функцию для администратора
                 } else {
-                    logger("INFO", "Пользователь не является администратором. Продолжение проверки FROD. [URL: $currentUrl]");
+                    //logger("INFO", "Пользователь не является администратором. Продолжение проверки FROD. [URL: $currentUrl]");
                 }
             } catch (Exception $e) {
                 logger("ERROR", "Ошибка при проверке прав администратора: " . $e->getMessage());
@@ -310,7 +310,7 @@
         
                 // Проверка значения active
                 if ($active === false) {
-                    logger("INFO", "Доступ запрещен для GUID: $moduleId [URL: $currentUrl]");
+                    logger("WARNING", "Доступ запрещен для GUID: $moduleId [URL: $currentUrl]");
                     header("Location: " . FORBIDDEN);
                     exit();
                 }
@@ -386,7 +386,7 @@
         
                 // Путь к конфигурационному файлу
                 $configFile = __DIR__ . '/../config/config.json';
-                logger("DEBUG", "Попытка чтения конфигурационного файла: " . $configFile);
+                //logger("DEBUG", "Попытка чтения конфигурационного файла: " . $configFile);
         
                 // Чтение конфигурации
                 $configContent = file_get_contents($configFile);
@@ -409,7 +409,7 @@
         
                 // Извлечение параметров подключения к базе данных из конфигурации
                 $dbConfig = $config['db'];
-                logger("INFO", "Раздел 'db' успешно извлечен из конфигурации.");
+                //logger("INFO", "Раздел 'db' успешно извлечен из конфигурации.");
         
                 // Проверка наличия всех необходимых параметров подключения
                 $requiredKeys = ['host', 'port', 'name', 'user', 'password'];
@@ -427,16 +427,16 @@
                 $dbname = $dbConfig['name'];
                 $user = $dbConfig['user'];
                 $password = $dbConfig['password'];
-                logger("DEBUG", "Параметры подключения:");
-                logger("DEBUG", "Хост: " . $host);
-                logger("DEBUG", "Порт: " . $port);
-                logger("DEBUG", "Имя базы данных: " . $dbname);
-                logger("DEBUG", "Пользователь: " . $user);
-                logger("DEBUG", "Пароль: " . (empty($password) ? "не указан" : "указан"));
+                //logger("DEBUG", "Параметры подключения:");
+                //logger("DEBUG", "Хост: " . $host);
+                //logger("DEBUG", "Порт: " . $port);
+                //logger("DEBUG", "Имя базы данных: " . $dbname);
+                //logger("DEBUG", "Пользователь: " . $user);
+                //logger("DEBUG", "Пароль: " . (empty($password) ? "не указан" : "указан"));
         
                 // Формирование строки подключения к PostgreSQL
                 $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;options='--client_encoding=UTF8'";
-                logger("DEBUG", "Строка подключения к базе данных: " . $dsn);
+                //logger("DEBUG", "Строка подключения к базе данных: " . $dsn);
         
                 // Создание подключения к базе данных с использованием PDO
                 logger("INFO", "Попытка подключения к базе данных...");
