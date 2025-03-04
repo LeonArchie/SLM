@@ -11,6 +11,7 @@
     background-color: #ffffff; /* Белый фон */
     border: none;
     border-radius: 12px; /* Закругленные углы */
+    padding: 30px; /* Внутренние отступы */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Тень */
     max-width: 90%; /* Максимальная ширина формы */
     width: 100%;
@@ -24,12 +25,13 @@
 /* Статичная полоса с кнопками */
 .button-bar {
     background-color: #f9f9f9; /* Светлый фон */
-    padding: 10px;
+    padding: 15px;
     display: flex;
     flex-wrap: wrap; /* Разрешаем перенос кнопок на новую строку */
-    justify-content: center; /* Центрируем кнопки по горизонтали */
-    gap: 10px; /* Добавляем равномерные отступы между кнопками */
+    justify-content: center; /* Центрируем кнопки */
+    gap: 10px; /* Равномерные отступы между кнопками */
     border-bottom: 1px solid #e0e0e0; /* Светлая граница */
+    border-radius: 8px; /* Закругленные углы */
     box-shadow: inset 0 -2px 5px rgba(0, 0, 0, 0.1); /* Внутренняя тень */
 }
 
@@ -45,73 +47,49 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Мягкая тень */
 }
 
-/* Кнопка "Добавить" */
-#addButton {
+/* Кнопка "Назначить полномочия" */
+#AssignPrivileges {
     background-color: #667eea; /* Синий */
     color: #ffffff; /* Белый текст */
 }
 
-#addButton:hover {
+#AssignPrivileges:hover {
     background-color: #5a67d8; /* Темнее синий */
     transform: translateY(-2px); /* Приподнимаем кнопку */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Увеличиваем тень */
 }
 
-/* Кнопка "Редактировать" */
-#editButton {
+/* Кнопка "Просмотреть полномочия" */
+#VievPrivileges {
     background-color: #667eea; /* Синий */
     color: #ffffff; /* Белый текст */
 }
 
-#editButton:hover {
+#VievPrivileges:hover {
     background-color: #5a67d8; /* Темнее синий */
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Кнопка "Заблокировать" */
-#blockButton {
+/* Кнопка "Снять полномочия" */
+#DeletePrivileges {
     background-color: #667eea; /* Синий */
     color: #ffffff; /* Белый текст */
 }
 
-#blockButton:hover {
+#DeletePrivileges:hover {
     background-color: #5a67d8; /* Темнее синий */
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Кнопка "Удалить" */
-#deleteButton {
+/* Кнопка "Создать полномочия" */
+#CreatePrivileges {
     background-color: #667eea; /* Синий */
     color: #ffffff; /* Белый текст */
 }
 
-#deleteButton:hover {
-    background-color: #5a67d8; /* Темнее синий */
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-/* Кнопка "Принудительная синхронизация LDAP" */
-#syncLdapButton {
-    background-color: #667eea; /* Синий */
-    color: #ffffff; /* Белый текст */
-}
-
-#syncLdapButton:hover {
-    background-color: #5a67d8; /* Темнее синий */
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-/* Кнопка "Настройки LDAP" */
-#ldapSettingsButton {
-    background-color: #667eea; /* Синий */
-    color: #ffffff; /* Белый текст */
-}
-
-#ldapSettingsButton:hover {
+#CreatePrivileges:hover {
     background-color: #5a67d8; /* Темнее синий */
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
