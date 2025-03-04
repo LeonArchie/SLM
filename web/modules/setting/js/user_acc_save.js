@@ -31,6 +31,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const data = {
             csrf_token: csrfToken,
+            userID: document.getElementById('userID')?.value || '',
+            login: document.getElementById('login')?.value || '',
             lastName: document.getElementById('lastName')?.value || '',
             firstName: document.getElementById('firstName')?.value || '',
             fullName: document.getElementById('fullName')?.value || '',

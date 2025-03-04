@@ -13,7 +13,7 @@
     $config_path = CONFIG_PATH; // Путь к config.json определен в function.php
     if (!file_exists($config_path)) {
         logger("ERROR", "Файл конфигурации config.json не найден.");
-        echo json_encode(['success' => false, 'message' => 'Ошибка сервера: файл конфигурации не найден.']);
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0001: Обратитесь к администратору.']);
         exit();
     }
 
@@ -22,13 +22,13 @@
     $config_data = json_decode($config_content, true);
     if (json_last_error() !== JSON_ERROR_NONE) {
         logger("ERROR", "Ошибка чтения конфигурации: " . json_last_error_msg());
-        echo json_encode(['success' => false, 'message' => 'Ошибка сервера: неверный формат конфигурации.']);
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0002: Обратитесь к администратору.']);
         exit();
     }
 
     // Получение session_timeout
     $session_timeout = $config_data['web']['session_timeout'] ?? 3600; // Значение по умолчанию: 3600 секунд
-    logger("DEBUG", "Получено время жизни сессии из конфигурации: $session_timeout секунд.");
+    //logger("DEBUG", "Получено время жизни сессии из конфигурации: $session_timeout секунд.");
 
     // Установка времени жизни сессии
     session_set_cookie_params($session_timeout);
@@ -49,13 +49,13 @@
         }
     } catch (Exception $e) {
         logger("ERROR", "Ошибка подключения к базе данных: " . $e->getMessage());
-        echo json_encode(['success' => false, 'message' => 'Ошибка сервера: база данных недоступна.']);
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0003: Обратитесь к администратору.']);
         exit();
     }
 
     // Проверка, была ли отправлена форма
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        logger("INFO", "Начало обработки формы авторизации. Метод запроса: POST.");
+        //logger("DEBUG", "Начало обработки формы авторизации. Метод запроса: POST.");
 
         // Получение данных из формы
         $login = trim($_POST['login'] ?? '');
@@ -64,7 +64,7 @@
         // Проверка на пустые поля
         if (empty($login) || empty($password)) {
             logger("ERROR", "Логин и пароль обязательны для заполнения!");
-            echo json_encode(['success' => false, 'message' => 'Логин и пароль обязательны для заполнения!']);
+            echo json_encode(['success' => false, 'message' => 'Error 200: Логин и пароль обязательны для заполнения!']);
             exit();
         }
 
@@ -90,7 +90,7 @@
 
                 // Генерация уникального ID сессии
                 $session_id = session_id();
-                logger("DEBUG", "Сгенерирован ID сессии: " . $session_id);
+                //logger("DEBUG", "Сгенерирован ID сессии: " . $session_id);
 
                 // Сохранение данных пользователя в сессии
                 $_SESSION['username'] = htmlspecialchars($user['full_name']);
@@ -98,7 +98,7 @@
                 $_SESSION['roleid'] = $user['roleid'];
                 $_SESSION['session_id'] = $session_id;
 
-                logger("DEBUG", "Данные пользователя сохранены в сессии. Username: " . $_SESSION['username'] . ", UserID: " . $_SESSION['userid'] . ", RoleID: " . $_SESSION['roleid'] . ", SessionID: " . $_SESSION['session_id']);
+                //logger("DEBUG", "Данные пользователя сохранены в сессии. Username: " . $_SESSION['username'] . ", UserID: " . $_SESSION['userid'] . ", RoleID: " . $_SESSION['roleid'] . ", SessionID: " . $_SESSION['session_id']);
 
                 // Установка времени жизни сессии
                 setcookie("session_id", $session_id, time() + $session_timeout, "/");
@@ -110,17 +110,17 @@
                 // Неудачная авторизация
                 logger("ERROR", "Неверный логин или пароль для пользователя: " . $login);
                 sleep(2); // Задержка для защиты от брутфорса
-                echo json_encode(['success' => false, 'message' => 'Неверный логин или пароль!']);
+                echo json_encode(['success' => false, 'message' => 'Error 200: Неверный логин или пароль!']);
                 exit();
             }
         } catch (PDOException $e) {
             logger("ERROR", "Ошибка выполнения запроса: " . $e->getMessage());
-            echo json_encode(['success' => false, 'message' => 'Произошла ошибка. Пожалуйста, попробуйте позже.']);
+            echo json_encode(['success' => false, 'message' => 'Ошибка 0004: Пожалуйста, попробуйте позже.']);
             exit();
         }
     } else {
         // Если форма не была отправлена, возвращаем ошибку
-        logger("INFO", "Попытка доступа к authorization.php без отправки формы. Метод запроса: " . $_SERVER["REQUEST_METHOD"]);
+        logger("WARNING", "Попытка доступа к authorization.php без отправки формы. Метод запроса: " . $_SERVER["REQUEST_METHOD"]);
         echo json_encode(['success' => false, 'message' => 'Недопустимый метод запроса.']);
         exit();
     }
