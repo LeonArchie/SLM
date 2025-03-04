@@ -13,23 +13,23 @@
     if (isset($_SESSION['username'])) {
         logger("INFO", "Пользователь " . $_SESSION['username'] . " начал процесс выхода из системы.");
     } else {
-        logger("WARNING", "Попытка выхода из системы неавторизованным пользователем.");
+        //logger("INFO", "Попытка выхода из системы неавторизованным пользователем.");
     }
 
     // Удаление CSRF-токена из сессии
     if (isset($_SESSION['csrf_token'])) {
         unset($_SESSION['csrf_token']);
-        logger("INFO", "CSRF-токен успешно удален из сессии.");
+        //logger("INFO", "CSRF-токен успешно удален из сессии.");
     } else {
-        logger("WARNING", "CSRF-токен не найден в сессии.");
+        //logger("WARNING", "CSRF-токен не найден в сессии.");
     }
 
     // Удаление CSRF-токена из куки (если он там есть)
     if (isset($_COOKIE['csrf_token'])) {
         setcookie("csrf_token", "", time() - 3600, "/");
-        logger("INFO", "CSRF-токен успешно удален из куки.");
+        //logger("INFO", "CSRF-токен успешно удален из куки.");
     } else {
-        logger("WARNING", "CSRF-токен не найден в куки.");
+        //logger("WARNING", "CSRF-токен не найден в куки.");
     }
 
     // Удаление данных сессии
@@ -46,12 +46,12 @@
     // Удаление куки session_id
     if (isset($_COOKIE['session_id'])) {
         if (setcookie("session_id", "", time() - 3600, "/")) {
-            logger("INFO", "Кука session_id успешно удалена.");
+            //logger("INFO", "Кука session_id успешно удалена.");
         } else {
             logger("ERROR", "Не удалось удалить куку session_id.");
         }
     } else {
-        logger("WARNING", "Кука session_id не найдена.");
+        //logger("WARNING", "Кука session_id не найдена.");
     }
 
     // Логирование завершения процесса выхода

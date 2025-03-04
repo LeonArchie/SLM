@@ -17,7 +17,7 @@
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Логирование начала обработки запроса
-        logger("INFO", "Получен POST-запрос для обновления данных пользователя.");
+        logger("INFO", "Получен POST-запрос для обновления данных собственного профиля пользователя.");
         //logger("DEBUG", "Сырые данные из php://input: " . file_get_contents('php://input'));
         
         $data = json_decode(file_get_contents('php://input'), true);
@@ -231,7 +231,7 @@
 
             // Логирование результата выполнения запроса
             if ($stmt->rowCount() > 0) {
-                logger("INFO", "Данные пользователя с UserID=" . htmlspecialchars($data['userid'] ?? 'не указано') . " успешно обновлены.");
+                logger("INFO", "Данные пользователя с UserID=" . htmlspecialchars($data['userID'] ?? 'не указано') . " успешно обновлены.");
             } else {
                 logger("WARNING", "Обновление данных не затронуло ни одной записи. Возможно, UserID не найден.");
                 echo json_encode(['success' => false, 'message' => 'Данные не были обновлены. Возможно, UserID не найден.']);

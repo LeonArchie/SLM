@@ -10,7 +10,7 @@
 
     require_once $file_path;
 
-    logger("INFO", "Начало выполнения скрипта deluser.php.");
+    //logger("INFO", "Начало выполнения скрипта deluser.php.");
 
     startSessionIfNotStarted();
 
