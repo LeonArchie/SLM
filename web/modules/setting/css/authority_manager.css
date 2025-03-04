@@ -11,7 +11,6 @@
     background-color: #ffffff; /* Белый фон */
     border: none;
     border-radius: 12px; /* Закругленные углы */
-    padding: 30px; /* Внутренние отступы */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Тень */
     max-width: 90%; /* Максимальная ширина формы */
     width: 100%;
@@ -72,6 +71,18 @@
 }
 
 /* Кнопка "Снять полномочия" */
+#OffPrivileges {
+    background-color: #667eea; /* Синий */
+    color: #ffffff; /* Белый текст */
+}
+
+#OffPrivileges:hover {
+    background-color: #5a67d8; /* Темнее синий */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Кнопка "Удалить полномочия" */
 #DeletePrivileges {
     background-color: #667eea; /* Синий */
     color: #ffffff; /* Белый текст */

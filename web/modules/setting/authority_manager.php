@@ -62,10 +62,10 @@
 
             <div class="form-container">
                 <div class="button-bar">
-                    <button id="AssignPrivileges">Назначить полномочия</button>
+                    <button id="AssignPrivileges" disabled>Назначить полномочия</button>
                     <button id="VievPrivileges" disabled>Просмотреть полномочия</button>
-                    <button id="DeletePrivileges" disabled>Снять полномочия</button>
-                    <button id="CreatePrivileges" disabled>Создать полномочия</button>
+                    <button id="OffPrivileges" disabled>Снять полномочия</button>
+                    <button id="CreatePrivileges">Создать полномочия</button>
                     <button id="DeletePrivileges">Удалить полномочия</button>
                     <button id="refreshButton" onclick="location.reload()">Обновить</button>
                     <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
@@ -113,5 +113,6 @@
         </main>
         <?php include ROOT_PATH . '/include/error.php'; ?>
         <?php include ROOT_PATH . '/include/footer.php'; ?>
+        <script src="js/auth_manager.js"></script>
     </body>
 </html>
