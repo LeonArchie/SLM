@@ -193,7 +193,7 @@
                             $configData['web']['frod'] === true);
         
             if ($frodEnabled) {
-                logger("INFO", "FROD включен.");
+                //logger("INFO", "FROD включен.");
             } else {
                 logger("WARNING", "FROD выключен.");
                 return; // Если FROD выключен, пропускаем все проверки

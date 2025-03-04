@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log('Скрипт загружен и готов к работе.');
+    //console.log('Скрипт загружен и готов к работе.');
 
     // Генерация пароля
     const generateButton = document.getElementById("generate-password");
@@ -10,17 +10,17 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    console.log('Элементы для генерации пароля найдены.');
+    //console.log('Элементы для генерации пароля найдены.');
 
     generateButton.addEventListener("click", function () {
-        console.log('Нажата кнопка генерации пароля.');
+        //console.log('Нажата кнопка генерации пароля.');
         const randomPassword = generateRandomPassword(10);
         passwordField.value = randomPassword;
-        console.log(`Сгенерирован пароль: ${randomPassword}`);
+        //console.log(`Сгенерирован пароль: ${randomPassword}`);
     });
 
     function generateRandomPassword(length) {
-        console.log('Начало генерации случайного пароля.');
+        //console.log('Начало генерации случайного пароля.');
         const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         let password = "";
 
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const randomIndex = Math.floor(Math.random() * charset.length);
             password += charset[randomIndex];
         }
-        console.log('Пароль успешно сгенерирован.');
+        //console.log('Пароль успешно сгенерирован.');
         return password;
     }
 
@@ -36,13 +36,13 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('addButton').addEventListener('click', openAddForm);
 
     function openAddForm() {
-        console.log('Открыта форма добавления пользователя.');
+        //console.log('Открыта форма добавления пользователя.');
         document.getElementById('addFormOverlay').style.display = 'flex';
     }
 
     // Закрытие формы
     window.closeAddForm = function () {
-        console.log('Закрыта форма добавления пользователя.');
+        //console.log('Закрыта форма добавления пользователя.');
         document.getElementById('addFormOverlay').style.display = 'none';
         document.getElementById('addUserForm').reset();
     };
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Проверка наличия CSRF-токена
         const csrfToken = document.getElementsByName('csrf_token')[0]?.value;
         if (!csrfToken) {
-            console.error('CSRF-токен не найден. Пожалуйста, обновите страницу.');
+            //console.error('CSRF-токен не найден. Пожалуйста, обновите страницу.');
             showErrorMessage('CSRF-токен не найден. Пожалуйста, обновите страницу.');
             return;
         }
@@ -73,18 +73,18 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         // Вывод данных в консоль перед отправкой
-        console.group('Данные для отправки:');
-        console.log('CSRF-токен:', formData.csrf_token);
-        console.log('Полное ФИО:', formData.full_name);
-        console.log('Логин:', formData.userlogin);
-        console.log('E-mail:', formData.email);
-        console.log('Роль:', formData.role);
-        console.groupEnd();
+        //console.group('Данные для отправки:');
+        //console.log('CSRF-токен:', formData.csrf_token);
+        //console.log('Полное ФИО:', formData.full_name);
+        //console.log('Логин:', formData.userlogin);
+        //console.log('E-mail:', formData.email);
+        //console.log('Роль:', formData.role);
+        //console.groupEnd();
 
         // Логирование данных в формате UTF-8
-        console.log('Данные будут отправлены в формате UTF-8:', JSON.stringify(formData));
+        //console.log('Данные будут отправлены в формате UTF-8:', JSON.stringify(formData));
 
-        console.log('Отправляемые данные:', formData);
+        //console.log('Отправляемые данные:', formData);
 
         // Отправка данных на сервер
         fetch('back/create_user.php', {
@@ -97,16 +97,17 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                console.log('Успешный ответ от сервера:', data.message);
+                //console.log('Успешный ответ от сервера:', data.message);
                 showErrorMessage('Пользователь успешно создан!');
                 closeAddForm();
+                location.reload();
             } else {
-                console.error('Ошибка при создании пользователя:', data.message || 'Неизвестная ошибка.');
+                //console.error('Ошибка при создании пользователя:', data.message || 'Неизвестная ошибка.');
                 showErrorMessage(data.message);
             }
         })
         .catch(error => {
-            console.error('Ошибка при отправке данных:', error);
+            //console.error('Ошибка при отправке данных:', error);
             showErrorMessage('Ошибка при отправке данных');
         });
     });

@@ -21,14 +21,14 @@ document.getElementById('blockButton').addEventListener('click', function () {
 
     if (missingParams.length > 0) {
         const errorMessage = 'Отсутствуют следующие параметры: ' + missingParams.join(', ');
-        console.error(errorMessage); // Логирование ошибки
+        //console.error(errorMessage); // Логирование ошибки
         showErrorMessage(errorMessage);
         return;
     }
 
-    console.log("CSRF-токен:", csrfToken); // Логирование CSRF-токена
-    console.log("ID текущего пользователя:", adminUserId); // Логирование adminUserId
-    console.log("ID пользователя:", userIDValue); // Логирование userID
+    //console.log("CSRF-токен:", csrfToken); // Логирование CSRF-токена
+    //console.log("ID текущего пользователя:", adminUserId); // Логирование adminUserId
+    //console.log("ID пользователя:", userIDValue); // Логирование userID
 
     // Преобразуем userIDValue в массив
     const selectedUsers = [userIDValue]; // userIDValue передается как массив, даже если один элемент
@@ -46,11 +46,11 @@ document.getElementById('blockButton').addEventListener('click', function () {
         })
     })
     .then(response => {
-        console.log("Ответ от сервера:", response); // Логирование ответа от сервера
+        //console.log("Ответ от сервера:", response); // Логирование ответа от сервера
         return response.json();
     })
     .then(data => {
-        console.log("Данные ответа:", data); // Логирование данных ответа
+        //console.log("Данные ответа:", data); // Логирование данных ответа
         if (data.success) {
             showErrorMessage('Выполнено.');
             location.reload();
@@ -59,7 +59,7 @@ document.getElementById('blockButton').addEventListener('click', function () {
         }
     })
     .catch(error => {
-        console.error('Ошибка при блокировке:', error); // Логирование ошибки
+        //console.error('Ошибка при блокировке:', error); // Логирование ошибки
         showErrorMessage('Произошла ошибка при блокировке пользователей.');
     });
 });

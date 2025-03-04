@@ -13,7 +13,7 @@ function closeForm() {
 document.getElementById('passwdForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
-    console.log('Клик по кнопке сохранения.');
+    //console.log('Клик по кнопке сохранения.');
 
     const currentPassword = document.getElementById('current_password').value;
     const newPassword = document.getElementById('new_password').value;
@@ -33,7 +33,7 @@ document.getElementById('passwdForm').addEventListener('submit', function (e) {
 
     if (!csrfToken || !adminUserid || !userid) {
         showErrorMessage('Не удалось получить необходимые данные. Пожалуйста, обновите страницу.');
-        console.error('Ошибка: CSRF-токен, admin_userid или userid не найдены.'); // Отладочная информация в консоль
+        //console.error('Ошибка: CSRF-токен, admin_userid или userid не найдены.'); // Отладочная информация в консоль
         return;
     }
 
@@ -58,11 +58,11 @@ document.getElementById('passwdForm').addEventListener('submit', function (e) {
             closeForm();
         } else {
             showErrorMessage(data.message || 'Ошибка при изменении пароля.');
-            console.error('Ошибка сервера:', data.message); // Отладочная информация в консоль
+            //console.error('Ошибка сервера:', data.message); // Отладочная информация в консоль
         }
     })
     .catch(error => {
-        console.error('Ошибка при отправке данных:', error); // Отладочная информация в консоль
+        //console.error('Ошибка при отправке данных:', error); // Отладочная информация в консоль
         showErrorMessage('Произошла ошибка при отправке данных.');
     });
 });

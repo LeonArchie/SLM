@@ -33,16 +33,16 @@
     if (isset($_GET['error'])) {
         $raw_error = $_GET['error']; // Сохраняем сырое значение
         $error_message = htmlspecialchars($raw_error, ENT_QUOTES, 'UTF-8');
-        logger("DEBUG", "Сырое значение параметра error: " . $raw_error);
+        //logger("DEBUG", "Сырое значение параметра error: " . $raw_error);
         logger("ERROR", "Получено сообщение об ошибке: " . $error_message);
     } else {
-        logger("INFO", "Параметр 'error' не передан.");
+        //logger("INFO", "Параметр 'error' не передан.");
     }
 
     
      // Получаем userid из POST
     $userid = $_POST['userid'];
-    logger("DEBUG", "Получен User ID: " . $userid);
+    //logger("DEBUG", "Получен User ID: " . $userid);
 
     // Получаем данные пользователя при загрузке страницы
     $userData = getUserData($userid);
