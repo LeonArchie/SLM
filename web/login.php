@@ -1,5 +1,5 @@
 <?php
-    // Инициализация вызвываемых функции
+    // Инициализация вызываемых функций
     $file_path = 'include/function.php';
     if (!file_exists($file_path)) {
         // Если файл не существует, переходим на страницу 503.php
@@ -18,6 +18,15 @@
 
     // Генерация CSRF-токена
     csrf_token();
+
+    // Чтение конфигурационного файла
+    $config_path = CONFIG_PATH;
+    $config = json_decode(file_get_contents($config_path), true);
+
+    // Проверка состояния LDAP
+    $ldap_active = $config['LDAP']['active'] ?? false;
+    $auth_type_disabled = !$ldap_active;
+    $default_auth_type = $ldap_active ? 'ldap' : 'internal';
 
     $error_message = "";
     if (isset($_GET['error'])) {
@@ -72,6 +81,14 @@
                 <div class="input-group">
                     <label for="password">Пароль:</label>
                     <input type="password" id="password" name="password" placeholder="Введите пароль" required>
+                </div>
+                <!-- Поле для выбора типа авторизации -->
+                <div class= "input-group select-group">
+                    <label for="auth_type">Сервер:</label>
+                    <select id="auth_type" name="auth_type" <?php echo $auth_type_disabled ? 'disabled' : ''; ?> required>
+                        <option value="internal" <?php echo $default_auth_type === 'internal' ? 'selected' : ''; ?>>Внутренняя</option>
+                        <option value="ldap" <?php echo $default_auth_type === 'ldap' ? 'selected' : ''; ?>>LDAP</option>
+                    </select>
                 </div>
                 <!-- Кнопка отправки -->
                 <input type="submit" value="Войти">

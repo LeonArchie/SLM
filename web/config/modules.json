@@ -126,13 +126,13 @@
                     "url": "/modules/setting/all_accounts.php",
                     "icon": "",
                     "active": true,
-                    "role": ["view", "edit"],
+                    "role": ["edit"],
                     "dropdown": []
                 },
                 {
                     "guid": "ada7e553-6d5f-4444-8eec-29e008139ecd",
-                    "title": "Добавить пользователя",
-                    "url": "/FR_register.php",
+                    "title": "Полномочия",
+                    "url": "/modules/setting/authority_manager.php",
                     "icon": "",
                     "active": true,
                     "role":["edit"],
@@ -141,10 +141,10 @@
                 {
                     "guid": "aeef82b7-5083-480e-a59e-507a083a16be",
                     "title": "Просмотреть/Назначить роли",
-                    "url": "/viev_edit_role.php",
+                    "url": "/modules/setting/authority_manager.php",
                     "icon": "",
                     "active": true,
-                    "role": ["view", "edit"],
+                    "role": ["edit"],
                     "dropdown": []
                 },
                 {

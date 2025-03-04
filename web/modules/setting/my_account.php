@@ -52,9 +52,9 @@
     <head>
         <?php include ROOT_PATH . '/include/all_head.html'; ?>
         <!-- Подключение стилей -->
-        <link rel="stylesheet" href="/css/error.css"/>
         <link rel="stylesheet" href="/css/navbar.css"/>
         <link rel="stylesheet" href="css/my_account.css"/>
+        <link rel="stylesheet" href="/css/error.css"/>
     </head>
     <body>
         <?php include ROOT_PATH . '/include/eos_header.html'; ?>
