@@ -6,8 +6,7 @@
         exit();
     }
     require_once $file_path;
-    logger("INFO", "Начало выполнения скрипта authorization.php.");
-    startSessionIfNotStarted();
+    //logger("INFO", "Начало выполнения скрипта authorization.php.");
 
     // Получение времени жизни сессии из конфигурации
     $config_path = CONFIG_PATH; // Путь к config.json определен в function.php
@@ -29,10 +28,11 @@
     // Получение session_timeout
     $session_timeout = $config_data['web']['session_timeout'] ?? 3600; // Значение по умолчанию: 3600 секунд
     //logger("DEBUG", "Получено время жизни сессии из конфигурации: $session_timeout секунд.");
-
     // Установка времени жизни сессии
     session_set_cookie_params($session_timeout);
-    session_regenerate_id(true); // Пересоздание ID сессии для безопасности
+    startSessionIfNotStarted();
+    
+    session_regenerate_id(true); // Пересоздание ID сессии
 
     // Проверка CSRF-токена
     if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {

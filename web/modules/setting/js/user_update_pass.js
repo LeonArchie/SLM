@@ -24,22 +24,29 @@ document.getElementById('passwdForm').addEventListener('submit', function (e) {
         return;
     }
 
-    // Проверка наличия CSRF-токена
+    // Получаем CSRF-токен и admin_userid из скрытых полей
     const csrfToken = document.getElementsByName('csrf_token')[0]?.value;
-    if (!csrfToken) {
-        showErrorMessage('CSRF-токен не найден. Пожалуйста, обновите страницу.');
-        //console.error('Ошибка: CSRF-токен не найден.'); // Отладочная информация в консоль
+    const adminUserid = document.getElementsByName('admin_userid')[0]?.value;
+
+    // Получаем userid из поля ввода
+    const userid = document.getElementById('userID').value;
+
+    if (!csrfToken || !adminUserid || !userid) {
+        showErrorMessage('Не удалось получить необходимые данные. Пожалуйста, обновите страницу.');
+        //console.error('Ошибка: CSRF-токен, admin_userid или userid не найдены.'); // Отладочная информация в консоль
         return;
     }
 
     // Отправляем данные на сервер
-    fetch('back/update_pass.php', {
+    fetch('back/update_user_pass.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             csrf_token: csrfToken,
+            admin_userid: adminUserid,
+            userid: userid,
             current_password: currentPassword,
             new_password: newPassword
         })

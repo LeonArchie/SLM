@@ -26,23 +26,23 @@
     }
 
     // Логирование начала выполнения скрипта
-    logger("INFO", "Начало выполнения скрипта edituser.php.");
+    //logger("INFO", "Начало выполнения скрипта edituser.php.");
 
     // Проверка, есть ли сообщение об ошибке
     $error_message = "";
     if (isset($_GET['error'])) {
         $raw_error = $_GET['error']; // Сохраняем сырое значение
         $error_message = htmlspecialchars($raw_error, ENT_QUOTES, 'UTF-8');
-        logger("DEBUG", "Сырое значение параметра error: " . $raw_error);
+        //logger("DEBUG", "Сырое значение параметра error: " . $raw_error);
         logger("ERROR", "Получено сообщение об ошибке: " . $error_message);
     } else {
-        logger("INFO", "Параметр 'error' не передан.");
+        //logger("INFO", "Параметр 'error' не передан.");
     }
 
     
      // Получаем userid из POST
     $userid = $_POST['userid'];
-    logger("DEBUG", "Получен User ID: " . $userid);
+    //logger("DEBUG", "Получен User ID: " . $userid);
 
     // Получаем данные пользователя при загрузке страницы
     $userData = getUserData($userid);
@@ -76,7 +76,7 @@
             <!-- Скроллируемая форма -->
             <div class="scrollable-form">
                 <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-                <input type="hidden" name="userid" value="<?php echo $_SESSION['userid']; ?>">
+                <input type="hidden" name="admin_userid" value="<?php echo $_SESSION['userid']; ?>">
                 <!-- Секция профиля -->
                 <div class="profile-section">
                     <div class="user-info">
@@ -249,8 +249,7 @@
             <div class="modal-overlay" id="modalOverlay">
                 <div class="passwd-form">
                     <form id="passwdForm">
-                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
-                        <label for="current_password">Текущий пароль:</label>
+                        <label for="current_password">Пароль администратора:</label>
                         <input type="password" id="current_password" name="current_password" required>
 
                         <label for="new_password">Новый пароль:</label>
@@ -272,6 +271,6 @@
         <!-- Скрипты -->
     <script src="js/user_acc_save.js"></script>
     <script src="js/user_block.js"></script>
-    <script src="js/admin_user_update_pass.js"></script>
+    <script src="js/user_update_pass.js"></script>
 </body>
 </html>
