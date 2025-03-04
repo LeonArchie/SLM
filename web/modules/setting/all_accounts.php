@@ -1,6 +1,6 @@
 <?php
     $modules = 'da137713-83fe-4325-868f-14b967dbf17c';
-    $pages = '62583be6-530e-42b2-b490-b0b082d47e66';
+    $pages = '34868747-e94d-4294-9fb5-20aaf163ba7f';
 
     $file_path = __DIR__ . '/include/platform.php';
     if (!file_exists($file_path)) {
@@ -20,7 +20,7 @@
     $pdo = connectToDatabase();
     //logger("INFO", "Успешное подключение к базе данных.");
 
-    // Запрос к таблице users для получения всех пользователей
+    // Запрос к таблице users для получения пользователей
     $stmt = $pdo->prepare("SELECT userlogin, full_name, active, add_ldap, userid FROM users");
     //logger("DEBUG", "Выполняется запрос к таблице users: SELECT userlogin, full_name, active, add_ldap, userid FROM users");
 
@@ -50,9 +50,9 @@
         <head>
             <?php include ROOT_PATH . '/include/all_head.html'; ?>
             <!-- Подключение стилей -->
-            <link rel="stylesheet" href="/css/error.css"/>
             <link rel="stylesheet" href="/css/navbar.css"/>
             <link rel="stylesheet" href="css/all_accounts.css"/>
+            <link rel="stylesheet" href="/css/error.css"/>
         </head>
         <body>
             <?php include ROOT_PATH . '/include/eos_header.html'; ?>

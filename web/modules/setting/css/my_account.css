@@ -1,15 +1,16 @@
 /* Контейнер формы */
 .form-container {
-    background-color: #f3f3f3; /* Светло-серый, контрастный к молочному */
-    border-radius: 8px;
+    background-color: #ffffff; /* Белый фон */
+    border-radius: 12px; /* Закругленные углы */
     max-width: 90%; /* Максимальная ширина формы */
     width: 100%;
     margin: 50px auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Тень */
     position: relative;
     display: flex;
     flex-direction: column;
     height: calc(100vh - 100px); /* Высота формы с отступом */
+    transition: all 0.3s ease; /* Плавные переходы */
 }
 
 /* Группа кнопок (фиксированная) */
@@ -25,59 +26,61 @@
 /* Общие стили для кнопок */
 .form-button {
     padding: 12px 20px; /* Увеличиваем размер кнопок */
-    font-size: 14px; /* Размер шрифта */
+    font-size: 1.1em; /* Размер шрифта */
     font-weight: 500; /* Немного жирнее текст */
     border: none; /* Убираем рамку */
-    border-radius: 6px; /* Закругленные углы */
+    border-radius: 8px; /* Закругленные углы */
     cursor: pointer; /* Курсор указателя */
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* Анимация при наведении */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Мягкая тень */
+    background-color: #667eea; /* Основной синий цвет */
+    color: #ffffff; /* Белый текст */
 }
 
-/* Цвета для разных типов кнопок */
+.form-button:hover {
+    background-color: #5a67d8; /* Темнее синий при наведении */
+    transform: translateY(-2px); /* Приподнимаем кнопку */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Увеличиваем тень */
+}
+
+.form-button:active {
+    transform: translateY(0); /* Возвращаем кнопку в исходное положение */
+}
 
 /* Кнопка "Сбросить" */
 #updateButton {
-    background-color: #ffe0e0; /* Нежно-розовый */
-    color: #b71c1c; /* Темно-красный текст */
+    background-color: #667eea; /* Синий */
 }
 
 #updateButton:hover {
-    background-color: #ffcdd2; /* Темнее нежно-розовый при наведении */
-    transform: translateY(-2px); /* Приподнимаем кнопку */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Увеличиваем тень */
+    background-color: #5a67d8; /* Темнее синий */
 }
 
 /* Кнопка "Сохранить" */
 #saveButton {
-    background-color: #c8e6c9; /* Нежно-зеленый */
-    color: #38761d; /* Темно-зеленый текст */
+    background-color: #667eea; /* Синий */
 }
 
 #saveButton:hover {
-    background-color: #a8d8a4; /* Темнее нежно-зеленый при наведении */
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background-color: #5a67d8; /* Темнее синий */
 }
 
 /* Кнопка "Сменить пароль" */
 #changePasswordButton {
-    background-color: #d1e7fd; /* Более заметный нежно-голубой */
-    color: #0b5345; /* Темно-синий текст */
+    background-color: #667eea; /* Синий */
 }
 
 #changePasswordButton:hover {
-    background-color: #a5d8ff; /* Темнее нежно-голубой при наведении */
-    transform: translateY(-2px); /* Приподнимаем кнопку */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Увеличиваем тень */
+    background-color: #5a67d8; /* Темнее синий */
 }
 
 /* Стиль для отключенных кнопок */
 .form-button:disabled {
-    background-color: #eaeaea; /* Серый фон */
-    color: #a1a1a1; /* Более светлый текст */
+    background-color: #bdbdbd; /* Серый фон */
+    color: #757575; /* Серый текст */
     cursor: not-allowed; /* Изменяем курсор */
     box-shadow: none; /* Убираем тень */
+    opacity: 0.7; /* Немного прозрачности */
 }
 
 /* Скроллируемая форма */
@@ -86,6 +89,7 @@
     padding: 20px;
     flex: 1; /* Занимает оставшееся пространство */
     max-height: calc(100vh - 150px); /* Ограничиваем высоту формы */
+    transition: all 0.3s ease; /* Плавные переходы */
 }
 
 /* Кастомизация скроллбара для WebKit-браузеров (Chrome, Edge, Safari) */
@@ -122,9 +126,9 @@
     position: relative;
     z-index: 2;
     background-color: white;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
+    border: 1px solid #e2e8f0; /* Светлая граница */
+    border-radius: 12px; /* Закругленные углы */
+    padding: 20px; /* Увеличиваем отступы */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -146,7 +150,7 @@
     width: 15em;
     height: 15em;
     object-fit: cover;
-    border: 2px solid #ccc;
+    border: 2px solid #e2e8f0; /* Светлая граница */
     border-radius: 50%; /* Сделать круглой */
 }
 
@@ -164,30 +168,49 @@
 
 /* Поле формы */
 .form-field {
-    margin-bottom: 15px;
-    display: flex; /* Используем flexbox для выравнивания */
-    align-items: center; /* Вертикальное центрирование */
+    margin-bottom: 20px; /* Увеличиваем отступ между полями */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Добавляем отступ между label и input */
+    position: relative;
 }
 
 .form-field label {
-    width: 150px; /* Фиксированная ширина для названий полей */
-    text-align: right; /* Выравниваем название по правому краю */
-    margin-right: 10px; /* Отступ между названием и полем */
-    font-weight: bold;
+    flex: 0 0 150px; /* Фиксированная ширина для label */
+    font-size: 1em;
+    color: #4a5568; /* Цвет текста */
+    text-align: right; /* Выравнивание текста по правому краю */
+    font-weight: 500; /* Полужирный шрифт */
 }
 
 .form-field input[type="text"],
 .form-field input[type="email"],
-.form-field input[type="tel"] {
-    flex: 1; /* Поле ввода занимает оставшееся пространство */
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 20px; /* Отступ справа, как у поля API */
+.form-field input[type="tel"],
+.form-field input[type="password"] {
+    padding: 12px;
+    border: 1px solid #e2e8f0; /* Светлая граница */
+    border-radius: 8px; /* Закругленные углы */
+    font-size: 1em;
+    flex: 1; /* Занимает оставшееся пространство */
+    box-sizing: border-box;
+    height: 44px; /* Фиксированная высота */
+    line-height: 1.1;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Плавные переходы */
+}
+
+.form-field input[type="text"]:focus,
+.form-field input[type="email"]:focus,
+.form-field input[type="tel"]:focus,
+.form-field input[type="password"]:focus {
+    border-color: #667eea; /* Синяя граница при фокусе */
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); /* Тень при фокусе */
+    outline: none; /* Убираем стандартный outline */
 }
 
 .form-field input[readonly] {
-    background-color: #f9f9f9;
+    background-color: #f7fafc; /* Светлый фон для readonly */
+    color: #a0aec0; /* Серый текст */
+    cursor: not-allowed; /* Курсор "недоступно" */
 }
 
 /* Ряды полей с большим отступом */
@@ -244,10 +267,18 @@
 
 .api-key-field input {
     flex: 1;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 20px; /* Отступ справа, как у остальных полей */
+    padding: 12px;
+    border: 1px solid #e2e8f0; /* Светлая граница */
+    border-radius: 8px; /* Закругленные углы */
+    font-size: 1em;
+    height: 44px; /* Фиксированная высота */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Плавные переходы */
+}
+
+.api-key-field input:focus {
+    border-color: #667eea; /* Синяя граница при фокусе */
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); /* Тень при фокусе */
+    outline: none; /* Убираем стандартный outline */
 }
 
 /* Телефон */
@@ -255,10 +286,6 @@
     font-size: 12px;
     color: #666;
 }
-
-
-
-
 
 /* Стиль для подложки */
 .modal-overlay {
@@ -295,29 +322,47 @@
 .passwd-form input[type="password"],
 .passwd-form input[type="hidden"] {
     width: 95%;
-    padding: 8px;
+    padding: 12px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #e2e8f0; /* Светлая граница */
+    border-radius: 8px; /* Закругленные углы */
+    font-size: 1em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Плавные переходы */
 }
 
+.passwd-form input[type="password"]:focus,
+.passwd-form input[type="hidden"]:focus {
+    border-color: #667eea; /* Синяя граница при фокусе */
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); /* Тень при фокусе */
+    outline: none; /* Убираем стандартный outline */
+}
 
 .passwd-form button {
-    padding: 10px 15px;
+    padding: 12px 20px;
     margin-right: 10px;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px; /* Закругленные углы */
     cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Плавные переходы */
+    background-color: #667eea; /* Синий */
+    color: #ffffff; /* Белый текст */
+}
+
+.passwd-form button:hover {
+    background-color: #5a67d8; /* Темнее синий */
+    transform: translateY(-2px); /* Приподнимаем кнопку */
 }
 
 .passwd-form button.cancel {
-    background-color: #ffcccc;
+    background-color: #e0e0e0; /* Серый */
+    color: #4a5568; /* Темный текст */
 }
 
-.passwd-form button.save {
-    background-color: #ccffcc;
+.passwd-form button.cancel:hover {
+    background-color: #bdbdbd; /* Темнее серый */
 }
-
 
 /* Стиль для выделенной строки */
 tbody tr.selected {
@@ -330,3 +375,24 @@ tbody tr.selected {
     cursor: pointer;
 }
 
+/* Кнопка "Заблокировать" */
+#blockButton {
+    background-color: #667eea; /* Синий */
+    color: #ffffff;
+}
+
+#blockButton:hover {
+    background-color: #5a67d8; /* Темнее синий */
+}
+
+/* Кнопка "Сохранить" */
+#getAPIKey {
+    background-color: #667eea; /* Синий */
+    color: #ffffff;
+}
+
+#getAPIKey:hover {
+    background-color: #5a67d8; /* Темнее синий */
+    transform: translateY(-2px); /* Приподнимаем кнопку */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Увеличиваем тень */
+}
