@@ -211,5 +211,6 @@
             <script src="js/createuser.js"></script>
             <script src="js/all_acc_delete.js"></script>
             <script src="js/all_acc_block.js"></script>
+            <script src="/js/error.js"></script>
         </body>
     </html>

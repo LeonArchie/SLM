@@ -266,5 +266,6 @@
             <!-- Скрипты -->
         <script src="js/user_acc_save.js"></script>
         <script src="js/my_pass_update.js"></script>
+        <script src="/js/error.js"></script>
     </body>
 </html>
