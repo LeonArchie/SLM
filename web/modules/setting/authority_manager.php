@@ -66,6 +66,7 @@
                     <button id="VievPrivileges" disabled>Просмотреть полномочия</button>
                     <button id="OffPrivileges" disabled>Снять полномочия</button>
                     <button id="CreatePrivileges">Создать полномочия</button>
+                    <button id="VievPrivileges">Просмотерть все полномочия</button>
                     <button id="DeletePrivileges">Удалить полномочия</button>
                     <button id="refreshButton" onclick="location.reload()">Обновить</button>
                     <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">

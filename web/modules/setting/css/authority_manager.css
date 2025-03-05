@@ -106,6 +106,18 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+/* Кнопка "VievPrivileges" */
+#VievPrivileges {
+    background-color: #667eea; /* Синий */
+    color: #ffffff; /* Белый текст */
+}
+
+#VievPrivileges:hover {
+    background-color: #5a67d8; /* Темнее синий */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
 /* Кнопка "Обновить" */
 #refreshButton {
     background-color: #667eea; /* Синий */
