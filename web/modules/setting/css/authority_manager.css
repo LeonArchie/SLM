@@ -8,30 +8,30 @@
 
 /* Контейнер формы */
 .form-container {
-    background-color: #ffffff; /* Белый фон */
+    background-color: #ffffff;
     border: none;
-    border-radius: 12px; /* Закругленные углы */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Тень */
-    max-width: 90%; /* Максимальная ширина формы */
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    max-width: 90%;
     width: 100%;
     margin: 50px auto;
     position: relative;
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 100px); /* Высота формы с отступом */
+    height: calc(100vh - 100px);
 }
 
 /* Статичная полоса с кнопками */
 .button-bar {
-    background-color: #f9f9f9; /* Светлый фон */
+    background-color: #f9f9f9;
     padding: 15px;
     display: flex;
-    flex-wrap: wrap; /* Разрешаем перенос кнопок на новую строку */
-    justify-content: center; /* Центрируем кнопки */
-    gap: 10px; /* Равномерные отступы между кнопками */
-    border-bottom: 1px solid #e0e0e0; /* Светлая граница */
-    border-radius: 8px; /* Закругленные углы */
-    box-shadow: inset 0 -2px 5px rgba(0, 0, 0, 0.1); /* Внутренняя тень */
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: inset 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Общие стили для кнопок */
@@ -40,103 +40,103 @@
     font-size: 14px;
     font-weight: 500;
     border: none;
-    border-radius: 8px; /* Закругленные углы */
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Мягкая тень */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Кнопка "Назначить полномочия" */
 #AssignPrivileges {
-    background-color: #667eea; /* Синий */
-    color: #ffffff; /* Белый текст */
+    background-color: #667eea;
+    color: #ffffff;
 }
 
 #AssignPrivileges:hover {
-    background-color: #5a67d8; /* Темнее синий */
-    transform: translateY(-2px); /* Приподнимаем кнопку */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Увеличиваем тень */
+    background-color: #5a67d8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Кнопка "Просмотреть полномочия" */
 #VievPrivileges {
-    background-color: #667eea; /* Синий */
-    color: #ffffff; /* Белый текст */
+    background-color: #667eea;
+    color: #ffffff;
 }
 
 #VievPrivileges:hover {
-    background-color: #5a67d8; /* Темнее синий */
+    background-color: #5a67d8;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Кнопка "Снять полномочия" */
 #OffPrivileges {
-    background-color: #667eea; /* Синий */
-    color: #ffffff; /* Белый текст */
+    background-color: #667eea;
+    color: #ffffff;
 }
 
 #OffPrivileges:hover {
-    background-color: #5a67d8; /* Темнее синий */
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-/* Кнопка "Удалить полномочия" */
-#DeletePrivileges {
-    background-color: #667eea; /* Синий */
-    color: #ffffff; /* Белый текст */
-}
-
-#DeletePrivileges:hover {
-    background-color: #5a67d8; /* Темнее синий */
+    background-color: #5a67d8;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Кнопка "Создать полномочия" */
 #CreatePrivileges {
-    background-color: #667eea; /* Синий */
-    color: #ffffff; /* Белый текст */
+    background-color: #667eea;
+    color: #ffffff;
 }
 
 #CreatePrivileges:hover {
-    background-color: #5a67d8; /* Темнее синий */
+    background-color: #5a67d8;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Кнопка "VievPrivileges" */
-#VievPrivileges {
-    background-color: #667eea; /* Синий */
-    color: #ffffff; /* Белый текст */
+/* Кнопка "Просмотреть все полномочия" */
+#ViewAllPrivileges {
+    background-color: #667eea;
+    color: #ffffff;
 }
 
-#VievPrivileges:hover {
-    background-color: #5a67d8; /* Темнее синий */
+#ViewAllPrivileges:hover {
+    background-color: #5a67d8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Кнопка "DeletePrivileges" */
+#DeletePrivileges {
+    background-color: #667eea;
+    color: #ffffff;
+}
+
+#DeletePrivileges:hover {
+    background-color: #5a67d8;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Кнопка "Обновить" */
 #refreshButton {
-    background-color: #667eea; /* Синий */
-    color: #ffffff; /* Белый текст */
+    background-color: #667eea;
+    color: #ffffff;
 }
 
 #refreshButton:hover {
-    background-color: #5a67d8; /* Темнее синий */
+    background-color: #5a67d8;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Стиль для отключенных кнопок */
 .button-bar button:disabled {
-    background-color: #bdbdbd; /* Серый фон */
-    color: #757575; /* Серый текст */
+    background-color: #bdbdbd;
+    color: #757575;
     cursor: not-allowed;
     box-shadow: none;
-    opacity: 0.7; /* Немного прозрачности */
+    opacity: 0.7;
 }
 
 /* Таблица */
@@ -175,214 +175,162 @@ td.name-cell a:hover {
     text-decoration: underline;
 }
 
-/* Форма добавления пользователя */
-.add-form-overlay {
-    display: none; /* Сначала скрыта */
-    position: fixed; /* Абсолютное позиционирование относительно окна браузера */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Полупрозрачный темный фон */
-    z-index: 10;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+/* Анимация появления формы */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
 }
 
-.add-form {
-    background-color: #ffffff; /* Белый фон */
+/* Анимация закрытия формы */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+}
+
+/* Базовые стили для всех форм */
+.form-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: #ffffff;
     border: none;
-    border-radius: 12px; /* Закругленные углы */
-    padding: 30px; /* Внутренние отступы */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Тень */
-    width: 500px; /* Ширина блока */
-    text-align: left; /* Выравнивание текста по левому краю */
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    animation: fadeIn 0.3s ease-out;
 }
 
-.add-form h2 {
-    margin-top: 0; /* Убираем отступ сверху у заголовка */
-    margin-bottom: 15px; /* Отступ снизу для заголовка */
-    font-size: 1.5em; /* Размер шрифта заголовка */
-    color: #2d3748; /* Цвет текста */
-    text-align: center; /* Выравнивание заголовка по центру */
+/* Класс для закрытия формы с анимацией */
+.form-modal.closing {
+    animation: fadeOut 0.3s ease-in;
 }
 
-.add-form form {
+/* Форма для создания полномочий */
+#createPrivilegesForm {
+    width: 400px; /* Персональный размер */
+}
+
+/* Форма для удаления полномочий */
+#deletePrivilegesForm {
+    width: 450px; /* Персональный размер */
+}
+
+/* Форма для снятия полномочий */
+#revokePrivilegesForm {
+    width: 500px; /* Персональный размер */
+}
+
+/* Форма для просмотра полномочий */
+#viewPrivilegesForm {
+    width: 600px; /* Персональный размер */
+}
+
+/* Форма для просмотра всех полномочий */
+#viewAllPrivilegesForm {
+    width: 700px; /* Персональный размер */
+}
+
+/* Остальные стили для форм */
+.form-modal h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #2d3748;
+    font-weight: 600;
+}
+
+.form-modal form {
     display: flex;
-    flex-direction: column; /* Элементы формы в колонку */
-    gap: 20px; /* Отступ между элементами формы */
+    flex-direction: column;
+    gap: 20px;
 }
 
-.add-form .input-group {
+.form-modal .input-group {
     display: flex;
     align-items: center;
-    gap: 10px; /* Отступ между лейблом и полем ввода */
+    gap: 10px;
     position: relative;
 }
 
-.add-form label {
-    flex: 0 0 120px; /* Фиксированная ширина для лейбла */
+.form-modal label {
+    flex: 0 0 80px;
     font-size: 1em;
-    color: #4a5568; /* Цвет текста */
-    text-align: right; /* Лейбл выравнивается по правому краю */
-    font-weight: 500; /* Полужирный шрифт */
+    color: #4a5568;
+    text-align: right;
+    font-weight: 500;
 }
 
-.add-form input[type="text"],
-.add-form input[type="email"],
-.add-form input[type="password"] {
-    padding: 12px; /* Внутренние отступы */
-    border: 1px solid #e2e8f0; /* Светлая граница */
-    border-radius: 8px; /* Закругленные углы */
-    font-size: 1em; /* Размер шрифта */
-    flex: 1; /* Занимает всё оставшееся пространство */
-    box-sizing: border-box; /* Учитываем padding и border в ширине */
-    height: 44px; /* Фиксированная высота */
+.form-modal input[type="text"],
+.form-modal input[type="password"],
+.form-modal select {
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1em;
+    flex: 1;
+    box-sizing: border-box;
+    height: 44px;
     line-height: 1.1;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Плавные переходы */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.add-form input[type="text"]:focus,
-.add-form input[type="email"]:focus,
-.add-form input[type="password"]:focus {
-    border-color: #667eea; /* Синяя граница при фокусе */
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); /* Тень при фокусе */
-    outline: none; /* Убираем стандартный outline */
+.form-modal input[type="text"]:focus,
+.form-modal input[type="password"]:focus,
+.form-modal select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.add-form .password-container {
-    display: flex;
-    gap: 5px; /* Отступ между полем и кнопкой */
-    flex: 1; /* Занимает всё оставшееся пространство */
+.form-modal .input-group.select-group::after {
+    content: "▼";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #4a5568;
+    font-size: 0.8em;
 }
 
-.add-form .password-container input[type="text"] {
-    flex: 1; /* Поле занимает всё доступное пространство */
-}
-
-.add-form .password-container button {
-    padding: 10px;
-    background-color: #667eea; /* Синий */
-    color: white;
-    border: none;
-    border-radius: 8px; /* Закругленные углы */
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.add-form .password-container button:hover {
-    background-color: #5a67d8; /* Темнее синий */
-}
-
-.add-form .button-group {
+.form-modal .button-group {
     display: flex;
     gap: 10px;
+    margin-top: 10px;
+    justify-content: flex-end;
 }
 
-.add-form .button-group button {
-    padding: 12px; /* Внутренние отступы */
-    font-size: 1em; /* Размер шрифта */
-    border: none; /* Убираем рамку */
-    border-radius: 8px; /* Закругленные углы */
-    cursor: pointer; /* Курсор в виде указателя */
-    transition: background-color 0.3s ease; /* Плавное изменение цвета */
-    flex: 1; /* Занимает равное пространство */
-}
-
-.add-form .button-group .cancel {
-    background-color: #e57373; /* Красный */
-    color: #ffffff; /* Белый текст */
-}
-
-.add-form .button-group .cancel:hover {
-    background-color: #ef5350; /* Темнее красный */
-}
-
-.add-form .button-group .create {
-    background-color: #81c784; /* Зеленый */
-    color: #ffffff; /* Белый текст */
-}
-
-.add-form .button-group .create:hover {
-    background-color: #66bb6a; /* Темнее зеленый */
-}
-
-/* Стиль для выпадающего списка */
-.add-form select {
-    padding: 12px; /* Внутренние отступы */
-    border: 1px solid #e2e8f0; /* Светлая граница */
-    border-radius: 8px; /* Закругленные углы */
-    font-size: 1em; /* Размер шрифта */
-    flex: 1; /* Занимает всё оставшееся пространство */
-    box-sizing: border-box; /* Учитываем padding и border в ширине */
-    background-color: #fff; /* Белый фон */
-    color: #4a5568; /* Темный текст */
-    cursor: pointer; /* Курсор в виде указателя */
-    appearance: none; /* Убираем стандартную стрелку браузера */
-    -webkit-appearance: none; /* Для WebKit-браузеров */
-    -moz-appearance: none; /* Для Firefox */
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%234a5568" viewBox="0 0 16 16"><path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>'); /* Стрелка вниз */
-    background-repeat: no-repeat; /* Запрещаем повторение фона */
-    background-position: right 10px center; /* Позиция стрелки */
-    background-size: 16px; /* Размер стрелки */
-}
-
-/* Фокус на выпадающем списке */
-.add-form select:focus {
-    outline: none; /* Убираем стандартный фокус */
-    border-color: #667eea; /* Синяя граница при фокусе */
-    box-shadow: 0 0 5px rgba(102, 126, 234, 0.5); /* Тень при фокусе */
-}
-
-/* Стиль для option */
-.add-form select option {
-    background-color: #fff; /* Белый фон */
-    color: #4a5568; /* Темный текст */
-    padding: 5px; /* Отступы */
-}
-
-/* Стиль для кастомных чекбоксов */
-.custom-checkbox {
-    appearance: none; /* Убираем стандартный вид чекбокса */
-    width: 20px;
-    height: 20px;
-    border: 2px solid #e2e8f0; /* Светлая граница */
-    border-radius: 4px; /* Закругленные углы */
-    position: relative;
+.form-modal button {
+    padding: 12px;
+    background-color: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
     cursor: pointer;
-    outline: none;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Чекбокс при наведении */
-.custom-checkbox:hover {
-    border-color: #667eea; /* Синяя граница */
+.form-modal button:hover {
+    background-color: #5a67d8;
+    transform: translateY(-2px);
 }
 
-/* Активный чекбокс */
-.custom-checkbox:checked {
-    background-color: #667eea; /* Синий фон */
-    border-color: #667eea; /* Синяя граница */
-}
-
-/* Отметка внутри активного чекбокса */
-.custom-checkbox:checked::after {
-    content: ''; /* Добавляем отметку */
-    display: block;
-    width: 10px;
-    height: 5px;
-    border: 2px solid #fff; /* Белая отметка */
-    border-top: none;
-    border-left: none;
-    transform: rotate(45deg); /* Поворачиваем отметку */
-    position: absolute;
-    top: 4px;
-    left: 6px;
-}
-
-/* Неактивный чекбокс */
-.custom-checkbox:not(:checked) {
-    background-color: #f44336; /* Красный фон */
-    border-color: #f44336; /* Красная граница */
+.form-modal button:active {
+    transform: translateY(0);
 }
