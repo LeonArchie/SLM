@@ -26,6 +26,11 @@
         "username":"",
         "password":""    
     },
+    "zabbix": {
+        "zabbixservers": [],
+        "zabbixUser": "",
+        "zabbixUserPassword": ""
+    },
     "app": {
 
     },
