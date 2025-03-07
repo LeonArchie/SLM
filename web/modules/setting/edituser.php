@@ -259,7 +259,7 @@
                             <input type="password" id="confirm_password" name="confirm_password" required>
 
                             <button type="button" class="cancel" onclick="closeForm()">Отменить</button>
-                            <button type="submit" class="save">Сохранить</button>
+                            <button type="submit" class="save">Сменить</button>
                         </form>
                     </div>
                 </div>
