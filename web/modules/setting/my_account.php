@@ -264,8 +264,8 @@
         <?php include ROOT_PATH . '/include/error.php'; ?>
         <?php include ROOT_PATH . '/include/footer.php'; ?>
             <!-- Скрипты -->
-        <script src="js/user_acc_save.js"></script>
-        <script src="js/my_pass_update.js"></script>
+        <script src="js/my_account/user_acc_save.js"></script>
+        <script src="js/my_account/my_pass_update.js"></script>
         <script src="/js/error.js"></script>
     </body>
 </html>

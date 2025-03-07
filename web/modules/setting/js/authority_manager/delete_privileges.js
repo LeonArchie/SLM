@@ -57,3 +57,26 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const selectElement = document.getElementById('privilegesToRevoke');
+
+    // Обработка кликов на опциях
+    selectElement.addEventListener('mousedown', function (event) {
+        const option = event.target;
+
+        // Если кликнули на option
+        if (option.tagName === 'OPTION') {
+            // Отменяем стандартное поведение
+            event.preventDefault();
+
+            // Переключаем состояние выбора
+            option.selected = !option.selected;
+
+            // Логируем выбранные значения
+            const selectedValues = Array.from(selectElement.selectedOptions).map(opt => opt.value);
+            console.log("Выбранные привилегии:", selectedValues);
+        }
+    });
+});

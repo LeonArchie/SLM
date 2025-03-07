@@ -215,12 +215,12 @@
             <?php include ROOT_PATH . '/include/error.php'; ?>
             <?php include ROOT_PATH . '/include/footer.php'; ?>
 
-            <script src="js/auth_manager.js"></script>
-            <script src="js/create_privileges.js"></script>
-            <script src="js/delete_privileges.js"></script>
-            <script src="js/revoke_privileges.js"></script>
-            <script src="js/view_privileges.js"></script>
-            <script src="js/view_all_privileges.js"></script>
+            <script src="js/authority_manager/auth_manager.js"></script>
+            <script src="js/authority_manager/create_privileges.js"></script>
+            <script src="js/authority_manager/delete_privileges.js"></script>
+            <script src="js/authority_manager/revoke_privileges.js"></script>
+            <script src="js/authority_manager/view_privileges.js"></script>
+            <script src="js/authority_manager/view_all_privileges.js"></script>
             <script src="/js/error.js"></script>
         </body>
     </html>
