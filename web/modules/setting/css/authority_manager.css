@@ -233,7 +233,7 @@ td.name-cell a:hover {
 
 /* Форма для снятия полномочий */
 #revokePrivilegesForm {
-    width: 500px; /* Персональный размер */
+    width: auto; /* Персональный размер */
 }
 
 /* Форма для просмотра полномочий */
@@ -298,7 +298,6 @@ td.name-cell a:hover {
 }
 
 .form-modal .input-group.select-group::after {
-    content: "▼";
     position: absolute;
     right: 12px;
     top: 50%;
@@ -338,6 +337,7 @@ td.name-cell a:hover {
 /* Стили для контейнера select */
 #privilegesToRevoke {
     width: 100%; /* Ширина на всю доступную область */
+    height: auto;
     padding: 10px; /* Внутренние отступы */
     border: 1px solid #e2e8f0; /* Граница */
     border-radius: 8px; /* Закругление углов */
@@ -361,6 +361,7 @@ td.name-cell a:hover {
     background-color: #ffffff; /* Фон опций */
     color: #2d3748; /* Цвет текста опций */
     transition: background-color 0.3s ease; /* Плавный переход фона */
+    border-bottom: 1px solid #e3e9f0;
 }
 
 /* Стили для выбранных опций */
