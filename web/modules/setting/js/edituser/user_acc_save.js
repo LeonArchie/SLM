@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
         
         //console.log('Отправляемые данные:', JSON.stringify(data));
 
-        fetch('back/save_user_data.php', {
+        fetch('back/edituser/save_user_data.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8', // явно указываем кодировку

@@ -221,29 +221,9 @@ td.name-cell a:hover {
     animation: fadeOut 0.3s ease-in;
 }
 
-/* Форма для создания полномочий */
-#createPrivilegesForm {
-    width: 400px; /* Персональный размер */
-}
-
-/* Форма для удаления полномочий */
-#deletePrivilegesForm {
+/* Форма для назначения полномочий */
+#assignPrivilegesForm {
     width: 450px; /* Персональный размер */
-}
-
-/* Форма для снятия полномочий */
-#revokePrivilegesForm {
-    width: 500px; /* Персональный размер */
-}
-
-/* Форма для просмотра полномочий */
-#viewPrivilegesForm {
-    width: 600px; /* Персональный размер */
-}
-
-/* Форма для просмотра всех полномочий */
-#viewAllPrivilegesForm {
-    width: 700px; /* Персональный размер */
 }
 
 /* Остальные стили для форм */
@@ -269,7 +249,7 @@ td.name-cell a:hover {
 }
 
 .form-modal label {
-    flex: 0 0 80px;
+    flex: 0 0 95px;
     font-size: 1em;
     color: #4a5568;
     text-align: right;
@@ -277,7 +257,6 @@ td.name-cell a:hover {
 }
 
 .form-modal input[type="text"],
-.form-modal input[type="password"],
 .form-modal select {
     padding: 12px;
     border: 1px solid #e2e8f0;
@@ -291,14 +270,12 @@ td.name-cell a:hover {
 }
 
 .form-modal input[type="text"]:focus,
-.form-modal input[type="password"]:focus,
 .form-modal select:focus {
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .form-modal .input-group.select-group::after {
-    content: "▼";
     position: absolute;
     right: 12px;
     top: 50%;
@@ -333,4 +310,142 @@ td.name-cell a:hover {
 
 .form-modal button:active {
     transform: translateY(0);
+}
+
+/* Стили для контейнера select */
+#privilegesToAssign,
+#privilegesToRevoke {
+    width: 100%; /* Ширина на всю доступную область */
+    height: auto;
+    padding: 10px; /* Внутренние отступы */
+    border: 1px solid #e2e8f0; /* Граница */
+    border-radius: 8px; /* Закругление углов */
+    background-color: #ffffff; /* Фон */
+    font-size: 1em; /* Размер шрифта */
+    color: #2d3748; /* Цвет текста */
+    appearance: none; /* Убираем стандартный стиль браузера */
+    outline: none; /* Убираем обводку при фокусе */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Плавные переходы */
+}
+
+/* Стили при фокусе */
+#privilegesToAssign:focus,
+#privilegesToRevoke:focus {
+    border-color: #667eea; /* Цвет границы при фокусе */
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); /* Тень при фокусе */
+}
+
+/* Стили для опций */
+#privilegesToAssign option,
+#privilegesToRevoke option {
+    padding: 10px; /* Внутренние отступы */
+    background-color: #ffffff; /* Фон опций */
+    color: #2d3748; /* Цвет текста опций */
+    transition: background-color 0.3s ease; /* Плавный переход фона */
+    border-bottom: 1px solid #e3e9f0;
+}
+
+/* Стили для выбранных опций */
+#privilegesToAssign option:checked,
+#privilegesToRevoke option:checked {
+    background-color: #667eea; /* Фон выбранной опции */
+    color: #ffffff; /* Цвет текста выбранной опции */
+}
+
+/* Стили для hover опций */
+#privilegesToAssign option:hover,
+#privilegesToRevoke option:hover {
+    background-color: #e2e8f0; /* Фон при наведении */
+}
+
+/* Дополнительные стили для улучшения внешнего вида */
+#privilegesToAssign::-webkit-scrollbar,
+#privilegesToRevoke::-webkit-scrollbar {
+    width: 8px; /* Ширина скроллбара */
+}
+
+#privilegesToAssign::-webkit-scrollbar-track,
+#privilegesToRevoke::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Фон трека скроллбара */
+    border-radius: 4px; /* Закругление углов трека */
+}
+
+#privilegesToAssign::-webkit-scrollbar-thumb,
+#privilegesToRevoke::-webkit-scrollbar-thumb {
+    background: #667eea; /* Цвет ползунка скроллбара */
+    border-radius: 4px; /* Закругление углов ползунка */
+}
+
+#privilegesToAssign::-webkit-scrollbar-thumb:hover,
+#privilegesToRevoke::-webkit-scrollbar-thumb:hover {
+    background: #5a67d8; /* Цвет ползунка при наведении */
+}
+
+.form-error-message {
+    color: red;
+    font-weight: bold;
+    padding: 10px;
+    border: 1px solid red;
+    background-color: #ffe6e6;
+    text-align: center;
+}
+
+/* Стили для контейнера select */
+#privilegesToDelete {
+    width: 100%; /* Ширина на всю доступную область */
+    height: auto;
+    padding: 10px; /* Внутренние отступы */
+    border: 1px solid #e2e8f0; /* Граница */
+    border-radius: 8px; /* Закругление углов */
+    background-color: #ffffff; /* Фон */
+    font-size: 1em; /* Размер шрифта */
+    color: #2d3748; /* Цвет текста */
+    appearance: none; /* Убираем стандартный стиль браузера */
+    outline: none; /* Убираем обводку при фокусе */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Плавные переходы */
+}
+
+/* Стили при фокусе */
+#privilegesToDelete:focus {
+    border-color: #667eea; /* Цвет границы при фокусе */
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); /* Тень при фокусе */
+}
+
+/* Стили для опций */
+#privilegesToDelete option {
+    padding: 10px; /* Внутренние отступы */
+    background-color: #ffffff; /* Фон опций */
+    color: #2d3748; /* Цвет текста опций */
+    transition: background-color 0.3s ease; /* Плавный переход фона */
+    border-bottom: 1px solid #e3e9f0;
+}
+
+/* Стили для выбранных опций */
+#privilegesToDelete option:checked {
+    background-color: #667eea; /* Фон выбранной опции */
+    color: #ffffff; /* Цвет текста выбранной опции */
+}
+
+/* Стили для hover опций */
+#privilegesToDelete option:hover {
+    background-color: #e2e8f0; /* Фон при наведении */
+}
+
+/* Дополнительные стили для улучшения внешнего вида */
+#privilegesToDelete::-webkit-scrollbar {
+    width: 8px; /* Ширина скроллбара */
+}
+
+#privilegesToDelete::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Фон трека скроллбара */
+    border-radius: 4px; /* Закругление углов трека */
+}
+
+#privilegesToDelete::-webkit-scrollbar-thumb {
+    background: #667eea; /* Цвет ползунка скроллбара */
+    border-radius: 4px; /* Закругление углов ползунка */
+}
+
+#privilegesToDelete::-webkit-scrollbar-thumb:hover {
+    background: #5a67d8; /* Цвет ползунка при наведении */
 }

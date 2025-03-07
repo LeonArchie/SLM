@@ -10,7 +10,7 @@
     }
 	require_once $file_path;
     
-    $file_path = __DIR__ . '/back/load_account.php';
+    $file_path = __DIR__ . '/back/edituser/load_account.php';
     if (!file_exists($file_path)) {
         // Если файл не существует, переходим на страницу 503.php
         header("Location: /err/50x.html");
@@ -254,7 +254,7 @@
                             <input type="password" id="confirm_password" name="confirm_password" required>
 
                             <button type="button" class="cancel" onclick="closeForm()">Отменить</button>
-                            <button type="submit" class="save">Сохранить</button>
+                            <button type="submit" class="save">Сменить</button>
                         </form>
                     </div>
                 </div>
@@ -264,8 +264,8 @@
         <?php include ROOT_PATH . '/include/error.php'; ?>
         <?php include ROOT_PATH . '/include/footer.php'; ?>
             <!-- Скрипты -->
-        <script src="js/user_acc_save.js"></script>
-        <script src="js/my_pass_update.js"></script>
+        <script src="js/edituser/user_acc_save.js"></script>
+        <script src="js/my_account/my_pass_update.js"></script>
         <script src="/js/error.js"></script>
     </body>
 </html>

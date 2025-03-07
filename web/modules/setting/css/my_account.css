@@ -308,7 +308,7 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 40vw;
 }
 
 .passwd-form label {
@@ -353,15 +353,6 @@
 .passwd-form button:hover {
     background-color: #5a67d8; /* Темнее синий */
     transform: translateY(-2px); /* Приподнимаем кнопку */
-}
-
-.passwd-form button.cancel {
-    background-color: #e0e0e0; /* Серый */
-    color: #4a5568; /* Темный текст */
-}
-
-.passwd-form button.cancel:hover {
-    background-color: #bdbdbd; /* Темнее серый */
 }
 
 /* Стиль для выделенной строки */
