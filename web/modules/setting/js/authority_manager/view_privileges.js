@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             console.log("Запрос данных о полномочиях для UserID:", userID);
-            fetch(`back/authoriry_manager/get_user_privileges.php?userID=${userID}`)
+            fetch(`back/authority_manager/get_user_privileges.php?userID=${userID}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("Ошибка сети или сервера.");

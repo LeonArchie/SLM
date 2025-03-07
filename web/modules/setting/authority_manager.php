@@ -74,7 +74,6 @@
                         <button id="ViewAllPrivileges">Просмотреть все полномочия</button>
                         <button id="DeletePrivileges">Удалить полномочия</button>
                         <button id="refreshButton" onclick="location.reload()">Обновить</button>
-                        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                         <input type="hidden" name="userid" value="<?php echo $_SESSION['userid']; ?>">
                     </div>
                     <div class="table-container">
@@ -211,6 +210,35 @@
                         <button type="button" id="closeViewAllPrivilegesForm">Закрыть</button>
                     </div>
                 </div>
+
+                <!-- Форма для назначения полномочий -->
+                <div id="assignPrivilegesForm" class="form-modal" style="display: none;">
+                    <h2>Назначить полномочия</h2>
+                    <form id="assignPrivilegesFormContent">
+                        <!-- Поле UserID -->
+                        <div class="input-group">
+                            <label for="userIDAssign">UserID:</label>
+                            <input type="text" id="userIDAssign" name="userIDAssign" readonly>
+                        </div>
+
+                        <!-- Поле с множественным выбором для полномочий -->
+                        <div class="input-group select-group">
+                            <label for="privilegesToAssign">Полномочия:</label>
+                            <select id="privilegesToAssign" name="privilegesToAssign[]" multiple>
+                                <?php foreach ($name_privileges as $privilege): ?>
+                                    <option value="<?= $privilege['id_privileges'] ?>"><?= $privilege['name_privileges'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <!-- Скрытое поле для CSRF-токена -->
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                        <!-- Кнопки -->
+                        <div class="button-group">
+                            <button type="button" id="submitAssignPrivilegesForm">Назначить полномочия</button>
+                            <button type="button" id="cancelAssignPrivilegesForm">Отменить</button>
+                        </div>
+                    </form>
+</div>
             </main>
             <?php include ROOT_PATH . '/include/error.php'; ?>
             <?php include ROOT_PATH . '/include/footer.php'; ?>
@@ -221,6 +249,7 @@
             <script src="js/authority_manager/revoke_privileges.js"></script>
             <script src="js/authority_manager/view_privileges.js"></script>
             <script src="js/authority_manager/view_all_privileges.js"></script>
+            <script src="js/authority_manager/assign_privileges.js"></script>
             <script src="/js/error.js"></script>
         </body>
     </html>

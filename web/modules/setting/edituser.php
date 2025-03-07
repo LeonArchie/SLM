@@ -9,8 +9,10 @@
         exit();
     }
     require_once $file_path;
+
+    logger("INFO", "Платформа загружена");
     
-    $file_path = __DIR__ . '/back/edituser/load_user_account.php';
+    $file_path = __DIR__ . '/back/edituser/load_account.php';
     if (!file_exists($file_path)) {
         // Если файл не существует, переходим на страницу 503.php
         header("Location: /err/50x.html");
@@ -68,6 +70,7 @@
             <div class="form-container">
                 <!-- Группа кнопок (фиксированная) -->
                 <div class="button-group fixed-buttons">
+                    <button class="form-button" id="backButton" onclick="window.location.href='/modules/setting/all_accounts.php'">Назад</button>
                     <button class="form-button" id="updateButton" onclick="location.reload()">Сбросить</button>
                     <button class="form-button" id="saveButton">Сохранить</button>
                     <button class="form-button" id="changePasswordButton">Сменить пароль</button>

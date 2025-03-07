@@ -355,15 +355,6 @@
     transform: translateY(-2px); /* Приподнимаем кнопку */
 }
 
-.passwd-form button.cancel {
-    background-color: #e0e0e0; /* Серый */
-    color: #4a5568; /* Темный текст */
-}
-
-.passwd-form button.cancel:hover {
-    background-color: #bdbdbd; /* Темнее серый */
-}
-
 /* Стиль для выделенной строки */
 tbody tr.selected {
     background-color: #e0f7fa; /* Светло-голубой фон */
