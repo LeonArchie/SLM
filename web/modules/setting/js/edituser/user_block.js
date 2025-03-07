@@ -34,7 +34,7 @@ document.getElementById('blockButton').addEventListener('click', function () {
     const selectedUsers = [userIDValue]; // userIDValue передается как массив, даже если один элемент
 
     // Отправка запроса на сервер
-    fetch('back/blockuser.php', {
+    fetch('back/all_account/blockuser.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

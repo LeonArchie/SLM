@@ -33,7 +33,7 @@ document.getElementById('passwdForm').addEventListener('submit', function (e) {
     }
 
     // Отправляем данные на сервер
-    fetch('back/update_pass.php', {
+    fetch('back/my_account/update_pass.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

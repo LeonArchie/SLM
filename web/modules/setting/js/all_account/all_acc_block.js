@@ -37,7 +37,7 @@ document.getElementById('blockButton').addEventListener('click', function () {
     //console.log("ID текущего пользователя:", userId); // Логирование userid
 
     // Отправка запроса на сервер
-    fetch('back/blockuser.php', {
+    fetch('back/all_account/blockuser.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

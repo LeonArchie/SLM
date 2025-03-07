@@ -10,7 +10,7 @@
     }
 	require_once $file_path;
     
-    $file_path = __DIR__ . '/back/load_account.php';
+    $file_path = __DIR__ . '/back/edituser/load_account.php';
     if (!file_exists($file_path)) {
         // Если файл не существует, переходим на страницу 503.php
         header("Location: /err/50x.html");

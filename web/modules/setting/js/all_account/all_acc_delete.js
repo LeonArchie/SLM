@@ -37,7 +37,7 @@ document.getElementById('deleteButton').addEventListener('click', function () {
     //console.log("ID текущего пользователя:", userId); // Логирование userid
 
     // Отправка запроса на сервер
-    fetch('back/deluser.php', {
+    fetch('back/all_account/deluser.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
