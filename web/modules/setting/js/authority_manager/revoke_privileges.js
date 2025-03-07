@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     csrf_token: formData.get('csrf_token')
                 };
 
-                fetch('back/revoke_privileges.php', {
+                fetch('back/authority_manager/revoke_privileges.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=UTF-8'

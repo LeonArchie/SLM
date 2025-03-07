@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
         //console.log('Отправляемые данные:', formData);
 
         // Отправка данных на сервер
-        fetch('back/create_user.php', {
+        fetch('back/all_account/create_user.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8' // Указываем кодировку UTF-8

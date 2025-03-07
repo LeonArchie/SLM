@@ -1,23 +1,30 @@
-document.getElementById('blockButton').addEventListener('click', function () {
+document.getElementById('deleteButton').addEventListener('click', function () {
+    // Получаем выбранных пользователей
+    const selectedUsers = Array.from(document.querySelectorAll('.userCheckbox:checked'))
+        .map(cb => cb.dataset.userid);
 
-    // Подтверждение действия
-    if (!confirm('Вы уверены, что хотите сменить статус пользователя?')) {
+    //console.log("Выбранные пользователи:", selectedUsers); // Логирование выбранных пользователей
+
+    // Проверка, что хотя бы один пользователь выбран
+    if (selectedUsers.length === 0) {
+        showErrorMessage('Не выбран ни один пользователь');
         return;
     }
 
-    // Получаем CSRF-токен и admin_userid из скрытых полей или других источников
-    const csrfToken = document.querySelector('input[name="csrf_token"]')?.value;
-    const adminUserId = document.querySelector('input[name="admin_userid"]')?.value;
+    // Подтверждение действия
+    if (!confirm('Вы уверены, что хотите удалить выбранных пользователей?')) {
+        return;
+    }
 
-    // Получаем значение из поля input с id="userID"
-    const userIDInput = document.getElementById('userID');
-    const userIDValue = userIDInput ? userIDInput.value : null;
+    // Получаем CSRF-токен и userid из скрытых полей или других источников
+    const csrfToken = document.querySelector('input[name="csrf_token"]')?.value;
+    const userId = document.querySelector('input[name="userid"]')?.value;
 
     // Проверка наличия всех необходимых параметров
     const missingParams = [];
     if (!csrfToken) missingParams.push('CSRF-токен');
-    if (!adminUserId) missingParams.push('ID текущего пользователя');
-    if (!userIDValue) missingParams.push('ID пользователя');
+    if (!userId) missingParams.push('ID текущего пользователя');
+    if (selectedUsers.length === 0) missingParams.push('выбранные пользователи');
 
     if (missingParams.length > 0) {
         const errorMessage = 'Отсутствуют следующие параметры: ' + missingParams.join(', ');
@@ -27,22 +34,18 @@ document.getElementById('blockButton').addEventListener('click', function () {
     }
 
     //console.log("CSRF-токен:", csrfToken); // Логирование CSRF-токена
-    //console.log("ID текущего пользователя:", adminUserId); // Логирование adminUserId
-    //console.log("ID пользователя:", userIDValue); // Логирование userID
-
-    // Преобразуем userIDValue в массив
-    const selectedUsers = [userIDValue]; // userIDValue передается как массив, даже если один элемент
+    //console.log("ID текущего пользователя:", userId); // Логирование userid
 
     // Отправка запроса на сервер
-    fetch('back/blockuser.php', {
+    fetch('back/all_account/deluser.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            user_ids: selectedUsers, // Передаем массив с ID пользователя
+            user_ids: selectedUsers,
             csrf_token: csrfToken, // Передаем CSRF-токен
-            userid: adminUserId, // Передаем admin_userid
+            userid: userId // Передаем userid
         })
     })
     .then(response => {

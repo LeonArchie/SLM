@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Функция для получения всех полномочий
         function fetchAllPrivileges() {
             console.log("Запрос всех полномочий...");
-            fetch('back/get_all_privileges.php')
+            fetch('back/authority_manager/get_all_privileges.php')
             .then(response => {
                 if (!response.ok) {
                     throw new Error("Ошибка сети или сервера.");

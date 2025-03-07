@@ -206,11 +206,11 @@
             </main>
             <?php include ROOT_PATH . '/include/error.php'; ?>
             <?php include ROOT_PATH . '/include/footer.php'; ?>
-            <script src="js/all_accounts.js"></script>
-            <script src="js/button_edit_all_acc.js"></script>
-            <script src="js/createuser.js"></script>
-            <script src="js/all_acc_delete.js"></script>
-            <script src="js/all_acc_block.js"></script>
+            <script src="js/all_account/all_accounts.js"></script>
+            <script src="js/all_account/button_edit_all_acc.js"></script>
+            <script src="js/all_account/createuser.js"></script>
+            <script src="js/all_account/all_acc_delete.js"></script>
+            <script src="js/all_account/all_acc_block.js"></script>
             <script src="/js/error.js"></script>
         </body>
     </html>
