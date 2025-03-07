@@ -9,8 +9,10 @@
         exit();
     }
     require_once $file_path;
+
+    logger("INFO", "Платформа загружена");
     
-    $file_path = __DIR__ . '/back/load_user_account.php';
+    $file_path = __DIR__ . '/back/edituser/load_account.php';
     if (!file_exists($file_path)) {
         // Если файл не существует, переходим на страницу 503.php
         header("Location: /err/50x.html");
@@ -68,6 +70,7 @@
             <div class="form-container">
                 <!-- Группа кнопок (фиксированная) -->
                 <div class="button-group fixed-buttons">
+                    <button class="form-button" id="backButton" onclick="window.location.href='/modules/setting/all_accounts.php'">Назад</button>
                     <button class="form-button" id="updateButton" onclick="location.reload()">Сбросить</button>
                     <button class="form-button" id="saveButton">Сохранить</button>
                     <button class="form-button" id="changePasswordButton">Сменить пароль</button>
@@ -259,7 +262,7 @@
                             <input type="password" id="confirm_password" name="confirm_password" required>
 
                             <button type="button" class="cancel" onclick="closeForm()">Отменить</button>
-                            <button type="submit" class="save">Сохранить</button>
+                            <button type="submit" class="save">Сменить</button>
                         </form>
                     </div>
                 </div>
@@ -269,9 +272,9 @@
         <?php include ROOT_PATH . '/include/error.php'; ?>
         <?php include ROOT_PATH . '/include/footer.php'; ?>
             <!-- Скрипты -->
-        <script src="js/user_acc_save.js"></script>
-        <script src="js/user_block.js"></script>
-        <script src="js/user_update_pass.js"></script>
+        <script src="js/edituser/user_acc_save.js"></script>
+        <script src="js/edituser/user_block.js"></script>
+        <script src="js/edituser/user_update_pass.js"></script>
         <script src="/js/error.js"></script>
     </body>
 </html>

@@ -38,7 +38,7 @@ document.getElementById('passwdForm').addEventListener('submit', function (e) {
     }
 
     // Отправляем данные на сервер
-    fetch('back/update_user_pass.php', {
+    fetch('back/edituser/update_user_pass.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

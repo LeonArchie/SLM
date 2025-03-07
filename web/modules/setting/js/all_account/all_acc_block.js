@@ -1,4 +1,4 @@
-document.getElementById('deleteButton').addEventListener('click', function () {
+document.getElementById('blockButton').addEventListener('click', function () {
     // Получаем выбранных пользователей
     const selectedUsers = Array.from(document.querySelectorAll('.userCheckbox:checked'))
         .map(cb => cb.dataset.userid);
@@ -12,7 +12,7 @@ document.getElementById('deleteButton').addEventListener('click', function () {
     }
 
     // Подтверждение действия
-    if (!confirm('Вы уверены, что хотите удалить выбранных пользователей?')) {
+    if (!confirm('Вы уверены, что хотите сменить статус выбранных пользователей?')) {
         return;
     }
 
@@ -28,7 +28,7 @@ document.getElementById('deleteButton').addEventListener('click', function () {
 
     if (missingParams.length > 0) {
         const errorMessage = 'Отсутствуют следующие параметры: ' + missingParams.join(', ');
-        //console.error(errorMessage); // Логирование ошибки
+        console.error(errorMessage); // Логирование ошибки
         showErrorMessage(errorMessage);
         return;
     }
@@ -37,7 +37,7 @@ document.getElementById('deleteButton').addEventListener('click', function () {
     //console.log("ID текущего пользователя:", userId); // Логирование userid
 
     // Отправка запроса на сервер
-    fetch('back/deluser.php', {
+    fetch('back/all_account/blockuser.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

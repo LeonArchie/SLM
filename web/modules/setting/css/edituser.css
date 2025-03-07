@@ -57,6 +57,16 @@
     transform: translateY(0); /* Возвращаем кнопку в исходное положение */
 }
 
+
+/* Кнопка "backButton" */
+#backButton {
+    background-color: #667eea; /* Синий */
+}
+
+#backButton:hover {
+    background-color: #5a67d8; /* Темнее синий */
+}
+
 /* Кнопка "Сбросить" */
 #updateButton {
     background-color: #667eea; /* Синий */
