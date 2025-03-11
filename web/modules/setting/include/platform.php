@@ -1,17 +1,23 @@
 <?php
-        define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT']);
-        define('MODULES_PATH', ROOT_PATH . '/modules/setting');
-        define('INIT_PLATFORM', ROOT_PATH . '/include/init.php');
-        define('INIT_FUNCTION', ROOT_PATH . '/include/function.php');
+        if (!defined('ROOT_PATH')) {
+            define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT']);
+        }
 
-    // Инициализация вызвываемых функции
+        if (!defined('INIT_PLATFORM')) {
+            define('INIT_PLATFORM',  ROOT_PATH .'/include/function.php');
+        }
+
+        if (!defined('TEMPLATE_PRIVILEGES')) {
+            define('TEMPLATE_PRIVILEGES',  ROOT_PATH .'/config/template.json');
+        }
+
+
+    // Инициализация функций
     $file_path = INIT_PLATFORM;
     if (!file_exists($file_path)) {
-        // Если файл не существует, переходим на страницу 503.php
         header("Location: /err/50x.html");
         exit();
     }
     
-    // Подключаем файл, так как он существует
     require_once $file_path;
 ?>

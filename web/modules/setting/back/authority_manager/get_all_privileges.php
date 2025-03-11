@@ -1,5 +1,7 @@
 <?php
-    define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT']);
+    if (!defined('ROOT_PATH')) {
+        define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT']);
+    }
     $file_path = ROOT_PATH . '/include/function.php';
 
     // Проверяем существование файла function.php
@@ -9,8 +11,6 @@
     }
 
     require_once $file_path;
-
-    //logger("INFO", "Начало выполнения скрипта deluser.php.");
 
     startSessionIfNotStarted();
 

@@ -1,14 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
-    //console.log('Скрипт загружен и DOM полностью готов.');
 
     const saveButton = document.getElementById('saveButton');
     if (!saveButton) {
-        //console.error('Кнопка "saveButton" не найдена в DOM.');
         return;
     }
 
     saveButton.addEventListener('click', function (e) {
-        //console.log('Клик по кнопке сохранения.');
 
         e.preventDefault();
 
@@ -16,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const errorMessageElement = document.getElementById('error_message');
 
         if (!loadingOverlay) {
-            //console.error('Элемент "loading" не найден в DOM.');
             return;
         }
 
@@ -43,27 +39,21 @@ document.addEventListener('DOMContentLoaded', function () {
             apiKey: document.getElementById('apiKey')?.value || ''
         };
 
-        //console.log('Собранные данные:', data);
-        
-        //console.log('Отправляемые данные:', JSON.stringify(data));
-
         fetch('back/edituser/save_user_data.php', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json; charset=utf-8', // явно указываем кодировку
+                'Content-Type': 'application/json; charset=utf-8', 
             },
-            body: JSON.stringify(data, null, null), // Без экранирования
-            credentials: 'include', // Важно для передачи кук
+            body: JSON.stringify(data, null, null), 
+            credentials: 'include',
         })
         .then(response => {
-            //console.log('Получен ответ от сервера:', response);
             if (!response.ok) {
                 throw new Error(`Ошибка HTTP ${response.status}`);
             }
             return response.json();
         })
         .then(result => {
-            //console.log('Данные успешно получены от сервера:', result);
             loadingOverlay.style.display = 'none';
             if (result.success) {
                 showErrorMessage('Данные успешно обновлены.');
@@ -72,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         })
         .catch(error => {
-            //console.error('Произошла ошибка при выполнении запроса:', error);
             loadingOverlay.style.display = 'none';
             showErrorMessage('Не удалось подключиться к серверу. Попробуйте позже.');
         });
