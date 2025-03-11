@@ -4,23 +4,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const tableContainer = document.querySelector('#viewAllPrivilegesFormContent');
 
     if (viewAllPrivilegesButton && viewAllPrivilegesForm && tableContainer) {
-        // Логирование открытия формы
         viewAllPrivilegesButton.addEventListener('click', function () {
-            console.log("Открыта форма просмотра всех полномочий.");
             fetchAllPrivileges();
-            openForm('viewAllPrivilegesForm'); // Используем функцию openForm
+            openForm('viewAllPrivilegesForm'); 
         });
 
         // Логирование закрытия формы
         const closeButton = document.getElementById('closeViewAllPrivilegesForm');
         if (closeButton) {
             closeButton.addEventListener('click', function () {
-                console.log("Форма просмотра всех полномочий закрыта.");
-                closeForm('viewAllPrivilegesForm'); // Используем функцию closeForm
+                closeForm('viewAllPrivilegesForm');
             });
         }
 
-        // Функция для получения всех полномочий
         function fetchAllPrivileges() {
             console.log("Запрос всех полномочий...");
             fetch('back/authority_manager/get_all_privileges.php')
@@ -28,14 +24,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (!response.ok) {
                     throw new Error("Ошибка сети или сервера.");
                 }
-                return response.text(); // Получаем HTML-код
+                return response.text();
             })
             .then(html => {
-                console.log("HTML-таблица получена:", html);
-                tableContainer.innerHTML = html; // Вставляем HTML в контейнер
+                tableContainer.innerHTML = html; 
             })
             .catch(error => {
-                console.log("Ошибка при получении данных:", error.message);
                 showErrorMessage('Ошибка', 'Произошла ошибка при получении данных.');
             });
         }

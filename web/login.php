@@ -1,17 +1,12 @@
 <?php
-    // Инициализация вызываемых функций
     $file_path = 'include/function.php';
     if (!file_exists($file_path)) {
-        // Если файл не существует, переходим на страницу 503.php
+        // Если не существует, переходим 503.php
         header("Location: /err/50x.html");
         exit();
     }
     
-    // Подключаем файл, так как он существует
     require_once $file_path;
-    
-    // Логирование начала выполнения скрипта
-    //logger("INFO", "Начало выполнения скрипта login.php.");
 
     // Запуск сессии
     startSessionIfNotStarted();
@@ -32,10 +27,6 @@
     if (isset($_GET['error'])) {
         $raw_error = $_GET['error']; // Сохраняем сырое значение
         $error_message = htmlspecialchars($raw_error, ENT_QUOTES, 'UTF-8');
-        //logger("DEBUG", "Сырое значение параметра error: " . $raw_error);
-        //logger("ERROR", "Получено сообщение об ошибке: " . $error_message);
-    } else {
-        //logger("INFO", "Параметр 'error' не передан.");
     }
 ?>
 <!DOCTYPE html>
@@ -97,7 +88,7 @@
         </main>
         <?php include 'include/error.php'; ?>
         <?php include 'include/footer.php'; ?>
-        <!-- Подключаем внешний скрипт -->
+        <!-- Подключаем скрипты -->
         <script src="js/error.js"></script>
         <script src="js/login.js"></script>
     </body>
