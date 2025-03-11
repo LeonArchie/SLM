@@ -214,6 +214,7 @@ td.name-cell a:hover {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
     animation: fadeIn 0.3s ease-out;
+    min-width: 450px;
 }
 
 /* Класс для закрытия формы с анимацией */

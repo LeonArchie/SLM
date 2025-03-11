@@ -1,8 +1,6 @@
 <?php
-    //logger("INFO", "Генерация меню подключена.");
-    //logger("INFO", "Начало создания навбара.");
 
-    // Проверяем наличие файла меню
+    // Проверяем наличие конфигов
     if (!file_exists(CONFIG_MENU)) {
         logger("ERROR", "Файл меню не найден: " . CONFIG_MENU);
         echo '';
@@ -10,7 +8,6 @@
     }
 
     try {
-        // Подключаемся к БД через функцию connectToDatabase()
         $pdo = connectToDatabase();
     } catch (Exception $e) {
         logger("ERROR", "Ошибка подключения к БД: " . $e->getMessage());
@@ -18,45 +15,30 @@
         exit();
     }
 
-    try {
-        // Подключаемся к БД через функцию connectToDatabase()
-        $pdo = connectToDatabase();
-    } catch (Exception $e) {
-        logger("ERROR", "Ошибка подключения к БД: " . $e->getMessage());
-        header("Location: " . SERVER_ERROR);
-        exit();
-    }
-
-    // Логируем значение $_SESSION['userid']
     if (!isset($_SESSION['userid'])) {
         logger("ERROR", "Значение userid отсутствует в сессии.");
         header("Location: " . FORBIDDEN);
         exit();
     }
-    //logger("DEBUG", "Используемое значение userid: " . $_SESSION['userid']);
 
-    // Получаем список разрешенных module_id для текущего пользователя
     $allowedModules = [];
     try {
-        $stmt = $pdo->prepare("SELECT module_id FROM privileges WHERE userid = :userid");
+        $stmt = $pdo->prepare("SELECT id_privileges FROM privileges WHERE userid = :userid");
         $stmt->execute([':userid' => $_SESSION['userid']]);
         
-        // Получаем результат
+        // Результат
         $allowedModules = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-        // Логируем полученные модули
         if (empty($allowedModules)) {
             logger("WARNING", "Список разрешенных модулей пуст для пользователя с userid: " . $_SESSION['userid']);
-        } else {
-            //logger("DEBUG", "Список разрешенных модулей: " . implode(', ', $allowedModules));
         }
+
     } catch (Exception $e) {
         logger("ERROR", "Ошибка при получении списка разрешенных модулей: " . $e->getMessage());
         header("Location: " . SERVER_ERROR);
         exit();
     }
 
-    // Если список разрешенных модулей пуст, завершаем работу
     if (empty($allowedModules)) {
         logger("ERROR", "У пользователя с userid: " . $_SESSION['userid'] . " нет доступных модулей.");
         echo '<ul class="navbar"></ul>';
@@ -64,7 +46,6 @@
         exit();
     }
 
-    // Читаем данные меню из JSON-файла
     $menuData = json_decode(file_get_contents(CONFIG_MENU), true);
     if (empty($menuData['menu'])) {
         logger("ERROR", "Данные меню не найдены.");
@@ -72,10 +53,10 @@
         exit();
     }
 
-    // Генерируем HTML для всего меню
+    // Генерируем HTML
     $menuHtml = '<ul class="navbar">';
     foreach ($menuData['menu'] as $item) {
-        // Проверяем, существует ли guid
+        // Проверяем guid
         if (!isset($item['guid'])) {
             logger("ERROR", "Пункт меню '{$item['title']}' пропущен, так как отсутствует guid.");
             continue;

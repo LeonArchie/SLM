@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (typeof errorMessage === "string" && errorMessage.trim() !== "") {
         // Если есть сообщение об ошибке, показываем уведомление типа "error"
-        showNotification('warning', 'Внимание', errorMessage, 10000);
+        showErrorMessage('warning', 'Внимание', errorMessage, 10000);
     } else {
         // Если сообщение пустое, скрываем окно и сбрасываем полосу прогресса
         const errorWindow = document.getElementById('error-window');

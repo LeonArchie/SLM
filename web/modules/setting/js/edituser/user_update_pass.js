@@ -13,8 +13,6 @@ function closeForm() {
 document.getElementById('passwdForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
-    //console.log('Клик по кнопке сохранения.');
-
     const currentPassword = document.getElementById('current_password').value;
     const newPassword = document.getElementById('new_password').value;
     const confirmPassword = document.getElementById('confirm_password').value;
@@ -24,20 +22,18 @@ document.getElementById('passwdForm').addEventListener('submit', function (e) {
         return;
     }
 
-    // Получаем CSRF-токен и admin_userid из скрытых полей
+    // Получаем CSRF-токен и admin_userid
     const csrfToken = document.getElementsByName('csrf_token')[0]?.value;
     const adminUserid = document.getElementsByName('admin_userid')[0]?.value;
 
-    // Получаем userid из поля ввода
+    // Получаем userid
     const userid = document.getElementById('userID').value;
 
     if (!csrfToken || !adminUserid || !userid) {
         showErrorMessage('Не удалось получить необходимые данные. Пожалуйста, обновите страницу.');
-        //console.error('Ошибка: CSRF-токен, admin_userid или userid не найдены.'); // Отладочная информация в консоль
         return;
     }
 
-    // Отправляем данные на сервер
     fetch('back/edituser/update_user_pass.php', {
         method: 'POST',
         headers: {
@@ -58,11 +54,9 @@ document.getElementById('passwdForm').addEventListener('submit', function (e) {
             closeForm();
         } else {
             showErrorMessage(data.message || 'Ошибка при изменении пароля.');
-            //console.error('Ошибка сервера:', data.message); // Отладочная информация в консоль
         }
     })
     .catch(error => {
-        //console.error('Ошибка при отправке данных:', error); // Отладочная информация в консоль
         showErrorMessage('Произошла ошибка при отправке данных.');
     });
 });
