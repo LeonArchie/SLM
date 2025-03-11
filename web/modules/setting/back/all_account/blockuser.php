@@ -1,8 +1,9 @@
 <?php
-    define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT']);
+    if (!defined('ROOT_PATH')) {
+        define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT']);
+    }
     $file_path = ROOT_PATH . '/include/function.php';
 
-    // Проверяем существование файла function.php
     if (!file_exists($file_path)) {
         echo json_encode(['success' => false, 'message' => 'Ошибка сервера: файл function.php не найден.']);
         exit();
@@ -10,24 +11,19 @@
 
     require_once $file_path;
 
-    logger("INFO", "Начало выполнения скрипта blockuser.php.");
-
     startSessionIfNotStarted();
 
-
-    // Получаем данные из тела запроса
     $data = json_decode(file_get_contents('php://input'), true);
 
-    //logger("DEBUG", "Полученные данные: " . print_r($data, true)); // Логирование полученных данных
 
-    // Проверка наличия всех необходимых параметров
+    // Проверка наличия параметров
     if (empty($data['csrf_token']) || empty($data['userid']) || empty($data['user_ids'])) {
         logger("ERROR", "Отсутствуют обязательные параметры.");
         echo json_encode(['success' => false, 'message' => 'Отсутствуют обязательные параметры.'], JSON_UNESCAPED_UNICODE);
         exit();
     }
 
-    // Проверка CSRF-токена
+    // Проверка токена
     if ($data['csrf_token'] !== $_SESSION['csrf_token']) {
         logger("ERROR", "Неверный CSRF-токен.");
         echo json_encode(['success' => false, 'message' => 'Ошибка безопасности.'], JSON_UNESCAPED_UNICODE);
@@ -41,9 +37,7 @@
         exit();
     }
 
-    // Подключение к базе данных
     $pdo = connectToDatabase();
-    //logger("DEBUG", "Успешное подключение к базе данных.");
 
     try {
         // Начинаем транзакцию
@@ -63,7 +57,7 @@
             }
 
             // Меняем значение active на противоположное
-            $newActiveValue = $user['active'] ? 'false' : 'true'; // Для PostgreSQL
+            $newActiveValue = $user['active'] ? 'false' : 'true';
 
             // Обновляем значение active
             $updateStmt = $pdo->prepare("UPDATE users SET active = :active WHERE userid = :userid");

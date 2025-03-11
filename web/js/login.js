@@ -27,10 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result.success) {
                 // Если авторизация успешна, выполняем перенаправление
                 if (result.redirect) {
-                    //console.log('Redirecting to:', result.redirect);
                     window.location.href = result.redirect; // Перенаправление
                 } else {
-                    console.error('Ошибка: Поле "redirect" отсутствует в ответе сервера.');
                     showErrorMessage('Произошла ошибка при попытке перенаправления.');
                 }
             } else {
@@ -39,8 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showErrorMessage(errorMessage);
             }
         } catch (error) {
-            // Обработка ошибок сети или сервера
-            //console.error('Network error:', error);
+            // Обработка ошибок сервера
             showErrorMessage('Не удалось подключиться к серверу. Попробуйте позже.');
         } finally {
             // Скрываем подложку после завершения загрузки
