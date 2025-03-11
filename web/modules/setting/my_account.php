@@ -22,7 +22,7 @@
     // Генерация CSRF-токена
     csrf_token();
 
-    FROD($modules);
+    FROD($privileges_page);
 
     $error_message = "";
     if (isset($_GET['error'])) {

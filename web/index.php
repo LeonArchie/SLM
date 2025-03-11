@@ -1,6 +1,6 @@
 <?php
     // Инициализация вызвываемых функции
-    $file_path = __DIR__ . 'include/function.php';
+    $file_path = 'include/function.php';
     if (!file_exists($file_path)) {
         // Если не существует, переходим 503.php
         header("Location: /err/50x.html");
