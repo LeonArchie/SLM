@@ -8,6 +8,13 @@
     }
     require_once $file_path;
 
+    $file_path = __DIR__ . '/back/edituser/load_account.php';
+    if (!file_exists($file_path)) {
+        header("Location: /err/50x.html");
+        exit();
+    }
+	require_once $file_path;
+
     //Инициализация проверки или запуска сессии
     startSessionIfNotStarted();
     // Проверка авторизации
@@ -33,7 +40,12 @@
      // Получаем id из POST
     $userid = $_POST['userid'];
 
-    $userData = getUserData($userid);
+    try {
+        $userData = getUserData($userid);
+    } catch (Exception $e) {
+        logger("ERROR", "Ошибка при получении данных о пользователе:". $e->getMessage());
+        header("Location: /err/50x.html");
+    }
     
     // Если произошла ошибка при получении данных
     if (isset($userData['error'])) {

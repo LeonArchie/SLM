@@ -32,7 +32,12 @@
     
     $userid = $_SESSION['userid'];
     
-    $userData = getUserData($userid);
+    try {
+        $userData = getUserData($userid);
+    } catch (Exception $e) {
+        logger("ERROR", "Ошибка при получении данных о пользователе:". $e->getMessage());
+        header("Location: /err/50x.html");
+    }
 
     if (isset($userData['error'])) {
         $error_message = $userData['error'];
