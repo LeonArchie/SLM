@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         showErrorMessage('success', 'Успех', 'Полномочия успешно удалены!', 5000);
                         closeForm('deletePrivilegesForm');
                         form.reset();
+                        location.reload(); // Перезагрузка страницы
                     } else {
                         showErrorMessage('error', 'Ошибка', result.message || 'Произошла ошибка при удалении полномочий.', 10000);
                     }
@@ -80,7 +81,6 @@ function openForm(formId) {
     const form = document.getElementById(formId);
     if (form) {
         form.style.display = 'block';
-        console.log(`Форма ${formId} открыта.`);
     }
 }
 
@@ -88,6 +88,5 @@ function closeForm(formId) {
     const form = document.getElementById(formId);
     if (form) {
         form.style.display = 'none';
-        console.log(`Форма ${formId} закрыта.`);
     }
 }

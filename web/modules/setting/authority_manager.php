@@ -115,10 +115,6 @@
                         <label for="privilegeID">ID:</label>
                         <input type="text" id="privilegeID" name="privilegeID" required>
                     </div>
-                    <div class="input-group">
-                        <label for="pagesCheckbox">Pages:</label>
-                        <input type="checkbox" id="pagesCheckbox" name="pagesCheckbox">
-                    </div>
                     <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                     <div class="button-group">
                         <button type="button" id="submitCreatePrivilegesForm">Создать</button>

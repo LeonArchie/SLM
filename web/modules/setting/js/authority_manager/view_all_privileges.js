@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         function fetchAllPrivileges() {
-            console.log("Запрос всех полномочий...");
             fetch('back/authority_manager/get_all_privileges.php')
             .then(response => {
                 if (!response.ok) {

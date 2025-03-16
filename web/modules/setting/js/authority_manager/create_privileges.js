@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (createPrivilegesButton && createPrivilegesForm) {
         createPrivilegesButton.addEventListener('click', function () {
-            openForm('createPrivilegesForm'); 
+            openForm('createPrivilegesForm');
         });
 
         const cancelButton = document.getElementById('cancelCreatePrivilegesForm');
@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 const data = {
                     privilegeName: formData.get('privilegeName'),
                     privilegeID: formData.get('privilegeID'),
-                    pagesCheckbox: formData.get('pagesCheckbox') === 'on',
                     csrf_token: formData.get('csrf_token')
                 };
 
@@ -33,18 +32,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     },
                     body: JSON.stringify(data)
                 })
-                .then(response => response.json())
+                .then(response => response.json()) // Преобразуем ответ в JSON
                 .then(result => {
                     if (result.success) {
                         showErrorMessage('success', 'Успех', 'Привилегия создана успешно!', 5000);
-                        closeForm('createPrivilegesForm'); 
+                        closeForm('createPrivilegesForm');
                         document.getElementById('createPrivilegesFormContent').reset();
                     } else {
-                        showErrorMessage('Ошибка', 'Произошла ошибка при создании привилегии.');
+                        // Если success === false, показываем сообщение об ошибке
+                        showErrorMessage('error', 'Ошибка', result.message, 10000);
                     }
                 })
                 .catch(error => {
-                    showErrorMessage('Ошибка', 'Произошла ошибка при отправке данных.');
+                    console.error('Ошибка:', error);
+                    showErrorMessage('error', 'Ошибка', 'Произошла ошибка при отправке данных.', 10000);
                 });
             });
         }
@@ -55,8 +56,8 @@ function openForm(formId) {
     const form = document.getElementById(formId);
     if (form) {
         form.style.display = "block";
-        form.classList.remove("closing"); 
-        form.classList.add("open"); 
+        form.classList.remove("closing");
+        form.classList.add("open");
     }
 }
 
