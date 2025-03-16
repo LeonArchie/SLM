@@ -98,7 +98,7 @@
             </form>
             <?php include 'include/loading.html'; ?>
         </main>
-        <?php include 'include/error.php'; ?>
+         <?php include 'include/error.php'; ?>
         <?php include 'include/footer.php'; ?>
         <!-- Подключаем скрипты -->
         <script src="js/error.js"></script>

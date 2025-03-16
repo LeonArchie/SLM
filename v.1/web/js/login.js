@@ -49,25 +49,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-/**
- * Функция для отображения сообщений об ошибках, предупреждениях и успехах
- * @param {string} type - Тип сообщения ('error', 'warning', 'success')
- * @param {string} title - Заголовок сообщения
- * @param {string} message - Текст сообщения
- * @param {number} duration - Время отображения сообщения в миллисекундах
- */
-function showErrorMessage(type, title, message, duration) {
-    // Создаем элемент для сообщения
-    const messageElement = document.createElement('div');
-    messageElement.className = `message ${type}`;
-    messageElement.innerHTML = `<strong>${title}</strong>: ${message}`;
-
-    // Добавляем сообщение на страницу
-    document.body.appendChild(messageElement);
-
-    // Устанавливаем таймер для автоматического удаления сообщения
-    setTimeout(() => {
-        messageElement.remove();
-    }, duration);
-}
