@@ -24,10 +24,8 @@
     $html = '<table id="allPrivilegesTable">
         <thead>
             <tr>
-                <th>ID Записи</th>
                 <th>ID Привилегии</th>
                 <th>Имя привилегии</th>
-                <th>Pages</th>
             </tr>
         </thead>
         <tbody>';
@@ -37,10 +35,8 @@
     } else {
         foreach ($data as $privilege) {
             $html .= '<tr>
-                <td>' . htmlspecialchars($privilege['id']) . '</td>
                 <td>' . htmlspecialchars($privilege['id_privileges']) . '</td>
                 <td>' . htmlspecialchars($privilege['name_privileges']) . '</td>
-                <td><input type="checkbox" ' . ($privilege['pages'] ? 'checked' : '') . ' disabled></td>
             </tr>';
         }
     }
