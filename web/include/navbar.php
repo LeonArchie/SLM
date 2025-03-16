@@ -128,9 +128,7 @@
     }
     $html .= '</ul>';
 
-    // Выводим сгенерированное меню
-
-
+    logger("INFO", "Генерация меню выполнена успешно");
 ?>
     <div class="generate_navbar">
         <?php echo $menuHtml; ?>
