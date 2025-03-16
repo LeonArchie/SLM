@@ -1,47 +1,70 @@
 <?php
+    // Уникальный идентификатор страницы для проверки привилегий
     $privileges_page = '356a5297-1587-4d79-8f81-b3e1c7e21a73';
 
-	$file_path = __DIR__ . '/include/platform.php';
+    // Путь к файлу platform.php
+    $file_path = __DIR__ . '/include/platform.php';
+    // Проверка существования файла platform.php
     if (!file_exists($file_path)) {
+        // Если файл не существует, перенаправляем на страницу ошибки 500
         header("Location: /err/50x.html");
         exit();
     }
-	require_once $file_path;
+    // Подключение файла platform.php
+    require_once $file_path;
     
+    // Путь к файлу load_account.php
     $file_path = __DIR__ . '/back/edituser/load_account.php';
+    // Проверка существования файла load_account.php
     if (!file_exists($file_path)) {
+        // Если файл не существует, перенаправляем на страницу ошибки 500
         header("Location: /err/50x.html");
         exit();
     }
-	require_once $file_path;
+    // Подключение файла load_account.php
+    require_once $file_path;
 
-    //Инициализация проверки или запуска сессии
+    // Инициализация сессии
     startSessionIfNotStarted();
-    // Проверка авторизации
+    // Проверка авторизации пользователя
     checkAuth();
-    // Генерация CSRF-токена
+    // Генерация CSRF-токена для защиты от атак
     csrf_token();
 
+    // Проверка привилегий пользователя для доступа к странице
     FROD($privileges_page);
 
+    // Инициализация переменной для хранения сообщения об ошибке
     $error_message = "";
+    // Проверка наличия ошибки в GET-параметрах
     if (isset($_GET['error'])) {
-        $raw_error = $_GET['error']; // Сохраняем сырое значение
+        $raw_error = $_GET['error']; // Сохраняем сырое значение ошибки
+        // Экранируем специальные символы для безопасного вывода на страницу
         $error_message = htmlspecialchars($raw_error, ENT_QUOTES, 'UTF-8');
     }
     
+    // Получение идентификатора пользователя из сессии
     $userid = $_SESSION['userid'];
     
     try {
+        // Получение данных пользователя по его идентификатору
         $userData = getUserData($userid);
     } catch (Exception $e) {
+        // Логирование ошибки при получении данных пользователя
         logger("ERROR", "Ошибка при получении данных о пользователе:". $e->getMessage());
+        // Перенаправление на страницу ошибки 500 в случае исключения
         header("Location: /err/50x.html");
+        exit();
     }
 
+    // Проверка наличия ошибки в данных пользователя
     if (isset($userData['error'])) {
+        // Установка сообщения об ошибке, если оно есть в данных пользователя
         $error_message = $userData['error'];
+        // Логирование ошибки
+        logger("ERROR", "Ошибка в данных пользователя: " . $error_message);
     }
+    logger("DEBUG", "my_account.php успешно инициализирован.");
 ?>
 <!DOCTYPE html>
 <html lang="ru">
