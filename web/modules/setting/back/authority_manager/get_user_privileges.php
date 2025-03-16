@@ -8,7 +8,6 @@
 
     // Проверяем существование файла function.php
     if (!file_exists($file_path)) {
-        logger("ERROR", "Файл function.php не найден.");
         echo json_encode(['success' => false, 'message' => 'Ошибка сервера: файл function.php не найден.'], JSON_UNESCAPED_UNICODE);
         exit();
     }
@@ -51,7 +50,7 @@
 
     // Формируем массив privileges_id
     $privileges_id = [];
-    foreach ($privileges as $privileges_id) {
+    foreach ($privileges as $privilege) { // Исправлено: $privilege вместо $privileges_id
         if (!empty($privilege['id_privileges']) && $privilege['id_privileges'] !== '') {
             $privileges_id[] = $privilege['id_privileges'];
         }
@@ -63,7 +62,7 @@
     }, $privileges_id);
 
     // Проверяем, если массивы пустые, возвращаем сообщение
-    if (empty($privileges_id) && empty($pagesIds)) {
+    if (empty($privileges_id)) {
         logger("WARNING", "Нет данных о полномочиях для UserID: " . $userID);
         echo json_encode(['success' => false, 'message' => 'Нет данных о полномочиях для данного пользователя.'], JSON_UNESCAPED_UNICODE);
         exit();
@@ -71,7 +70,7 @@
 
     // Пытаемся выполнить запрос к таблице name_privileges
     try {
-        $stmt = $pdo->prepare("SELECT * FROM name_privileges WHERE id_privileges IN (".implode(',', array_merge($privileges_id)).")");
+        $stmt = $pdo->prepare("SELECT * FROM name_privileges WHERE id_privileges IN (".implode(',', $privileges_id).")");
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
@@ -86,7 +85,6 @@
             <tr>
                 <th>ИД</th>
                 <th>Привилегия</th>
-                <th>Pages</th>
             </tr>
         </thead>
         <tbody>';
@@ -100,7 +98,6 @@
             $html .= '<tr>
                 <td>' . htmlspecialchars($privilege['id_privileges']) . '</td>
                 <td>' . htmlspecialchars($privilege['name_privileges']) . '</td>
-                <td><input type="checkbox" ' . ($privilege['pages'] ? 'checked' : '') . ' disabled></td>
             </tr>';
         }
     }
@@ -110,4 +107,4 @@
     // Возвращаем HTML
     header('Content-Type: text/html');
     echo $html;
-    ?>
+?>
