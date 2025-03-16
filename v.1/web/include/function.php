@@ -13,6 +13,10 @@
         define('LOGGER_PATH', '/var/log/slm/web/web.log');
     }
 
+    if (!defined('AUDIT_PATH')) {
+        define('AUDIT_PATH', '/var/log/slm/web/audit.log');
+    }
+
     if (!defined('CONFIG_PATH')) {
         define('CONFIG_PATH', ROOT_PATH . '/config/config.json');
     }
@@ -117,6 +121,34 @@
         
         return true; // Возвращаем успешное выполнение
     }
+
+        // Функция для аудита
+        function audit($level = 'INFO', $message = '') {
+            $AuditFile = AUDIT_PATH;
+            
+            // Проверяем, существует ли файл логов, и создаем его, если нет
+            if (!file_exists($AuditFile)) {
+                touch($AuditFile); // Создаем файл, если он не существует
+            }
+            
+            // Определяем инициатора (пользователя или "неизвестный")
+            $initiator = isset($_SESSION['username']) ? $_SESSION['username'] : 'неизвестный';
+            
+            // Получаем ID сессии
+            $sessionId = session_id();
+            
+            // Получаем текущий URL
+            $url = $_SERVER['REQUEST_URI'];
+            
+            // Формируем строку для записи в лог
+            $timestamp = date('Y-m-d H:i:s');
+            $logMessage = "[$timestamp] [$level] [Инициатор: $initiator] [ID сессии: $sessionId] [URL: $url] $message" . PHP_EOL;
+            
+            // Записываем сообщение в лог-файл
+            file_put_contents($AuditFile, $logMessage, FILE_APPEND);
+            
+            return true; // Возвращаем успешное выполнение
+        }
 
     // Функция для генерации GUID
     function generateGUID() {

@@ -1,33 +1,45 @@
 <?php
+    // Путь к файлу с функциями
     $file_path = 'include/function.php';
+
+    // Проверка существования файла
     if (!file_exists($file_path)) {
-        // Если не существует, переходим 503.php
+        // Если файл не существует, перенаправляем на страницу ошибки 503
         header("Location: /err/50x.html");
-        exit();
+        exit(); // Завершаем выполнение скрипта
     }
     
+    // Подключаем файл с функциями
     require_once $file_path;
 
-    // Запуск сессии
+    // Запуск сессии, если она еще не запущена
     startSessionIfNotStarted();
 
-    // Генерация CSRF-токена
+    // Генерация CSRF-токена для защиты от атак типа CSRF
     csrf_token();
 
-    // Чтение конфигурационного файла
+    // Путь к конфигурационному файлу
     $config_path = CONFIG_PATH;
+
+    // Чтение и декодирование конфигурационного файла в формате JSON
     $config = json_decode(file_get_contents($config_path), true);
 
-    // Проверка состояния LDAP
-    $ldap_active = $config['LDAP']['active'] ?? false;
-    $auth_type_disabled = !$ldap_active;
-    $default_auth_type = $ldap_active ? 'ldap' : 'internal';
+    // Проверка состояния LDAP из конфигурации
+    $ldap_active = $config['LDAP']['active'] ?? false; // Если параметр не задан, по умолчанию false
+    $auth_type_disabled = !$ldap_active; // Определяем, отключена ли LDAP-аутентификация
+    $default_auth_type = $ldap_active ? 'ldap' : 'internal'; // Устанавливаем тип аутентификации по умолчанию
 
+    // Инициализация переменной для хранения сообщения об ошибке
     $error_message = "";
+
+    // Проверяем, передана ли ошибка через GET-параметр
     if (isset($_GET['error'])) {
-        $raw_error = $_GET['error']; // Сохраняем сырое значение
-        $error_message = htmlspecialchars($raw_error, ENT_QUOTES, 'UTF-8');
+        $raw_error = $_GET['error']; // Сохраняем сырое значение ошибки
+        $error_message = htmlspecialchars($raw_error, ENT_QUOTES, 'UTF-8'); // Экранируем специальные символы для безопасности
     }
+
+    // Логируем успешную инициализацию скрипта
+    logger("DEBUG", "login.php успешно инициализирован.");
 ?>
 <!DOCTYPE html>
 <html lang="ru">
