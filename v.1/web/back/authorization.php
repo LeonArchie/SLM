@@ -46,7 +46,7 @@
         logger("ERROR", "Ошибка безопасности: неверный CSRF-токен.");
         audit("ERROR", "Попытка авторизации польльзователя" . $_POST['login'] . "с неверным CSRF-токеном.");
         http_response_code(403);
-        echo json_encode(['success' => false, 'message' => 'Ошибка 0004: неверный CSRF-токен. Обновите страницу и повторите попытку']);
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0004: Обновите страницу и повторите попытку.']);
         exit();
     }
 
@@ -96,7 +96,7 @@
                 logger("ERROR", "Пользователь заблокирован: " . $login);
                 audit("ERROR", "Попытка авторизации заблокированного пользователя: " . $login);
                 http_response_code(403); 
-                echo json_encode(['success' => false, 'message' => 'Ошибка 0007: Пользователь заблокирован']);
+                echo json_encode(['success' => false, 'message' => 'Ошибка 0007: Пользователь заблокирован!']);
                 exit();
             }
 
@@ -140,7 +140,7 @@
         // Логирование предупреждения и возврат JSON-ответа, если форма не была отправлена
         logger("WARNING", "Попытка доступа к authorization.php без отправки формы. Метод запроса: " . $_SERVER["REQUEST_METHOD"]);
         http_response_code(401);
-        echo json_encode(['success' => false, 'message' => 'Ошибка 0010: Недопустимый метод запроса.']);
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0010: Доступ запрещен.']);
         exit();
     }
 ?>

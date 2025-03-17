@@ -59,7 +59,7 @@ document.getElementById('passwdForm').addEventListener('submit', function (e) {
     const csrfToken = document.getElementsByName('csrf_token')[0]?.value;
     if (!csrfToken) {
         // Если CSRF-токен не найден, показываем сообщение об ошибке
-        showErrorMessage('error', 'Ошибка', 'Ошибка 0015: CSRF-токен не найден. Пожалуйста, обновите страницу.', 5000);
+        showErrorMessage('error', 'Ошибка', 'Ошибка 0015: Обновите страницу и повторите попытку.', 5000);
         return; // Прерываем выполнение функции
     }
 
