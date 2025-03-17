@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.href = result.redirect; // Перенаправление
                 } else {
                     // Если перенаправление не указано, показываем ошибку
-                    showErrorMessage('error', 'Ошибка', 'Ошибка 0011: Произошла ошибка при попытке перенаправления.', 5000);
+                    showErrorMessage('error', 'Ошибка', 'Ошибка 0011: Ошибка сервера.', 5000);
                 }
             } else {
                 // Если возникла ошибка, показываем её через showErrorMessage
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             // Обработка ошибок сервера
-            showErrorMessage('error', 'Ошибка', 'Ошибка 0013: Не удалось подключиться к серверу. Попробуйте позже.', 5000);
+            showErrorMessage('error', 'Ошибка', 'Ошибка 0013: Ошибка сервера.', 5000);
         } finally {
             // Скрываем подложку после завершения загрузки
             loading.style.display = 'none';
