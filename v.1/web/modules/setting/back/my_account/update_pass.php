@@ -53,7 +53,7 @@
     if (empty($data['csrf_token'])) {
         logger("ERROR", "CSRF-токен не передан в данных.");
         http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'Ошибка 0022: Ошибка безопасности: CSRF-токен не передан.'], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0022: Обновите страницу и повторите попытку.'], JSON_UNESCAPED_UNICODE);
         exit();
     }
 
@@ -61,7 +61,7 @@
     if ($data['csrf_token'] !== $_SESSION['csrf_token']) {
         logger("ERROR", "CSRF-токен не совпадает с ожидаемым значением.");
         http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'Ошибка 0023: Ошибка безопасности: неверный CSRF-токен.'], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0023: Обновите страницу и повторите попытку.'], JSON_UNESCAPED_UNICODE);
         exit();
     }
 

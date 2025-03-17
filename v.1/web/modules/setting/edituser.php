@@ -1,54 +1,73 @@
 <?php
+    // Уникальный идентификатор страницы для проверки привилегий
     $privileges_page = '356a5297-1587-4d79-8f81-b3e1c7e21a73';
 
+    // Путь к файлу platform.php
     $file_path = __DIR__ . '/include/platform.php';
+    // Проверяем, существует ли файл platform.php
     if (!file_exists($file_path)) {
+        // Если файл не существует, перенаправляем на страницу ошибки 50x
         header("Location: /err/50x.html");
         exit();
     }
+    // Подключаем файл platform.php
     require_once $file_path;
 
+    // Путь к файлу load_account.php
     $file_path = __DIR__ . '/back/edituser/load_account.php';
+    // Проверяем, существует ли файл load_account.php
     if (!file_exists($file_path)) {
+        // Если файл не существует, перенаправляем на страницу ошибки 50x
         header("Location: /err/50x.html");
         exit();
     }
-	require_once $file_path;
+    // Подключаем файл load_account.php
+    require_once $file_path;
 
-    //Инициализация проверки или запуска сессии
+    // Инициализация сессии, если она еще не начата
     startSessionIfNotStarted();
-    // Проверка авторизации
+    // Проверка авторизации пользователя
     checkAuth();
-    // Генерация CSRF-токена
+    // Генерация CSRF-токена для защиты от атак
     csrf_token();
 
+    // Проверка привилегий пользователя для доступа к странице
     FROD($privileges_page);
 
-    // Проверяем, был ли отправлен POST-запрос и есть ли в нем userid
+    // Проверяем, был ли отправлен POST-запрос и есть ли в нем параметр userid
     if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['userid'])) {
-        // Если нет, перенаправляем на all_accounts.php
+        // Если нет, перенаправляем на страницу all_accounts.php
         header("Location: all_accounts.php");
         exit();
     }
 
+    // Инициализация переменной для хранения сообщения об ошибке
     $error_message = "";
+    // Проверяем, есть ли в GET-запросе параметр error
     if (isset($_GET['error'])) {
-        $raw_error = $_GET['error']; // Сохраняем сырое значение
+        // Сохраняем сырое значение ошибки
+        $raw_error = $_GET['error'];
+        // Экранируем значение ошибки для безопасного вывода на страницу
         $error_message = htmlspecialchars($raw_error, ENT_QUOTES, 'UTF-8');
     }
     
-     // Получаем id из POST
+    // Получаем идентификатор пользователя из POST-запроса
     $userid = $_POST['userid'];
 
     try {
+        // Получаем данные пользователя по его идентификатору
         $userData = getUserData($userid);
     } catch (Exception $e) {
+        // Логируем ошибку, если возникла проблема при получении данных
         logger("ERROR", "Ошибка при получении данных о пользователе:". $e->getMessage());
+        audit("ERROR", "Ошибка при получении данных о пользователе:". $e->getMessage());
+        // Перенаправляем на страницу ошибки 50x
         header("Location: /err/50x.html");
     }
     
-    // Если произошла ошибка при получении данных
+    // Проверяем, есть ли ошибка в данных пользователя
     if (isset($userData['error'])) {
+        // Если есть, сохраняем сообщение об ошибке
         $error_message = $userData['error'];
     }
 ?>
