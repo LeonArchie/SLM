@@ -10,7 +10,8 @@
     // Проверяем, существует ли файл function.php
     if (!file_exists($file_path)) {
         // Если файл не найден, возвращаем ошибку и завершаем выполнение
-        echo json_encode(['success' => false, 'message' => 'Ошибка сервера: файл function.php не найден.']);
+        http_response_code(500); // Внутренняя ошибка сервера
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0074: Ошибка сервера.']);
         exit();
     }
 
@@ -24,8 +25,9 @@
     $data = file_get_contents('php://input');
     if (!$data) {
         // Если данные пустые, логируем ошибку и возвращаем сообщение об ошибке
+        http_response_code(400); // Неверный запрос
         logger("ERROR", "Пустой запрос.");
-        echo json_encode(['success' => false, 'message' => 'Пустой запрос.'], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0075: Пустой запрос.'], JSON_UNESCAPED_UNICODE);
         exit();
     }
         
@@ -35,16 +37,21 @@
     // Проверяем корректность JSON
     if (json_last_error() !== JSON_ERROR_NONE) {
         // Если JSON некорректен, логируем ошибку и возвращаем сообщение об ошибке
+        http_response_code(400); // Неверный запрос
         logger("ERROR", "Неверный формат JSON.");
-        echo json_encode(['success' => false, 'message' => 'Неверный формат JSON.'], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0076: Ошибка сервера.'], JSON_UNESCAPED_UNICODE);
         exit();
     }
+
+    logger("INFO", "Получен запрос на создание пользователя $data");
+    audit("INFO", "Получен запрос на создание пользователя $data");
 
     // Проверка CSRF-токена
     if (empty($data['csrf_token']) || $data['csrf_token'] !== $_SESSION['csrf_token']) {
         // Если токен не совпадает, логируем ошибку и возвращаем сообщение об ошибке
+        http_response_code(403); // Запрещено (ошибка безопасности)
         logger("ERROR", "Ошибка безопасности: неверный CSRF-токен.");
-        echo json_encode(['success' => false, 'message' => 'Ошибка безопасности: неверный CSRF-токен.'], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0077: Обновите страницу и повторите попытку.'], JSON_UNESCAPED_UNICODE);
         exit();
     }
 
@@ -52,14 +59,24 @@
     $validationIssues = validateInputData($data);
     if (!empty($validationIssues)) {
         // Если есть ошибки валидации, логируем их и возвращаем сообщение об ошибке
+        http_response_code(400); // Неверный запрос
+        array_unshift($validationIssues, "Ошибка 0078:");
         $errorMessage = implode(' ', $validationIssues);
         logger("ERROR", "Ошибка валидации: " . $errorMessage);
         echo json_encode(['success' => false, 'message' => $errorMessage], JSON_UNESCAPED_UNICODE);
         exit();
     }
 
-    // Подключение к базе данных
-    $pdo = connectToDatabase();
+    try {
+        // Подключение к базе данных
+        $pdo = connectToDatabase();
+    } catch (PDOException $e) {
+        // Логируем ошибку и возвращаем сообщение об ошибке
+        http_response_code(500); // Внутренняя ошибка сервера
+        logger("ERROR", "Ошибка подключения к базе данных: " . $e->getMessage());
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0079: Ошибка сервера.'], JSON_UNESCAPED_UNICODE);
+        exit();
+    }
 
     // Генерация GUID для пользователя
     $userid = generateGUID();
@@ -79,8 +96,9 @@
         $stmt->execute(['userlogin' => $userlogin, 'email' => $email]);
         if ($stmt->fetchColumn() > 0) {
             // Если пользователь с таким логином или email уже существует, логируем ошибку и возвращаем сообщение
+            http_response_code(409); // Конфликт (уже существует)
             logger("ERROR", "Пользователь с таким логином или email уже существует: " . htmlspecialchars($userlogin) . ", " . htmlspecialchars($email));
-            echo json_encode(['success' => false, 'message' => 'Пользователь с таким логином или email уже существует.'], JSON_UNESCAPED_UNICODE);
+            echo json_encode(['success' => false, 'message' => 'Ошибка 0080: Пользователь с таким логином или email уже существует.'], JSON_UNESCAPED_UNICODE);
             exit();
         }
 
@@ -101,7 +119,15 @@
         // ВОТ ТУТ НУЖНО ВЫЗВАТЬ ВЫДАЧУ РОЛЕЙ ДЛЯ ПОЛЬЗОВАТЕЛЯ
 
         // Успешный ответ
+        http_response_code(200); // Успешный запрос
         logger("INFO", "Пользователь успешно создан: " . json_encode([
+            'userid' => $userid,
+            'userlogin' => $userlogin,
+            'email' => $email,
+            'ip' => $_SERVER['REMOTE_ADDR'],
+            'timestamp' => $currentTime
+        ]));
+        audit("INFO", "Пользователь успешно создан: " . json_encode([
             'userid' => $userid,
             'userlogin' => $userlogin,
             'email' => $email,
@@ -111,13 +137,14 @@
         echo json_encode(['success' => true, 'message' => 'Пользователь успешно создан.'], JSON_UNESCAPED_UNICODE);
     } catch (Exception $e) {
         // Откат транзакции в случае ошибки
+        http_response_code(500); // Внутренняя ошибка сервера
         $pdo->rollBack();
         logger("ERROR", "Ошибка при создании пользователя: " . json_encode([
             'error' => $e->getMessage(),
             'trace' => $e->getTraceAsString(),
             'data' => $data
         ]));
-        echo json_encode(['success' => false, 'message' => 'Ошибка при создании пользователя.'], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0081: Ошибка сервера.'], JSON_UNESCAPED_UNICODE);
         exit();
     }
 
