@@ -20,6 +20,47 @@
 
     // Запускаем сессию, если она ещё не запущена
     startSessionIfNotStarted();
+    
+    $file_path = ROOT_PATH . '/modules/setting/include/all_accounts.php';
+
+    // Проверяем существование файла 
+    if (!file_exists($file_path)) {
+        logger("ERROR", "Файл all_accounts не найден.");
+        http_response_code(500); // Internal Server Error
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0127: Ошибка сервера.']);
+        exit();
+    }
+    
+    require_once $file_path;
+
+    $file_path = ROOT_PATH . '/modules/setting/include/authority_manager.php';
+
+    // Проверяем существование файла
+    if (!file_exists($file_path)) {
+        logger("ERROR", "Файл authority_manager.php не найден.");
+        http_response_code(500); // Internal Server Error
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0128: Ошибка сервера.']);
+        exit();
+    }
+
+    require_once $file_path;
+
+    // Подключение файла template.json
+    $templatePath = TEMPLATE;
+    if (!file_exists($templatePath)) {
+        logger("ERROR", "Файл template.json не найден.");
+        http_response_code(500); // Internal Server Error
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0130: Ошибка сервера.'], JSON_UNESCAPED_UNICODE);
+        exit();
+    }
+    
+    $templateData = json_decode(file_get_contents($templatePath), true);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        logger("ERROR", "Неверный формат JSON в файле template.json.");
+        http_response_code(500); // Internal Server Error
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0131: Ошибка сервера.'], JSON_UNESCAPED_UNICODE);
+        exit();
+    }
 
     // Чтение входящих данных как JSON
     $data = file_get_contents('php://input');
@@ -43,8 +84,8 @@
         exit();
     }
 
-    logger("INFO", "Получен запрос на создание пользователя $data");
-    audit("INFO", "Получен запрос на создание пользователя $data");
+    logger("INFO", "Получен запрос на создание пользователя " . json_encode($data));
+    audit("INFO", "Получен запрос на создание пользователя " . json_encode($data));
 
     // Проверка CSRF-токена
     if (empty($data['csrf_token']) || $data['csrf_token'] !== $_SESSION['csrf_token']) {
@@ -78,118 +119,55 @@
         exit();
     }
 
-    // Генерация GUID для пользователя
-    $userid = generateGUID();
-
-    // Подготовка данных для записи в таблицу users
-    $full_name = trim($data['full_name']);
-    $userlogin = trim($data['userlogin']);
-    $password_hash = password_hash(trim($data['password']), PASSWORD_DEFAULT);
-    $email = trim($data['email']);
-    $currentTime = date('Y-m-d H:i:s'); // Текущее время
-
-    // Начало транзакции
-    $pdo->beginTransaction();
-    try {
-        // Проверка на существование пользователя с таким логином или email
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE userlogin = :userlogin OR email = :email");
-        $stmt->execute(['userlogin' => $userlogin, 'email' => $email]);
-        if ($stmt->fetchColumn() > 0) {
-            // Если пользователь с таким логином или email уже существует, логируем ошибку и возвращаем сообщение
-            http_response_code(409); // Конфликт (уже существует)
-            logger("ERROR", "Пользователь с таким логином или email уже существует: " . htmlspecialchars($userlogin) . ", " . htmlspecialchars($email));
-            echo json_encode(['success' => false, 'message' => 'Ошибка 0080: Пользователь с таким логином или email уже существует.'], JSON_UNESCAPED_UNICODE);
-            exit();
-        }
-
-        // Вставка данных в таблицу users
-        $stmt = $pdo->prepare("INSERT INTO users (userid, full_name, userlogin, password_hash, email, regtimes) VALUES (:userid, :full_name, :userlogin, :password_hash, :email, :regtimes)");
-        $stmt->execute([
-            'userid' => $userid,
-            'full_name' => $full_name,
-            'userlogin' => $userlogin,
-            'password_hash' => $password_hash,
-            'email' => $email,
-            'regtimes' => $currentTime
-        ]);
-
-        // Завершение транзакции
-        $pdo->commit();
-
-        // ВОТ ТУТ НУЖНО ВЫЗВАТЬ ВЫДАЧУ РОЛЕЙ ДЛЯ ПОЛЬЗОВАТЕЛЯ
-
-        // Успешный ответ
-        http_response_code(200); // Успешный запрос
-        logger("INFO", "Пользователь успешно создан: " . json_encode([
-            'userid' => $userid,
-            'userlogin' => $userlogin,
-            'email' => $email,
-            'ip' => $_SERVER['REMOTE_ADDR'],
-            'timestamp' => $currentTime
-        ]));
-        audit("INFO", "Пользователь успешно создан: " . json_encode([
-            'userid' => $userid,
-            'userlogin' => $userlogin,
-            'email' => $email,
-            'ip' => $_SERVER['REMOTE_ADDR'],
-            'timestamp' => $currentTime
-        ]));
-        echo json_encode(['success' => true, 'message' => 'Пользователь успешно создан.'], JSON_UNESCAPED_UNICODE);
-    } catch (Exception $e) {
-        // Откат транзакции в случае ошибки
-        http_response_code(500); // Внутренняя ошибка сервера
-        $pdo->rollBack();
-        logger("ERROR", "Ошибка при создании пользователя: " . json_encode([
-            'error' => $e->getMessage(),
-            'trace' => $e->getTraceAsString(),
-            'data' => $data
-        ]));
-        echo json_encode(['success' => false, 'message' => 'Ошибка 0081: Ошибка сервера.'], JSON_UNESCAPED_UNICODE);
+    // Создание пользователя
+    $result = createUser($pdo, $data);
+    if (!$result['success']) {
+        http_response_code($result['http_code']);
+        echo json_encode(['success' => false, 'message' => $result['message']], JSON_UNESCAPED_UNICODE);
         exit();
     }
 
-    /**
-     * Валидация входных данных.
-     *
-     * @param array $data Входные данные.
-     * @return array Массив с ошибками валидации.
-     */
-    function validateInputData($data) {
-        $validationIssues = [];
+    // Получаем имя массива из $data['role']
+    $roleKey = $data['role'];
 
-        // Валидация полного ФИО
-        if (mb_strlen($data['full_name'], 'UTF-8') > 50) {
-            $validationIssues[] = 'Полное ФИО превышает допустимую длину (максимум 50 символов).';
-            logger("WARNING", "Пользователь отправил слишком длинное полное ФИО: " . htmlspecialchars($data['full_name']));
-        } elseif (!preg_match('/^[\p{Cyrillic}\s]+$/u', $data['full_name'])) {
-            $validationIssues[] = 'Полное ФИО содержит недопустимые символы (разрешены только русские буквы и пробелы).';
-            logger("WARNING", "Пользователь отправил некорректное полное ФИО: " . htmlspecialchars($data['full_name']));
+    // Проверяем, существует ли массив с таким именем в template.json
+    if (!isset($templateData[$roleKey])) {
+        logger("ERROR", "Роль '$roleKey' не найдена в template.json.");
+        http_response_code(400); // Неверный запрос
+        echo json_encode(['success' => false, 'message' => "Ошибка 0132: Роль '$roleKey' не найдена."], JSON_UNESCAPED_UNICODE);
+        exit();
+    }
+
+    // Получаем массив привилегий для указанной роли
+    $privileges = $templateData[$roleKey]['value'];
+
+    // Получение userID по userLogin через прямой запрос к базе данных
+    $userLogin = $data['userlogin'];
+    try {
+        $stmt = $pdo->prepare("SELECT userid FROM users WHERE userlogin = :userlogin");
+        $stmt->execute(['userlogin' => $userLogin]);
+        $userID = $stmt->fetchColumn(); // Получаем значение userID
+
+        if (!$userID) {
+            logger("ERROR", "Пользователь с логином '$userLogin' не найден.");
+            http_response_code(404); // Не найдено
+            echo json_encode(['success' => false, 'message' => "Ошибка 0133: Пользователь с логином '$userLogin' не найден."], JSON_UNESCAPED_UNICODE);
+            exit();
         }
+    } catch (PDOException $e) {
+        logger("ERROR", "Ошибка при поиске пользователя: " . $e->getMessage());
+        http_response_code(500); // Внутренняя ошибка сервера
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0134: Ошибка сервера.'], JSON_UNESCAPED_UNICODE);
+        exit();
+    }
 
-        // Валидация логина
-        if (mb_strlen($data['userlogin'], 'UTF-8') > 20) {
-            $validationIssues[] = 'Логин превышает допустимую длину (максимум 20 символов).';
-            logger("WARNING", "Пользователь отправил слишком длинный логин: " . htmlspecialchars($data['userlogin']));
-        } elseif (!preg_match('/^[a-zA-Z0-9_]+$/', $data['userlogin'])) {
-            $validationIssues[] = 'Логин содержит недопустимые символы (разрешены только латинские буквы, цифры и "_").';
-            logger("WARNING", "Пользователь отправил некорректный логин: " . htmlspecialchars($data['userlogin']));
-        }
-
-        // Валидация пароля
-        if (mb_strlen($data['password'], 'UTF-8') < 10) {
-            $validationIssues[] = 'Пароль слишком короткий (минимум 10 символов).';
-            logger("WARNING", "Пользователь отправил слишком короткий пароль.");
-        } elseif ($data['password'] === $data['userlogin']) {
-            $validationIssues[] = 'Пароль не должен совпадать с логином.';
-            logger("WARNING", "Пользователь установил пароль, совпадающий с логином.");
-        }
-
-        // Валидация email
-        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            $validationIssues[] = 'Некорректный формат email.';
-            logger("WARNING", "Пользователь отправил некорректный email: " . htmlspecialchars($data['email']));
-        }
-
-        return $validationIssues;
+    // Назначение привилегий
+    try {
+        assignPrivileges($pdo, [$userID], $privileges);
+        logger("INFO", "Привилегии успешно назначены пользователю '$userLogin'.");
+        echo json_encode(['success' => true, 'message' => 'Пользователь успешно создан и роли назначены.'], JSON_UNESCAPED_UNICODE);
+    } catch (Exception $e) {
+        logger("ERROR", "Ошибка назначения привилегий: " . $e->getMessage());
+        echo json_encode(['success' => true, 'message' => 'Пользователь успешно создан, но роли не назначены.'], JSON_UNESCAPED_UNICODE);
     }
 ?>

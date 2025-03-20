@@ -1,44 +1,75 @@
 <?php
 
+    // Уникальный идентификатор страницы 
     $privileges_page = 'aeef82b7-5083-480e-a59e-507a083a16be';
 
+    // Путь к файлу platform.php
     $file_path = __DIR__ . '/include/platform.php';
+    // Проверка существования файла platform.php
     if (!file_exists($file_path)) {
+        // Если файл не существует, перенаправляем на страницу ошибки 50x
         header("Location: /err/50x.html");
         exit();
     }
+    // Подключение файла platform.php
     require_once $file_path;
 
-    //Инициализация проверки или запуска сессии
+    // Инициализация сессии, если она еще не начата
     startSessionIfNotStarted();
-    // Проверка авторизации
+    // Проверка авторизации пользователя
     checkAuth();
-    // Генерация CSRF-токена
+    // Генерация CSRF-токена для защиты от атак
     csrf_token();
 
+    // Вызов функции FROD с идентификатором страницы 
     FROD($privileges_page);
 
-    $pdo = connectToDatabase();
-
-    // Запрос к users для получения пользователей
-    $stmt = $pdo->prepare("SELECT userlogin, full_name, active, userid FROM users");
-
-    if (!$stmt->execute()) {
-        logger("ERROR", "Ошибка при выполнении запроса к таблице users.");
-        echo "Ошибка при загрузке данных.";
+    // Подключение к базе данных с обработкой исключений
+    try {
+        $pdo = connectToDatabase();
+    } catch (PDOException $e) {
+        // Логирование ошибки подключения к базе данных
+        logger("ERROR", "Ошибка подключения к базе данных: " . $e->getMessage());
+        // Вывод сообщения об ошибке
+        header("Location: /err/50x.html");
         exit();
     }
 
+    // Подготовка запроса для получения данных о пользователях
+    $stmt = $pdo->prepare("SELECT userlogin, full_name, active, userid FROM users");
+
+    // Выполнение запроса и проверка на ошибки
+    if (!$stmt->execute()) {
+        // Логирование ошибки, если запрос не выполнился
+        logger("ERROR", "Ошибка при выполнении запроса к таблице users.");
+        header("Location: /err/50x.html");
+        exit();
+    }
+
+    // Получение всех записей о пользователях
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // получение всех привилегий
+    // Подготовка запроса для получения всех привилегий
     $stmt = $pdo->prepare("SELECT * FROM name_privileges");
-    $stmt->execute();
+    
+    // Выполнение запроса и проверка на ошибки
+    if (!$stmt->execute()) {
+        // Логирование ошибки, если запрос не выполнился
+        logger("ERROR", "Ошибка при получении привилегий.");
+        header("Location: /err/50x.html");
+        exit();
+    }
+    
+    // Получение всех записей о привилегиях
     $name_privileges = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // Инициализация переменной для сообщения об ошибке
     $error_message = "";
+    // Проверка наличия параметра ошибки в URL
     if (isset($_GET['error'])) {
-        $raw_error = $_GET['error']; // Сохраняем сырое значение
+        // Сохранение сырого значения ошибки
+        $raw_error = $_GET['error'];
+        // Экранирование значения ошибки для безопасного вывода на страницу
         $error_message = htmlspecialchars($raw_error, ENT_QUOTES, 'UTF-8');
     }
 ?>
