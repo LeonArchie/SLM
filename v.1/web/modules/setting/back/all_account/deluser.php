@@ -18,7 +18,20 @@
 
     // Подключаем файл function.php
     require_once $file_path;
+        
+    
+    $file_path = ROOT_PATH . '/modules/setting/include/all_accounts.php';
 
+    // Проверяем существование файла function.php
+    if (!file_exists($file_path)) {
+        logger("ERROR", "Файл all_accounts.php не найден.");
+        http_response_code(500); // Internal Server Error
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0129: Ошибка сервера.']);
+        exit();
+    }
+    
+    require_once $file_path;
+    
     // Вызываем функцию startSessionIfNotStarted, которая запускает сессию, если она ещё не была запущена
     startSessionIfNotStarted();
 
@@ -45,8 +58,8 @@
         exit();
     }
 
-    logger("INFO", "Получен запрос на удаление прользователя $data");
-    audit("INFO", "Получен запрос на удаление прользователя $data");
+    logger("INFO", "Получен запрос на удаление пользователя $data");
+    audit("INFO", "Получен запрос на удаление пользователя $data");
 
     // Проверяем, не содержится ли ID текущего пользователя в массиве user_ids
     if (in_array($data['userid'], $data['user_ids'])) {
@@ -59,11 +72,6 @@
         exit();
     }
 
-    // Экранируем и оборачиваем в кавычки каждый ID пользователя из массива user_ids
-    $userIds = array_map(function($id) {
-        return "'" . pg_escape_string($id) . "'";
-    }, $data['user_ids']);
-
     // Подключаемся к базе данных
     $pdo = connectToDatabase();
 
@@ -72,11 +80,8 @@
         logger("INFO", "Попытка удаления пользователей с ID: " . implode(', ', $data['user_ids']));
         audit("INFO", "Попытка удаления пользователей с ID: " . implode(', ', $data['user_ids']));
 
-
-        // Формируем SQL-запрос для удаления пользователей с указанными ID
-        $sql = "DELETE FROM users WHERE userid IN (" . implode(',', $userIds) . ")";
-        $stmt = $pdo->prepare($sql);
-        $result = $stmt->execute();
+        // Вызываем функцию для удаления пользователей
+        $result = deleteUsers($pdo, $data['user_ids']);
 
         // Проверяем, успешно ли выполнен запрос на удаление
         if ($result) {
@@ -85,8 +90,6 @@
             // Логируем успешное удаление и возвращаем JSON-ответ с сообщением об успехе
             logger("INFO", "Пользователи успешно удалены. Удаленные ID: " . implode(', ', $data['user_ids']));
             audit("INFO", "Пользователи успешно удалены. Удаленные ID: " . implode(', ', $data['user_ids']));
-
-            // Здесь можно вставить вызов функции для отзыва ролей у пользователей
 
             echo json_encode(['success' => true, 'message' => 'Пользователи успешно удалены.'], JSON_UNESCAPED_UNICODE);
         } else {

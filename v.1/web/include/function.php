@@ -25,6 +25,10 @@
         define('CONFIG_MENU', ROOT_PATH . '/config/modules.json');
     }
 
+    if (!defined('TEMPLATE')) {
+        define('TEMPLATE', ROOT_PATH . '/config/template.json');
+    }
+
     if (!defined('FORBIDDEN')) {
         define('FORBIDDEN', '/err/403.html');
     }
