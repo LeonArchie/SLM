@@ -17,6 +17,9 @@
 
     // Подключаем файл function.php
     require_once $file_path;
+
+    // Запускаем сессию, если она ещё не запущена
+    startSessionIfNotStarted();
     
     $file_path = ROOT_PATH . '/modules/setting/include/all_accounts.php';
 
@@ -42,8 +45,22 @@
 
     require_once $file_path;
 
-    // Запускаем сессию, если она ещё не запущена
-    startSessionIfNotStarted();
+    // Подключение файла template.json
+    $templatePath = TEMPLATE;
+    if (!file_exists($templatePath)) {
+        logger("ERROR", "Файл template.json не найден.");
+        http_response_code(500); // Internal Server Error
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0130: Ошибка сервера.'], JSON_UNESCAPED_UNICODE);
+        exit();
+    }
+    
+    $templateData = json_decode(file_get_contents($templatePath), true);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        logger("ERROR", "Неверный формат JSON в файле template.json.");
+        http_response_code(500); // Internal Server Error
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0131: Ошибка сервера.'], JSON_UNESCAPED_UNICODE);
+        exit();
+    }
 
     // Чтение входящих данных как JSON
     $data = file_get_contents('php://input');
@@ -110,39 +127,19 @@
         exit();
     }
 
-    // Подключение файла template.json
-    $templatePath = TEMPLATE . '/template.json';
-    if (!file_exists($templatePath)) {
-        logger("ERROR", "Файл template.json не найден.");
-        http_response_code(500); // Internal Server Error
-        echo json_encode(['success' => false, 'message' => 'Ошибка 0131: Ошибка сервера.'], JSON_UNESCAPED_UNICODE);
-        exit();
-    }
+    // Получаем имя массива из $data['role']
+    $roleKey = $data['role'];
 
-    $templateData = json_decode(file_get_contents($templatePath), true);
-    if (json_last_error() !== JSON_ERROR_NONE) {
-        logger("ERROR", "Неверный формат JSON в файле template.json.");
-        http_response_code(500); // Internal Server Error
-        echo json_encode(['success' => false, 'message' => 'Ошибка 0132: Ошибка сервера.'], JSON_UNESCAPED_UNICODE);
-        exit();
-    }
-
-    // Поиск роли и получение привилегий
-    $roleName = $data['role'];
-    $privileges = [];
-    foreach ($templateData as $key => $role) {
-        if ($role['name'] === $roleName) {
-            $privileges = $role['value'];
-            break;
-        }
-    }
-
-    if (empty($privileges)) {
-        logger("ERROR", "Роль '$roleName' не найдена в template.json.");
+    // Проверяем, существует ли массив с таким именем в template.json
+    if (!isset($templateData[$roleKey])) {
+        logger("ERROR", "Роль '$roleKey' не найдена в template.json.");
         http_response_code(400); // Неверный запрос
-        echo json_encode(['success' => false, 'message' => "Ошибка 0133: Роль '$roleName' не найдена."], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['success' => false, 'message' => "Ошибка 0132: Роль '$roleKey' не найдена."], JSON_UNESCAPED_UNICODE);
         exit();
     }
+
+    // Получаем массив привилегий для указанной роли
+    $privileges = $templateData[$roleKey]['value'];
 
     // Получение userID по userLogin через прямой запрос к базе данных
     $userLogin = $data['userlogin'];
@@ -154,13 +151,13 @@
         if (!$userID) {
             logger("ERROR", "Пользователь с логином '$userLogin' не найден.");
             http_response_code(404); // Не найдено
-            echo json_encode(['success' => false, 'message' => "Ошибка 0134: Ошибка сервера."], JSON_UNESCAPED_UNICODE);
+            echo json_encode(['success' => false, 'message' => "Ошибка 0133: Пользователь с логином '$userLogin' не найден."], JSON_UNESCAPED_UNICODE);
             exit();
         }
     } catch (PDOException $e) {
         logger("ERROR", "Ошибка при поиске пользователя: " . $e->getMessage());
         http_response_code(500); // Внутренняя ошибка сервера
-        echo json_encode(['success' => false, 'message' => 'Ошибка 0135: Ошибка сервера.'], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['success' => false, 'message' => 'Ошибка 0134: Ошибка сервера.'], JSON_UNESCAPED_UNICODE);
         exit();
     }
 
@@ -168,13 +165,9 @@
     try {
         assignPrivileges($pdo, [$userID], $privileges);
         logger("INFO", "Привилегии успешно назначены пользователю '$userLogin'.");
-        audit("INFO", "Пользователь " . $userLogin . " успешно создан и роли назначены.");
-        http_response_code(200);
-        echo json_encode(['success' => true, 'message' => 'Пользователь ' . $userLogin . ' успешно создан и роли назначены.'], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['success' => true, 'message' => 'Пользователь успешно создан и роли назначены.'], JSON_UNESCAPED_UNICODE);
     } catch (Exception $e) {
         logger("ERROR", "Ошибка назначения привилегий: " . $e->getMessage());
-        audit("WARNING", "Пользователь " . $userLogin . " успешно создан, роли не назначены.");
-        http_response_code(200);
-        echo json_encode(['success' => true, 'message' => 'Пользователь ' . $userLogin . ' успешно создан, но роли не назначены.'], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['success' => true, 'message' => 'Пользователь успешно создан, но роли не назначены.'], JSON_UNESCAPED_UNICODE);
     }
 ?>

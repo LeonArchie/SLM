@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const addButton = document.getElementById('addButton');
     const cancelButton = document.querySelector('.cancel');
     const addFormOverlay = document.getElementById('addFormOverlay');
+    const csrfToken = document.querySelector('input[name="csrf_token"]')?.value;
 
     // Проверяем, существуют ли необходимые элементы на странице
     if (!generateButton || !passwordField || !addUserForm || !addButton || !cancelButton || !addFormOverlay) {
@@ -47,7 +48,8 @@ document.addEventListener("DOMContentLoaded", function () {
             userlogin: document.getElementById('userlogin').value.trim(),
             password: document.getElementById('password').value.trim(),
             email: document.getElementById('email').value.trim(),
-            role: document.getElementById('role').value.trim()
+            role: document.getElementById('role').value.trim(),
+            csrf_token: csrfToken
         };
 
         // Валидация данных
@@ -70,12 +72,13 @@ document.addEventListener("DOMContentLoaded", function () {
             if (data.success) {
                 showErrorMessage('success', 'Успех', 'Пользователь успешно создан!', 3000);
                 closeAddForm();
-                location.reload();
             } else {
+                // Используем сообщение об ошибке, которое пришло от сервера
                 showErrorMessage('error', 'Ошибка', data.message || 'Ошибка 0065: Произошла неизвестная ошибка.', 5000);
             }
         })
         .catch(error => {
+            // В случае ошибки сети или других проблем с запросом
             showErrorMessage('error', 'Ошибка', 'Ошибка 0066: Произошла неизвестная ошибка.', 5000);
         });
     });

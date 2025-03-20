@@ -1,4 +1,4 @@
-<?
+<?php
     /**
      * Валидация входных данных.
      *
@@ -76,16 +76,16 @@
             }
 
             // Вставка данных в таблицу users
-            $stmt = $pdo->prepare("INSERT INTO users (userid, full_name, userlogin, password_hash, email, regtimes) VALUES (:userid, :full_name, :userlogin, :password_hash, :email, :regtimes)");
+            $stmt = $pdo->prepare("INSERT INTO users (userid, full_name, userlogin, password_hash, email, regtimes, active) VALUES (:userid, :full_name, :userlogin, :password_hash, :email, :regtimes, :active)");
             $stmt->execute([
                 'userid' => $userid,
                 'full_name' => $full_name,
                 'userlogin' => $userlogin,
                 'password_hash' => $password_hash,
                 'email' => $email,
-                'regtimes' => $currentTime
+                'regtimes' => $currentTime,
+                'active' => true
             ]);
-
             // Завершение транзакции
             $pdo->commit();
 
