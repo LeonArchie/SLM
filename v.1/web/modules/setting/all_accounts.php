@@ -80,7 +80,7 @@
                     <div class="button-bar">
                         <button id="addButton">Добавить</button>
                         <button id="editButton" disabled>Редактировать</button>
-                        <button id="blockButton" disabled>Заблокировать</button>
+                        <button id="blockButton" disabled>Сменить статус пользователя</button>
                         <button id="deleteButton" disabled>Удалить</button>
                         <button id="syncLdapButton" disabled>Принудительная синхронизация LDAP</button>
                         <button id="ldapSettingsButton" disabled>Настройки LDAP</button>

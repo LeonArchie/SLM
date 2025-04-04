@@ -26,7 +26,7 @@
     box-shadow: inset 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Общие стили для кнопок */
+/* Общие стили кнопок */
 .button-bar button {
     padding: 12px 20px;
     font-size: 14px;
@@ -34,52 +34,73 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.3s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    text-align: center;
 }
 
 /* Кнопка "Добавить оборудование" */
-#AddServers {
+#AddServers  {
     background-color: #667eea;
     color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
-#AddServers:hover {
-    background-color: #5a67d8;
+#AddServers:hover:not(:disabled) {
+    background-color: #dc3545;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Кнопка "Просмотреть карточку обрудования" */
-#VievCardServer {
+#VievCardServer  {
     background-color: #667eea;
     color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
-#VievCardServer:hover {
-    background-color: #5a67d8;
+#VievCardServer:hover:not(:disabled) {
+    background-color: #dc3545;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Кнопка "Обновить" */
-#refreshButton {
+#refreshButton  {
     background-color: #667eea;
     color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
-#refreshButton:hover {
-    background-color: #5a67d8;
+#refreshButton:hover:not(:disabled) {
+    background-color: #dc3545;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+
+/* Кнопка "Проверка конфликтов" */
+#GlobalCheck  {
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
+}
+
+#GlobalCheck:hover:not(:disabled) {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+
 /* Стиль для отключенных кнопок */
 .button-bar button:disabled {
-    background-color: #bdbdbd;
-    color: #757575;
+    background-color: #95a5a6 !important;
+    background-image: none !important;
     cursor: not-allowed;
-    box-shadow: none;
+    transform: none !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
     opacity: 0.7;
 }
 
@@ -117,4 +138,49 @@ td.name-cell a {
 
 td.name-cell a:hover {
     text-decoration: underline;
+}
+
+/* Стиль для кастомных чекбоксов */
+.custom-checkbox {
+    appearance: none; /* Убираем стандартный вид чекбокса */
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e2e8f0; /* Светлая граница */
+    border-radius: 4px; /* Закругленные углы */
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Чекбокс при наведении */
+.custom-checkbox:hover {
+    border-color: #667eea; /* Синяя граница */
+}
+
+/* Активный чекбокс */
+.custom-checkbox:checked {
+    background-color: #667eea; /* Синий фон */
+    border-color: #667eea; /* Синяя граница */
+}
+
+/* Отметка внутри активного чекбокса */
+.custom-checkbox:checked::after {
+    content: ''; /* Добавляем отметку */
+    display: block;
+    width: 10px;
+    height: 5px;
+    border: 2px solid #fff; /* Белая отметка */
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg); /* Поворачиваем отметку */
+    position: absolute;
+    top: 4px;
+    left: 6px;
+}
+
+/* Неактивный чекбокс */
+.custom-checkbox:not(:checked) {
+    background-color: #f44336; /* Красный фон */
+    border-color: #f44336; /* Красная граница */
 }

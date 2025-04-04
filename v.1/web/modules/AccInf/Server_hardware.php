@@ -23,6 +23,32 @@
     // Проверка привилегий пользователя для доступа к странице
     FROD($privileges_page);
 
+        // Подключение к базе данных с обработкой исключений
+    try {
+        $pdo = connectToDatabase();
+    } catch (PDOException $e) {
+        // Логирование ошибки подключения к базе данных
+        logger("ERROR", "Ошибка подключения к базе данных: " . $e->getMessage());
+        // Вывод сообщения об ошибке
+        header("Location: /err/50x.html");
+        exit();
+    }
+
+    // Подготовка запроса для получения данных о серверах
+    $stmt = $pdo->prepare('SELECT servers."Name", Status, serv_id, ip_addr, servers."Domain", servers."Demon" FROM servers');
+
+    // Выполнение запроса и проверка на ошибки
+    if (!$stmt->execute()) {
+        // Логирование ошибки, если запрос не выполнился
+        logger("ERROR", "Ошибка при выполнении запроса к таблице servers.");
+        header("Location: /err/50x.html");
+        exit();
+    }
+
+    // Получение всех записей о серверах
+    $servers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    logger("DEBUG", "Получен ответ на запрос:" . print_r($servers, true));
+
     // Инициализация переменной для хранения сообщения об ошибке
     $error_message = "";
     // Проверка наличия ошибки в GET-параметрах
@@ -50,6 +76,7 @@
                 <div class="button-bar">
                     <button id="AddServers">Добавить оборудование</button>
                     <button id="VievCardServer" disabled>Просмотреть карточку оборудования</button>
+                    <button id="GlobalCheck">Глобальная проверка конфиликтов</button>
                     <button id="refreshButton" onclick="location.reload()">Обновить</button>
                     <input type="hidden" name="userid" value="<?php echo $_SESSION['userid']; ?>">
                 </div>
@@ -67,6 +94,33 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php
+                                foreach ($servers as $server):
+                                    $name = htmlspecialchars($server['name'] ?? 'Не указано');
+                                    $status = htmlspecialchars($server['status'] ?? 'Неизвестен');
+                                    $servId = htmlspecialchars($server['serv_id'] ?? 'Без ID');
+                                    $ipAddr = htmlspecialchars($server['ip_addr'] ?? 'Не указан');
+                                    $domain = htmlspecialchars($server['domain'] ?? 'Не указан');
+                                    $demonConnected = !empty($server['demon']) ? 'checked' : '';
+                            ?>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="serverCheckbox" data-serverid="<?= $servId ?>">
+                                </td>
+                                <td class="name-cell">
+                                    <a href="#" onclick="event.preventDefault(); redirectToServerCard(<?= json_encode($servId) ?>);">
+                                        <?= $name ?>
+                                    </a>
+                                </td>
+                                <td><?= $status ?></td>
+                                <td><?= $servId ?></td>
+                                <td><?= $ipAddr ?></td>
+                                <td><?= $domain ?></td>
+                                <td>
+                                    <input type="checkbox" disabled <?= $demonConnected ?> class="custom-checkbox demon-indicator">
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -77,5 +131,8 @@
         <?php include ROOT_PATH . '/include/footer.php'; ?>
         <!-- Скрипты платформы -->
         <script src="/js/error.js"></script>
+        <!-- Скрипты модуля -->
+        <script src="js/Server_hardware/server_hardware.js"></script>
+        <script src="js/Server_hardware/global_check.js"></script>
     </body>
 </html>
