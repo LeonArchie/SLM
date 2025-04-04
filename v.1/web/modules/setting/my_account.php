@@ -140,7 +140,7 @@
                                 <label for="active">Активен:</label>
                                 <input 
                                     type="checkbox" id="active" 
-                                    name="active"
+                                    name="active" class="custom-checkbox user-active"
                                     disabled <?= isset($userData['active']) && $userData['active'] ? 'checked' : '' ?>
                                 >
                             </div>
@@ -171,6 +171,7 @@
                                 <input 
                                     type="checkbox" id="ldapActive" 
                                     name="ldapActive" disabled 
+                                    class="custom-checkbox ldap-active"
                                     <?= isset($userData['LDAP']) && $userData['LDAP'] ? 'checked' : '' ?>
                                 >
                             </div>

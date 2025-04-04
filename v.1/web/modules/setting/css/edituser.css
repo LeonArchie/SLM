@@ -35,22 +35,22 @@
 
 /* Общие стили для кнопок */
 .form-button {
-    padding: 12px 20px; /* Увеличиваем размер кнопок */
-    font-size: 1.1em; /* Размер шрифта */
-    font-weight: 500; /* Немного жирнее текст */
-    border: none; /* Убираем рамку */
-    border-radius: 8px; /* Закругленные углы */
-    cursor: pointer; /* Курсор указателя */
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* Анимация при наведении */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Мягкая тень */
-    background-color: #667eea; /* Синий цвет */
-    color: #ffffff; /* Белый текст */
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    text-align: center;
 }
 
-.form-button:hover {
-    background-color: #5a67d8; /* Темнее синий при наведении */
-    transform: translateY(-2px); /* Приподнимаем кнопку */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Увеличиваем тень */
+.form-button:hover:not(:disabled) {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .form-button:active {
@@ -60,46 +60,63 @@
 
 /* Кнопка "backButton" */
 #backButton {
-    background-color: #667eea; /* Синий */
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
-#backButton:hover {
-    background-color: #5a67d8; /* Темнее синий */
+#backButton:hover:not(:disabled) {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Кнопка "Сбросить" */
 #updateButton {
-    background-color: #667eea; /* Синий */
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
-#updateButton:hover {
-    background-color: #5a67d8; /* Темнее синий */
+#updateButton:hover:not(:disabled) {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Кнопка "Сохранить" */
 #saveButton {
-    background-color: #667eea; /* Синий */
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
-#saveButton:hover {
-    background-color: #5a67d8; /* Темнее синий */
+#saveButton:hover:not(:disabled) {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
-
 /* Кнопка "Сменить пароль" */
 #changePasswordButton {
-    background-color: #667eea; /* Синий */
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
-#changePasswordButton:hover {
-    background-color: #5a67d8; /* Темнее синий */
+#changePasswordButton:hover:not(:disabled) {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Стиль для отключенных кнопок */
 .form-button:disabled {
-    background-color: #eaeaea; /* Серый фон */
-    color: #a1a1a1; /* Более светлый текст */
-    cursor: not-allowed; /* Изменяем курсор */
-    box-shadow: none; /* Убираем тень */
+    background-color: #95a5a6 !important;
+    background-image: none !important;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+    opacity: 0.7;
 }
 
 /* Скроллируемая форма */
@@ -395,22 +412,27 @@ tbody tr.selected {
 
 /* Кнопка "Заблокировать" */
 #blockButton {
-    background-color: #667eea; /* Синий */
+    background-color: #667eea;
     color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
-#blockButton:hover {
-    background-color: #5a67d8; /* Темнее синий */
+#blockButton:hover :hover:not(:disabled) {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
+
 
 /* Кнопка "Сохранить" */
 #getAPIKey {
-    background-color: #667eea; /* Синий */
+    background-color: #667eea;
     color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
-#getAPIKey:hover {
-    background-color: #5a67d8; /* Темнее синий */
-    transform: translateY(-2px); /* Приподнимаем кнопку */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Увеличиваем тень */
+#getAPIKey:hover:not(:disabled) {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
