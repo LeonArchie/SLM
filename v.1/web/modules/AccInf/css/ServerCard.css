@@ -1,0 +1,150 @@
+/* Контейнер формы */
+.form-container {
+    background-color: #ffffff; /* Белый фон */
+    border-radius: 12px; /* Закругленные углы */
+    max-width: 90%; /* Максимальная ширина формы */
+    width: 100%;
+    margin: 50px auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Тень */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 100px); /* Высота формы с отступом */
+    transition: all 0.3s ease; /* Плавные переходы */
+}
+
+/* Статичная полоса с кнопками */
+.button-bar {
+    background-color: #f9f9f9;
+    padding: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Общие стили кнопок */
+.button-bar button {
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    text-align: center;
+}
+
+/* Кнопка "EditCard" */
+#EditCard  {
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
+}
+
+#EditCard:hover:not(:disabled) {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Кнопка "SevaCard" */
+#SevaCard  {
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
+}
+
+#SevaCard:hover:not(:disabled) {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Кнопка "Обновить" */
+#refreshButton  {
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
+}
+
+#refreshButton:hover:not(:disabled) {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+/* Кнопка "Back" */
+#Back  {
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
+}
+
+#Back:hover:not(:disabled) {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+/* Стиль для отключенных кнопок */
+.button-bar button:disabled {
+    background-color: #95a5a6 !important;
+    background-image: none !important;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+    opacity: 0.7;
+}
+
+/* Стиль для кастомных чекбоксов */
+.custom-checkbox {
+    appearance: none; /* Убираем стандартный вид чекбокса */
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e2e8f0; /* Светлая граница */
+    border-radius: 4px; /* Закругленные углы */
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Чекбокс при наведении */
+.custom-checkbox:hover {
+    border-color: #667eea; /* Синяя граница */
+}
+
+/* Активный чекбокс */
+.custom-checkbox:checked {
+    background-color: #667eea; /* Синий фон */
+    border-color: #667eea; /* Синяя граница */
+}
+
+/* Отметка внутри активного чекбокса */
+.custom-checkbox:checked::after {
+    content: ''; /* Добавляем отметку */
+    display: block;
+    width: 10px;
+    height: 5px;
+    border: 2px solid #fff; /* Белая отметка */
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg); /* Поворачиваем отметку */
+    position: absolute;
+    top: 4px;
+    left: 6px;
+}
+
+/* Неактивный чекбокс */
+.custom-checkbox:not(:checked) {
+    background-color: #f44336; /* Красный фон */
+    border-color: #f44336; /* Красная граница */
+}
