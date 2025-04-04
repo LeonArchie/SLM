@@ -382,15 +382,6 @@ td.name-cell a:hover {
     background: #5a67d8; /* Цвет ползунка при наведении */
 }
 
-.form-error-message {
-    color: red;
-    font-weight: bold;
-    padding: 10px;
-    border: 1px solid red;
-    background-color: #ffe6e6;
-    text-align: center;
-}
-
 /* Стили для контейнера select */
 #privilegesToDelete {
     width: 100%; /* Ширина на всю доступную область */

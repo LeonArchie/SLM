@@ -58,7 +58,7 @@
                 {
                     "guid": "16bdb437-08e7-4783-8945-73618eab30e7",
                     "title": "Серверное оборудование",
-                    "url": "",
+                    "url": "/modules/AccInf/Server_hardware.php",
                     "icon": "",
                     "active": true,
                     "role": ["view", "edit"],
@@ -88,62 +88,6 @@
                     "url": "",
                     "icon": "",
                     "active": true,
-                    "role": ["view", "edit"],
-                    "dropdown": []
-                }
-
-            ]
-        },
-        {
-            "guid": "1e1daaaf-7822-4ab9-b6c5-a456ceab208a",
-            "title": "Поддержка",
-            "url": "",
-            "icon": "",
-            "active": false,
-            "role": ["view", "edit"],
-            "dropdown": [
-                {
-                    "guid": "fead5334-3da9-4a1a-8ae3-ba687d4211b8",
-                    "title": "Создать",
-                    "url": "/create.php",
-                    "icon": "",
-                    "active": false,
-                    "role": ["view", "edit"],
-                    "dropdown": []
-                },
-                {
-                    "guid": "eb95aef2-b478-4567-a66b-c7ae71c0a100",
-                    "title": "Инциденты",
-                    "url": "/incidents.php",
-                    "icon": "",
-                    "active": false,
-                    "role": ["view", "edit"],
-                    "dropdown": []
-                },
-                {
-                    "guid": "47c419f8-1f8f-4fc5-a200-a2cb4a6cdd4c",
-                    "title": "Запросы",
-                    "url": "/requests.php",
-                    "icon": "",
-                    "active": false,
-                    "role": ["view", "edit"],
-                    "dropdown": []
-                },
-                {
-                    "guid": "06d73430-f85a-448a-b008-c18e5686d716",
-                    "title": "Риски",
-                    "url": "/risk.php",
-                    "icon": "",
-                    "active": false,
-                    "role": ["view", "edit"],
-                    "dropdown": []
-                },
-                {
-                    "guid": "f4343168-d52c-48bc-9616-f13fa4b50aa5",
-                    "title": "Регламентные работы",
-                    "url": "/routinemaintenance.php",
-                    "icon": "",
-                    "active": false,
                     "role": ["view", "edit"],
                     "dropdown": []
                 }
