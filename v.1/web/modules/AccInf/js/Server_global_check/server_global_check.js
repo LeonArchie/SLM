@@ -8,11 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let eventSource;
 
-    console.log('Скрипт загружен и готов к работе.');
-
     // Функция для добавления записи в лог
     function addLogEntry(message, type = 'log') {
-        console.log(`Добавление записи в лог: Тип=${type}, Сообщение=${message}`);
         const logEntry = document.createElement('div');
         logEntry.className = `log-entry ${type}`;
 
@@ -32,26 +29,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Запуск проверки
     startBtn.addEventListener('click', function() {
-        console.log('Нажата кнопка "Запустить проверку".');
         tableContainer.innerHTML = '<div class="log-header">Журнал проверки серверов:</div>';
         stopBtn.disabled = false;
         startBtn.disabled = true;
 
         const csrfToken = document.querySelector('input[name="csrf_token"]').value;
         const userId = document.querySelector('input[name="userid"]').value;
-
-        console.log(`Получены данные для запроса: CSRF Token=${csrfToken}, UserID=${userId}`);
+;
         addLogEntry('Инициализация проверки...', 'log');
 
         eventSource = new EventSource(`back/Server_global_Check/server_global_check_start.php?userid=${userId}&csrf_token=${csrfToken}`);
 
-        console.log('EventSource создан. Ожидание сообщений от сервера...');
-
         eventSource.onmessage = function(e) {
-            console.log('Получено новое сообщение от сервера:', e.data);
             try {
                 const data = JSON.parse(e.data);
-                console.log('Данные успешно распарсены:', data);
 
                 // Проверяем структуру данных
                 if (!data || typeof data !== 'object' || !data.message || !data.type) {
@@ -63,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Завершаем проверку, если это последнее сообщение
                 if (data.type === 'done') {
-                    console.log('Получено завершающее сообщение. Закрытие EventSource.');
                     stopBtn.disabled = true;
                     startBtn.disabled = false;
                     eventSource.close();
@@ -85,9 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Остановка проверки
     stopBtn.addEventListener('click', function() {
-        console.log('Нажата кнопка "Остановить проверку".');
         if (eventSource) {
-            console.log('Закрытие EventSource.');
             eventSource.close();
         }
 
@@ -98,7 +86,6 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Данные от сервера после остановки:', data);
             const message = data.message || 'Проверка остановлена';
             addLogEntry(message, data.status === 'success' ? 'warning' : 'error');
             stopBtn.disabled = true;

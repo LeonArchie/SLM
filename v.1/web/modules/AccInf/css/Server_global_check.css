@@ -145,6 +145,14 @@
     color: #27ae60;
 }
 
+.log-entry.done {
+    color: #2927ae;
+}
+
+.log-entry.done .log-time {
+    color: #2927ae;
+}
+
 .log-entry.warning {
     color: #f39c12;
 }

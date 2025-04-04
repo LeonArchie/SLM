@@ -35,7 +35,7 @@
     }
 
     // Подготовка запроса для получения данных о серверах
-    $stmt = $pdo->prepare('SELECT servers."Name", Status, serv_id, ip_addr, servers."Domain", servers."Demon" FROM servers');
+    $stmt = $pdo->prepare('SELECT servers."Name", Status, serv_id, ip_addr, servers."Domain", servers."Demon", servers."validate", servers."stand" FROM servers');
 
     // Выполнение запроса и проверка на ошибки
     if (!$stmt->execute()) {
@@ -86,22 +86,26 @@
                             <tr>
                                 <th><input type="checkbox" id="selectAll"></th>
                                 <th>Наименование оборудования</th>
+                                <th>Стенд</th>
                                 <th>Статус</th>
-                                <th>ID Оборудования</th>
                                 <th>Ip Адрес</th>
                                 <th>Домен</th>
                                 <th>Демон подключен</th>
+                                <th>Валидация</th>
+                                <th>ID Оборудования</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                                 foreach ($servers as $server):
                                     $name = htmlspecialchars($server['name'] ?? 'Не указано');
-                                    $status = htmlspecialchars($server['status'] ?? 'Неизвестен');
+                                    $stand = htmlspecialchars($server['stand'] ?? 'Не указан');
+                                    $status = htmlspecialchars($server['Status'] ?? 'Неизвестен');
                                     $servId = htmlspecialchars($server['serv_id'] ?? 'Без ID');
                                     $ipAddr = htmlspecialchars($server['ip_addr'] ?? 'Не указан');
                                     $domain = htmlspecialchars($server['domain'] ?? 'Не указан');
                                     $demonConnected = !empty($server['demon']) ? 'checked' : '';
+                                    $validateChecked = !empty($server['validate']) ? 'checked' : '';
                             ?>
                             <tr>
                                 <td>
@@ -112,13 +116,17 @@
                                         <?= $name ?>
                                     </a>
                                 </td>
+                                <td><?= $stand ?></td>
                                 <td><?= $status ?></td>
-                                <td><?= $servId ?></td>
                                 <td><?= $ipAddr ?></td>
                                 <td><?= $domain ?></td>
                                 <td>
                                     <input type="checkbox" disabled <?= $demonConnected ?> class="custom-checkbox demon-indicator">
                                 </td>
+                                <td>
+                                    <input type="checkbox" disabled <?= $validateChecked ?> class="custom-checkbox validate-indicator">
+                                </td>
+                                <td><?= $servId ?></td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>

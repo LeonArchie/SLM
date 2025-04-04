@@ -1,26 +1,21 @@
 <?php
     // Проверка и определение ROOT_PATH
-    // Если константа ROOT_PATH не определена, задаем её как корневой путь сервера.
     if (!defined('ROOT_PATH')) {
         define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT']);
     }
 
     // Подключение function.php
-    // Формируем путь к файлу function.php, который находится в папке include.
     $file_path = ROOT_PATH . '/include/function.php';
 
-    // Проверяем, существует ли файл function.php. Если нет, возвращаем ошибку и завершаем выполнение.
     if (!file_exists($file_path)) {
-        http_response_code(500); // Устанавливаем HTTP-код 500 (Internal Server Error).
+        http_response_code(500);
         echo json_encode(['success' => false, 'message' => 'Ошибка 0067: Ошибка сервера.']);
         exit();
     }
 
-    // Подключаем файл function.php, который содержит необходимые функции.
     require_once $file_path;
 
     // Запуск сессии
-    // Если сессия не была запущена, запускаем её.
     startSessionIfNotStarted();
 
     header('Content-Type: text/event-stream; charset=utf-8');
@@ -30,10 +25,9 @@
     logger("DEBUG", "Установлены заголовки SSE");
 
     // Проверка CSRF-токена
-    // Сравниваем CSRF-токен из запроса с токеном, хранящимся в сессии.
     if ($_GET['csrf_token'] !== $_SESSION['csrf_token']) {
-        logger("ERROR", "Неверный CSRF-токен."); // Логируем ошибку.
-        http_response_code(403); // Устанавливаем HTTP-код 403 (Forbidden).
+        logger("ERROR", "Неверный CSRF-токен.");
+        http_response_code(403);
         echo json_encode(['success' => false, 'message' => 'Ошибка 0069: Обновите страницу и повторите попытку.'], JSON_UNESCAPED_UNICODE);
         exit();
     }
@@ -44,12 +38,11 @@
 
     try {      
         try {
-            // Пытаемся подключиться к базе данных.
+            // Подключение к базе данных
             $pdo = connectToDatabase();
         } catch (Exception $e) {
-            // Если подключение не удалось, логируем ошибку и завершаем выполнение.
             logger("ERROR", "Ошибка подключения к базе данных: " . $e->getMessage());
-            http_response_code(500); // Устанавливаем HTTP-код 500 (Internal Server Error).
+            http_response_code(500);
             echo json_encode(['success' => false, 'message' => 'Ошибка 0071: Ошибка сервера.'], JSON_UNESCAPED_UNICODE);
             exit();
         }
@@ -71,7 +64,7 @@
         sendMessage('log', 'Получено серверов для анализа: ' . $serverCount);
         
         // Проверки конфликтов
-        performConflictChecks($servers, $taskId);
+        performConflictChecks($servers, $taskId, $pdo);
         
         logger("INFO", "Проверка серверов успешно завершена", [
             'execution_time' => round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) . ' сек'
@@ -96,7 +89,7 @@
             'timestamp' => time()
         ];
 
-        logger("DEBUG", "Отправлено SSE сообщение" . $payload);
+        logger("DEBUG", "Отправлено SSE сообщение" . json_encode($payload, JSON_UNESCAPED_UNICODE));
 
         echo "data: " . json_encode($payload, JSON_UNESCAPED_UNICODE) . "\n\n";
         flush();
@@ -105,7 +98,7 @@
     /**
      * Выполнение проверок на конфликты с учетом уровней логирования
      */
-    function performConflictChecks($servers, $taskId) {
+    function performConflictChecks($servers, $taskId, $pdo) {
         // Проверка имен
         checkTaskInterruption($taskId);
         logger("INFO", "Начало проверки имен серверов");
@@ -113,6 +106,9 @@
         
         $nameResults = checkNameConflicts($servers);
         logCheckResults('Наменований серверов', $nameResults);
+        if (!empty($nameResults['conflicts'])) {
+            updatevalidateStatus($pdo, 'Name', $nameResults['conflicts']);
+        }
         
         // Проверка ID
         checkTaskInterruption($taskId);
@@ -121,6 +117,9 @@
         
         $idResults = checkIdConflicts($servers);
         logCheckResults('id серверов', $idResults);
+        if (!empty($idResults['conflicts'])) {
+            updatevalidateStatus($pdo, 'serv_id', $idResults['conflicts']);
+        }
         
         // Проверка IP
         checkTaskInterruption($taskId);
@@ -129,6 +128,40 @@
         
         $ipResults = checkIpConflicts($servers);
         logCheckResults('IP адресов', $ipResults);
+        if (!empty($ipResults['conflicts'])) {
+            updatevalidateStatus($pdo, 'ip_addr', $ipResults['conflicts']);
+        }
+    }
+
+    /**
+     * Обновление статуса validate в базе данных для конфликтующих записей
+     */
+    function updatevalidateStatus($pdo, $field, $conflictValues) {
+        try {
+            // Подготавливаем IN условие для запроса
+            $placeholders = implode(',', array_fill(0, count($conflictValues), '?'));
+            $query = "UPDATE servers SET \"validate\" = false WHERE \"$field\" IN ($placeholders)";
+            
+            $stmt = $pdo->prepare($query);
+            
+            // Выполняем запрос с передачей значений конфликтов
+            if (!$stmt->execute($conflictValues)) {
+                $errorInfo = $stmt->errorInfo();
+                logger("ERROR", "Ошибка обновления статуса validate: " . $errorInfo[2]);
+                sendMessage('done', 'Ошибка обновления статуса проверки в БД');
+                return false;
+            }
+            
+            $affectedRows = $stmt->rowCount();
+            logger("INFO", "Обновлено записей в БД: $affectedRows (поле $field)");
+            sendMessage('log', "Обновлено $affectedRows записей с конфликтами по полю $field");
+            
+            return true;
+        } catch (Exception $e) {
+            logger("ERROR", "Ошибка при обновлении validate: " . $e->getMessage());
+            sendMessage('done', 'Ошибка при обновлении БД');
+            return false;
+        }
     }
 
     /**
@@ -137,7 +170,7 @@
     function logCheckResults($checkType, $results) {
         if (!empty($results['conflicts'])) {
             logger("WARNING", "Обнаружены конфликты $checkType");
-            sendMessage('warning', "Обнаружены дубликаты $checkType " . implode(', ', $results['conflicts'])); 
+            sendMessage('warning', "Обнаружены дубликаты $checkType: " . implode(', ', $results['conflicts'])); 
         } else {
             logger("INFO", "Конфликты $checkType не обнаружены");
             sendMessage('success', "Конфликты $checkType не обнаружены");
@@ -152,7 +185,7 @@
         $counts = array_count_values($names);
         $conflicts = array_keys(array_filter($counts, fn($count) => $count > 1));
         
-        logger("DEBUG", "Результаты проверки имен". $conflicts);
+        logger("DEBUG", "Результаты проверки имен: " . json_encode($conflicts));
         
         return ['conflicts' => $conflicts];
     }
@@ -165,7 +198,7 @@
         $counts = array_count_values($ids);
         $conflicts = array_keys(array_filter($counts, fn($count) => $count > 1));
         
-        logger("DEBUG", "Результаты проверки ID". $conflicts);
+        logger("DEBUG", "Результаты проверки ID: " . json_encode($conflicts));
         
         return ['conflicts' => $conflicts];
     }
@@ -178,7 +211,7 @@
         $counts = array_count_values($ips);
         $conflicts = array_keys(array_filter($counts, fn($count) => $count > 1));
         
-        logger("DEBUG", "Результаты проверки IP". $conflicts);
+        logger("DEBUG", "Результаты проверки IP: " . json_encode($conflicts));
         
         return ['conflicts' => $conflicts];
     }
