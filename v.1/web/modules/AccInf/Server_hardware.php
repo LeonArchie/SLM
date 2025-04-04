@@ -100,7 +100,7 @@
                                 foreach ($servers as $server):
                                     $name = htmlspecialchars($server['name'] ?? 'Не указано');
                                     $stand = htmlspecialchars($server['stand'] ?? 'Не указан');
-                                    $status = htmlspecialchars($server['Status'] ?? 'Неизвестен');
+                                    $status = htmlspecialchars($server['status'] ?? 'Неизвестен');
                                     $servId = htmlspecialchars($server['serv_id'] ?? 'Без ID');
                                     $ipAddr = htmlspecialchars($server['ip_addr'] ?? 'Не указан');
                                     $domain = htmlspecialchars($server['domain'] ?? 'Не указан');
