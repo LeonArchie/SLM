@@ -35,3 +35,9 @@
     // Логируем успешное завершение загрузки футера
     logger("INFO", "Футер загружен успешно");
 ?>
+
+<!-- Подвал -->
+<footer class="footer">
+    <div class="version">Version: <?php echo htmlspecialchars($currentVersion); ?></div>
+    <div class="version">Apache License Version 2.0, 2025</div>
+</footer>

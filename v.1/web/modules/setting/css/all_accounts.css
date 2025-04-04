@@ -33,110 +33,121 @@
     box-shadow: inset 0 -2px 5px rgba(0, 0, 0, 0.1); /* Внутренняя тень */
 }
 
-/* Общие стили для кнопок */
+/* Общие стили кнопок */
 .button-bar button {
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 500;
     border: none;
-    border-radius: 8px; /* Закругленные углы */
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Мягкая тень */
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    text-align: center;
 }
 
 /* Кнопка "Добавить" */
 #addButton {
-    background-color: #667eea; /* Синий */
-    color: #ffffff; /* Белый текст */
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
-#addButton:hover {
-    background-color: #5a67d8; /* Темнее синий */
-    transform: translateY(-2px); /* Приподнимаем кнопку */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Увеличиваем тень */
+#addButton:hover:not(:disabled) {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Кнопка "Редактировать" */
 #editButton {
-    background-color: #667eea; /* Синий */
-    color: #ffffff; /* Белый текст */
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
-#editButton:hover {
-    background-color: #5a67d8; /* Темнее синий */
+#editButton:hover:not(:disabled) {
+    background-color: #dc3545;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Кнопка "Заблокировать" */
 #blockButton {
-    background-color: #667eea; /* Синий */
-    color: #ffffff; /* Белый текст */
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
-#blockButton:hover {
-    background-color: #5a67d8; /* Темнее синий */
+#blockButton:hover:not(:disabled) {
+    background-color: #dc3545;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Кнопка "Удалить" */
 #deleteButton {
-    background-color: #667eea; /* Синий */
-    color: #ffffff; /* Белый текст */
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
-#deleteButton:hover {
-    background-color: #5a67d8; /* Темнее синий */
+#deleteButton:hover:not(:disabled) {
+    background-color: #dc3545;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Кнопка "Принудительная синхронизация LDAP" */
 #syncLdapButton {
-    background-color: #667eea; /* Синий */
-    color: #ffffff; /* Белый текст */
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
-#syncLdapButton:hover {
-    background-color: #5a67d8; /* Темнее синий */
+#syncLdapButton:hover:not(:disabled) {
+    background-color: #dc3545;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Кнопка "Настройки LDAP" */
 #ldapSettingsButton {
-    background-color: #667eea; /* Синий */
-    color: #ffffff; /* Белый текст */
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
-#ldapSettingsButton:hover {
-    background-color: #5a67d8; /* Темнее синий */
+#ldapSettingsButton:hover:not(:disabled) {
+    background-color: #dc3545;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Кнопка "Обновить" */
 #refreshButton {
-    background-color: #667eea; /* Синий */
-    color: #ffffff; /* Белый текст */
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
-#refreshButton:hover {
-    background-color: #5a67d8; /* Темнее синий */
+#refreshButton:hover:not(:disabled) {
+    background-color: #dc3545;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Стиль для отключенных кнопок */
 .button-bar button:disabled {
-    background-color: #bdbdbd; /* Серый фон */
-    color: #757575; /* Серый текст */
+    background-color: #95a5a6 !important;
+    background-image: none !important;
     cursor: not-allowed;
-    box-shadow: none;
-    opacity: 0.7; /* Немного прозрачности */
+    transform: none !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+    opacity: 0.7;
 }
+
 
 /* Таблица */
 .table-container {
@@ -262,8 +273,9 @@ td.name-cell a:hover {
 
 .add-form .password-container button {
     padding: 10px;
-    background-color: #667eea; /* Синий */
-    color: white;
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
     border: none;
     border-radius: 8px; /* Закругленные углы */
     cursor: pointer;
@@ -290,21 +302,29 @@ td.name-cell a:hover {
 }
 
 .add-form .button-group .cancel {
-    background-color: #e57373; /* Красный */
-    color: #ffffff; /* Белый текст */
+    background-color: #dc3545;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #dc3545, #9200f3);
+
 }
 
-.add-form .button-group .cancel:hover {
-    background-color: #ef5350; /* Темнее красный */
+.add-form .button-group .cancel:hover:not(:disabled) {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .add-form .button-group .create {
-    background-color: #81c784; /* Зеленый */
+    background-color: #2cb933; /* Зеленый */
     color: #ffffff; /* Белый текст */
+    color: #ffffff;
+    background-image: linear-gradient(to right, #2cb933, #c4d860);
 }
 
-.add-form .button-group .create:hover {
-    background-color: #66bb6a; /* Темнее зеленый */
+.add-form .button-group .create:hover:not(:disabled) {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Стиль для выпадающего списка */
