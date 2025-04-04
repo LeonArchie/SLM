@@ -141,6 +141,7 @@
         <script src="/js/error.js"></script>
         <!-- Скрипты модуля -->
         <script src="js/Server_hardware/server_hardware.js"></script>
+        <script src="js/Server_hardware/ServerCard.js"></script>
         <script src="js/Server_hardware/global_check.js"></script>
     </body>
 </html>

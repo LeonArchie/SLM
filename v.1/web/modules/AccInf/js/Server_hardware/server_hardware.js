@@ -23,9 +23,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             updateViewCardButtonState();
         });
-        
-        // Обработчик клика по строке
-        const row = this.closest('tr');
+    });
+
+    // Обработчики клика по строкам таблицы
+    document.querySelectorAll('tbody tr').forEach(row => {
         row.addEventListener('click', function(e) {
             // Игнорируем клики по ссылкам и чекбоксам
             if (e.target.tagName === 'A' || e.target.tagName === 'INPUT') {
@@ -33,8 +34,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             const checkbox = this.querySelector('.serverCheckbox');
-            checkbox.checked = !checkbox.checked;
-            checkbox.dispatchEvent(new Event('change'));
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+                // Создаем и запускаем событие change
+                const event = new Event('change');
+                checkbox.dispatchEvent(event);
+            }
         });
     });
     
@@ -54,12 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
             redirectToServerCard(serverId);
         }
     });
-    
-    // Функция для перенаправления на карточку сервера
-    function redirectToServerCard(serverId) {
-        window.location.href = `/server_card.php?id=${serverId}`;
-    }
-    
+   
     // Инициализация состояния кнопки при загрузке
     updateViewCardButtonState();
 });
