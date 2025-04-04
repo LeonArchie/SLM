@@ -22,12 +22,20 @@
     // Если сессия не была запущена, запускаем её.
     startSessionIfNotStarted();
 
+    // Установка кодировки
     header('Content-Type: application/json; charset=utf-8');
-    
+    mb_internal_encoding('UTF-8');
+
     if (isset($_SESSION['running_task'])) {
         unset($_SESSION['running_task']);
-        echo json_encode(['status' => 'success', 'message' => 'Проверка остановлена'], JSON_UNESCAPED_UNICODE);
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Проверка остановлена'
+        ], JSON_UNESCAPED_UNICODE);
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'Нет активных задач для остановки'], JSON_UNESCAPED_UNICODE);
+        echo json_encode([
+            'status' => 'error', 
+            'message' => 'Нет активных задач для остановки'
+        ], JSON_UNESCAPED_UNICODE);
     }
-    ?>
+?>
