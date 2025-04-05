@@ -96,7 +96,7 @@
         },
         {
             "guid": "9bc70913-5e7b-4577-8918-cde4756b29a8",
-            "title": "Настройки",
+            "title": "Настройки платформы",
             "url": "",
             "icon": "",
             "active": true,
@@ -112,15 +112,6 @@
                     "dropdown": []
                 },
                 {
-                    "guid": "ada7e553-6d5f-4444-8eec-29e008139ecd",
-                    "title": "Полномочия",
-                    "url": "/modules/setting/authority_manager.php",
-                    "icon": "",
-                    "active": true,
-                    "role":["edit"],
-                    "dropdown": []
-                },
-                {
                     "guid": "aeef82b7-5083-480e-a59e-507a083a16be",
                     "title": "Просмотреть/Назначить роли",
                     "url": "/modules/setting/authority_manager.php",
@@ -131,23 +122,32 @@
                 },
                 {
                     "guid": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-                    "title": "Модули",
-                    "url": "/modules.php",
-                    "icon": "",
-                    "active": false,
-                    "role": ["view", "edit"],
-                    "dropdown": []
-                },
-                {
-                    "guid": "356a5297-1587-4d79-8f81-b3e1c7e21a73",
-                    "title": "Моя учетная запись",
-                    "url": "/modules/setting/my_account.php",
+                    "title": "Управление модулями",
+                    "url": "/modules/setting/modules.php",
                     "icon": "",
                     "active": true,
-                    "role": ["edit"],
+                    "role": ["view", "edit"],
                     "dropdown": []
-                }                  
+                } 
             ]
+        },
+        {
+            "guid": "27cc1a41-fc05-4e9d-931f-8133812e71ba",
+            "title": "Справочник",
+            "url": "/modules/addresbook/addresbook.php",
+            "icon": "",
+            "active": true,
+            "role": ["edit"],
+            "dropdown": []
+        },
+        {
+            "guid": "356a5297-1587-4d79-8f81-b3e1c7e21a73",
+            "title": "Моя учетная запись",
+            "url": "/modules/setting/my_account.php",
+            "icon": "",
+            "active": true,
+            "role": ["edit"],
+            "dropdown": []
         },
         {
             "guid": "a5366719-a2ec-4cc8-a1a6-f8a0f78e1238",
