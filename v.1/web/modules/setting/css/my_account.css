@@ -362,13 +362,15 @@
     font-size: 1em;
     font-weight: 500;
     transition: background-color 0.3s ease, transform 0.2s ease; /* Плавные переходы */
-    background-color: #667eea; /* Синий */
-    color: #ffffff; /* Белый текст */
+    background-color: #667eea;
+    color: #ffffff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
 .passwd-form button:hover {
-    background-color: #5a67d8; /* Темнее синий */
-    transform: translateY(-2px); /* Приподнимаем кнопку */
+    background-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Стиль для выделенной строки */
