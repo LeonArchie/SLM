@@ -83,7 +83,7 @@
             <div class="form-container">
                 <!-- Группа кнопок -->
                 <div class="button-group fixed-buttons">
-                    <button class="form-button" id="updateButton" onclick="location.reload()">Сбросить</button>
+                    <button class="form-button" id="updateButton" onclick="location.reload()">Обновить страницу</button>
                     <button class="form-button" id="saveButton">Сохранить</button>
                     <button class="form-button" id="changePasswordButton">Сменить пароль</button>
                 </div>
