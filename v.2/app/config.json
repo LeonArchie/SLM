@@ -1,0 +1,20 @@
+{
+    "LDAP": {
+        "active": false,
+        "domain_master": "",
+        "domain_slave": "",
+        "port": "",
+        "DN": "",
+        "username": "",
+        "password": ""
+    },
+    "LOG": {
+        "app": "/var/log/slm/app/v2/app.log",
+        "max_bytes": 10485700,
+        "backup_count": 5,
+        "log_level": "DEBUG"
+    },
+    "version": {
+        "current_version": "0.7.0"
+    }
+}
