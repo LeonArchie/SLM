@@ -1,19 +1,23 @@
 <?php
 
-logger("INFO", "Футер начал загрузку");
+    // Определяем корень веб-сервера
+    if (!defined('ROOT_PATH')) {
+        define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT']);
+    }
 
-include "/../api/getVersionFromApi.php";
+    logger("INFO", "Футер начал загрузку");
 
-// Получаем версию через API с обработкой исключений
-try {
-    $currentVersion = getVersionFromApi();
-} catch (Exception $e) {
-    logger("ERROR", "Failed to get version: " . $e->getMessage());
-    $currentVersion = '0.0.0.0'; // Возвращаем 4 цифры при ошибке
-}
+    include ROOT_PATH . "/platform/include/api/getVersionFromApi.php";
 
-// Логируем успешное завершение загрузки футера
-logger("INFO", "Футер загружен успешно. Версия: " . $currentVersion);
+    try {
+        $currentVersion = getVersionFromApi();
+    } catch (Throwable $e) {
+        logger("ERROR", "Failed to get version: " . $e->getMessage());
+        $currentVersion = '0.0.0.0';
+    }
+
+    // Логируем успешное завершение загрузки футера
+    logger("INFO", "Футер загружен успешно. Версия: " . $currentVersion);
 ?>
 
 <!-- Подвал -->

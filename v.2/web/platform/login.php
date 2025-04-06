@@ -58,7 +58,7 @@
             href="include/img/eos_icon.png"
             />
             <link rel="stylesheet" href="css/login.css"/>
-            <link rel="stylesheet" href="/include/css/error.css"/>
+            <link rel="stylesheet" href="include/css/error.css"/>
     </head>
     <body>
         <?php include 'include/visible/eos_header.html'; ?>

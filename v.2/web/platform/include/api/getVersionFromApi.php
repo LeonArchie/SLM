@@ -1,5 +1,8 @@
 <?php
-    // Функция для получения версии через API (без изменений)
+
+    logger("INFO", "getVersionFromApi загружен");
+
+    // Функция для получения версии через API
     function getVersionFromApi() {
         $apiUrl = 'http://localhost:5000/version/';
         $defaultVersion = '0.0.0';
