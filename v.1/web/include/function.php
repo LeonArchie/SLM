@@ -10,11 +10,11 @@
     }
 
     if (!defined('LOGGER_PATH')) {
-        define('LOGGER_PATH', '/var/log/slm/web/web.log');
+        define('LOGGER_PATH', '/var/log/slm/web/v1/web.log');
     }
 
     if (!defined('AUDIT_PATH')) {
-        define('AUDIT_PATH', '/var/log/slm/web/audit.log');
+        define('AUDIT_PATH', '/var/log/slm/web/v1/audit.log');
     }
 
     if (!defined('CONFIG_PATH')) {

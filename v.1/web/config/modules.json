@@ -56,6 +56,15 @@
             "role": ["view", "edit"],
             "dropdown": [
                 {
+                    "guid": "94248bd2-78dc-48d6-8995-6833a962a223",
+                    "title": "Автоматизированные системы",
+                    "url": "/modules/AccInf/Automated_systems.php",
+                    "icon": "",
+                    "active": true,
+                    "role": ["view", "edit"],
+                    "dropdown": []
+                },
+                {
                     "guid": "16bdb437-08e7-4783-8945-73618eab30e7",
                     "title": "Серверное оборудование",
                     "url": "/modules/AccInf/Server_hardware.php",
