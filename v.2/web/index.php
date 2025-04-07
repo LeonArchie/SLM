@@ -29,5 +29,6 @@
         logger("WARNING", "Авторизация не пройдена, перенаправление на logout");
         header("Location: platform/login.php");
     }
+    exit();
 ?>
 

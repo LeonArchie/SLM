@@ -51,5 +51,80 @@
         }
     }
 
+    function checkPrivilege($privileges_page) {
+        // Логируем начало выполнения функции
+        logger("INFO", "Вызов checkPrivilege для привилегии: {$privileges_page}");
+        
+        // Проверяем наличие необходимых данных в сессии
+        if (!isset($_SESSION['access_token']) || !isset($_SESSION['userid'])) {
+            $errorMsg = "Отсутствует access_token или userid в сессии";
+            logger("ERROR", $errorMsg);
+            return false;
+        }
+    
+        // Автоматически определяем базовый URL с портом 5000
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+        $host = $_SERVER['HTTP_HOST'];
+        
+        // Удаляем стандартный порт если он есть в HTTP_HOST
+        $host = str_replace([':80',':443'], '', $host);
+        
+        // Формируем URL с портом 5000
+        $api_url = "{$protocol}://{$host}:5000/check-privilege";
+        logger("DEBUG", "Сформирован URL API: {$api_url}");
+    
+        // Подготавливаем данные для запроса
+        $post_data = [
+            'access_token' => $_SESSION['access_token'],
+            'privileges_id' => $privileges_page,
+            'userid' => $_SESSION['userid']
+        ];
+        logger("DEBUG", "Данные запроса: " . json_encode($post_data));
+    
+        // Инициализируем cURL
+        $ch = curl_init();
+        
+        // Настраиваем параметры запроса
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $api_url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($post_data),
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Accept: application/json'
+            ],
+            CURLOPT_TIMEOUT => 5
+        ]);
+    
+        // Выполняем запрос
+        logger("INFO", "Отправка запроса к API проверки привилегий");
+        $response = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        
+        if (curl_errno($ch)) {
+            $errorMsg = "cURL Error: " . curl_error($ch);
+            logger("ERROR", $errorMsg);
+            curl_close($ch);
+            return false;
+        }
+        
+        curl_close($ch);
+    
+        // Обрабатываем ответ
+        logger("DEBUG", "Получен ответ от API. HTTP код: {$http_code}, Ответ: {$response}");
+        
+        if ($http_code === 200) {
+            $result = json_decode($response, true);
+            $has_privilege = $result['has_privilege'] ?? false;
+            logger("INFO", "Результат проверки привилегии: " . ($has_privilege ? "Доступ разрешен" : "Доступ запрещен"));
+            return $has_privilege;
+        }
+    
+        $errorMsg = "API request failed. HTTP code: {$http_code}, Response: {$response}";
+        logger("ERROR", $errorMsg);
+        return false;
+    }
+
     logger("INFO", "function.php инициализирован");
 ?>

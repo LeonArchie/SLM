@@ -1,7 +1,14 @@
 <?php
     function checkAuth() {
         // Параметры API
-        $apiBaseUrl = 'http://your-api-domain';
+                // Автоматически определяем базовый URL с портом 5000
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+        $host = $_SERVER['HTTP_HOST'];
+        
+        // Удаляем стандартный порт если он есть в HTTP_HOST
+        $host = str_replace([':80',':443'], '', $host);
+
+        $apiBaseUrl = "{$protocol}://{$host}:5000";
         $verifyEndpoint = '/auth/verify';
         $refreshEndpoint = '/auth/refresh';
         
@@ -93,5 +100,4 @@
         logger("WARNING", "Авторизация не пройдена, перенаправление на login");
         header("Location: platform/login.php");
     }
-    exit();
 ?>
