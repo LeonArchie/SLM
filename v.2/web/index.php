@@ -8,7 +8,7 @@
     }
     require_once $file_path;
 
-    $file_path = 'platform/include/check_auth.php';
+    $file_path = 'platform/include/binding/check_auth.php';
     if (!file_exists($file_path)) {
         // Если не существует, переходим 503.php
         header("Location: err/50x.html");

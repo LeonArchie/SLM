@@ -28,7 +28,7 @@
     $auth_type_disabled = !$ldap_active;
     $default_auth_type = $ldap_active ? 'ldap' : 'internal';
 
-    include "include/visible/inital_error.php";
+    include "include/binding/inital_error.php";
 
     // Логируем успешную инициализацию скрипта
     logger("DEBUG", "login.php успешно инициализирован.");
