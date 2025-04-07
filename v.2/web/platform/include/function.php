@@ -51,30 +51,5 @@
         }
     }
 
-    // Функция для проверки авторизации пользователя
-    function checkAuth() {
-        // Проверка наличия имени пользователя в сессии
-        if (!isset($_SESSION['username'])) {
-            logger("INFO", "Пользователь не авторизован: отсутствует username в сессии.");
-            header("Location: " . LOGOUT_PATH);
-            exit();
-        }
-
-        // Проверка наличия cookie с session_id
-        if (!isset($_COOKIE['session_id'])) {
-            logger("INFO", "Пользователь не авторизован: отсутствует session_id в cookie.");
-            header("Location: " . LOGOUT_PATH);
-            exit();
-        }
-
-        // Проверка совпадения session_id из cookie и текущей сессии
-        if ($_COOKIE['session_id'] !== session_id()) {
-            logger("WARNING", "Пользователь не авторизован: session_id из cookie не совпадает с текущей сессией.");
-            header("Location: " . LOGOUT_PATH);
-            exit();
-        }
-
-        // Проверки пройдены
-        logger("INFO", "Пользователь авторизован: username = " . $_SESSION['username'] . ", session_id = " . session_id());
-    }
+    logger("INFO", "function.php инициализирован");
 ?>

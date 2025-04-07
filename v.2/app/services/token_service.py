@@ -9,7 +9,7 @@ class TokenService:
     @staticmethod
     def generate_tokens(user_id: str) -> tuple:
         """Генерация JWT токенов"""
-        logger.info(f"Генерация токенов для user_id={user_id}")
+        logger.info(f"Generating tokens for user_id={user_id}")
         
         try:
             access_payload = {
@@ -36,12 +36,42 @@ class TokenService:
                 algorithm='HS256'
             )
 
-            logger.debug(f"Токены сгенерированы для user_id={user_id}")
             return access_token, refresh_token
 
         except Exception as e:
-            logger.critical(
-                f"Ошибка генерации токенов: {str(e)}",
-                exc_info=True
+            logger.critical(f"Token generation error: {str(e)}", exc_info=True)
+            raise
+
+    @staticmethod
+    def verify_token(token: str) -> dict:
+        """Проверка JWT токена"""
+        logger.info("Verifying token")
+        try:
+            payload = jwt.decode(
+                token,
+                current_app.config['JWT_SECRET_KEY'],
+                algorithms=['HS256']
             )
+            return payload
+        except jwt.ExpiredSignatureError:
+            logger.warning("Token expired")
+            raise
+        except jwt.InvalidTokenError as e:
+            logger.warning(f"Invalid token: {str(e)}")
+            raise
+        except Exception as e:
+            logger.error(f"Token verification error: {str(e)}", exc_info=True)
+            raise
+
+    @staticmethod
+    def rotate_refresh_token(refresh_token: str) -> tuple:
+        """Обновление refresh токена"""
+        logger.info("Rotating refresh token")
+        try:
+            payload = TokenService.verify_token(refresh_token)
+            if payload['type'] != 'refresh':
+                raise ValueError("Not a refresh token")
+            return TokenService.generate_tokens(payload['user_id'])
+        except Exception as e:
+            logger.error(f"Token rotation error: {str(e)}", exc_info=True)
             raise

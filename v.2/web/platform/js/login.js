@@ -2,16 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('authForm');
     const loading = document.getElementById('loading');
     const authTypeSelect = document.getElementById('auth_type');
-    // Автоматически определяем базовый URL
     const baseUrl = window.location.origin;
 
-    // Проверяем, что все необходимые элементы существуют
     if (!form || !loading || !authTypeSelect) {
         console.error('Необходимые элементы формы не найдены');
         return;
     }
 
-    let isFormSubmitting = false; // Флаг для защиты от повторной отправки
+    let isFormSubmitting = false;
 
     const validateForm = () => {
         const login = form.login.value.trim();
@@ -30,21 +28,29 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
     };
 
-    const saveTokens = (data) => {
+    const saveToSession = async (data) => {
         try {
-            localStorage.setItem('access_token', data.access_token);
-            localStorage.setItem('refresh_token', data.refresh_token);
-            document.cookie = `user_id=${encodeURIComponent(data.user_id)}; path=/; secure; samesite=strict`;
+            const response = await fetch(`${baseUrl}/platform/back/save_session.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    access_token: data.access_token,
+                    refresh_token: data.refresh_token,
+                    user_id: data.user_id,
+                    user_name: data.user_name
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка сохранения сессии');
+            }
+
+            return await response.json();
         } catch (error) {
-            console.error('Ошибка при сохранении токенов:', error);
-            showErrorMessage(
-                'error',
-                'Ошибка сохранения данных',
-                'Невозможно сохранить токены. Попробуйте использовать другой браузер или отключить режим приватного просмотра.',
-                10000
-            );
-            form.reset();
-            setTimeout(() => window.location.reload(), 10000);
+            console.error('Ошибка при сохранении в сессию:', error);
+            throw error;
         }
     };
 
@@ -54,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isFormSubmitting) return;
         isFormSubmitting = true;
 
-        // Находим кнопку отправки формы
         const submitButton = form.querySelector('input[type="submit"]');
         if (!submitButton) {
             console.error('Кнопка отправки формы не найдена');
@@ -62,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        submitButton.disabled = true; // Блокируем кнопку
+        submitButton.disabled = true;
 
         try {
             if (!validateForm()) {
@@ -76,7 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? `${baseUrl}:5000/auth/login`
                 : `${baseUrl}:5000/auth/ldap/login`;
 
-            const response = await fetch(apiUrl, {
+            // Шаг 1: Получаем токены от API
+            const authResponse = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,17 +93,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
             });
 
-            const data = await response.json();
+            const authData = await authResponse.json();
 
-            if (!response.ok) {
-                throw new Error(data.error || 'Неизвестная ошибка сервера');
+            if (!authResponse.ok) {
+                throw new Error(authData.error || 'Неизвестная ошибка сервера');
             }
 
-            if (!data.access_token || !data.refresh_token) {
+            if (!authData.access_token || !authData.refresh_token) {
                 throw new Error('Некорректный ответ сервера');
             }
 
-            saveTokens(data);
+            // Шаг 2: Сохраняем данные в PHP сессию
+            await saveToSession(authData);
+
+            // Перенаправляем пользователя
             window.location.href = '/platform/dashboard.php';
 
         } catch (error) {
@@ -111,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } finally {
             isFormSubmitting = false;
             if (submitButton) {
-                submitButton.disabled = false; // Разблокируем кнопку
+                submitButton.disabled = false;
             }
             loading.style.display = 'none';
         }

@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from services.logger_service import LoggerService
 from services.db_service import DatabaseService
 from services.config_service import get_config
+from routes.verify import verify_bp
+from routes.refresh import refresh_bp
 from flask_cors import CORS
 import os
 import sys
@@ -70,9 +72,11 @@ def create_app():
     blueprints = [
         ('LDAP', ldap_bp),
         ('Version', version_bp),
-        ('Auth', auth_bp)
+        ('Auth', auth_bp),
+        ('Verify', verify_bp),
+        ('Refresh', refresh_bp)
     ]
-    
+        
     for name, bp in blueprints:
         try:
             app.register_blueprint(bp)
