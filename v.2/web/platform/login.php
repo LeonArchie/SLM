@@ -65,7 +65,7 @@
         <!-- Основной контент -->
         <main class="authorization">
             <h2>Авторизация</h2>
-            <form id="authForm" action="back/authorization.php" method="POST">
+            <form id="authForm">
                 <!-- Поле для логина -->
                 <div class="input-group">
                     <label for="login">Логин:</label>

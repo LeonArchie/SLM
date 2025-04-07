@@ -1,41 +1,57 @@
-# services/auth_service.py
 import bcrypt
-from typing import Dict, Any
-from services.db_service import DatabaseService
-from services.logger_service import setup_logger
 import time
+from typing import Dict, Optional
+from services.logger_service import LoggerService
 
-logger = setup_logger()
+logger = LoggerService.get_logger('app.auth')
 
-def verify_credentials(username: str, password: str) -> Dict[str, Any]:
-    """Проверяет учетные данные пользователя"""
-    try:
+class AuthService:
+    @staticmethod
+    def hash_password(password: str) -> str:
+        """Генерация bcrypt хеша пароля"""
+        logger.debug("Генерация хеша пароля")
+        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+    @staticmethod
+    def verify_password(input_pwd: str, stored_hash: str) -> bool:
+        """Проверка пароля через bcrypt"""
+        logger.debug("Проверка пароля")
+        try:
+            return bcrypt.checkpw(input_pwd.encode('utf-8'), stored_hash.encode('utf-8'))
+        except Exception as e:
+            logger.error(f"Ошибка проверки пароля: {str(e)}", exc_info=True)
+            return False
+
+    @staticmethod
+    def authenticate_user(login: str, password: str, db_service) -> Optional[Dict]:
+        """Основной метод аутентификации"""
+        logger.info(f"Начало аутентификации для '{login}'")
         start_time = time.time()
-        user = DatabaseService.get_user_by_login(username)
-        
-        if not user:
-            logger.warning(f"Попытка входа несуществующего пользователя: {username}")
-            return {'success': False, 'message': 'Неверный логин или пароль'}
-        
-        if not user['active']:
-            logger.warning(f"Попытка входа заблокированного пользователя: {username}")
-            return {'success': False, 'message': 'Пользователь заблокирован'}
-        
-        if bcrypt.checkpw(password.encode('utf-8'), user['password_hash'].encode('utf-8')):
-            logger.info(f"Успешная авторизация пользователя: {username} за {time.time() - start_time:.2f} сек")
+
+        try:
+            user = db_service.get_user_by_login(login)
+            if not user:
+                logger.warning(f"Пользователь '{login}' не найден")
+                return None
+
+            if not AuthService.verify_password(password, user['password_hash']):
+                logger.warning(f"Неверный пароль для '{login}'")
+                time.sleep(3)  # Защита от брутфорса
+                return None
+
+            logger.info(
+                f"Успешная аутентификация '{login}' "
+                f"(за {time.time()-start_time:.2f} сек)"
+            )
             return {
-                'success': True,
-                'user': {
-                    'id': user['userid'],
-                    'name': user['full_name'],
-                    'login': user['userlogin']
-                }
+                'id': user['userid'],
+                'login': user['userlogin'],
+                'name': user['full_name']
             }
-        else:
-            logger.warning(f"Неверный пароль для пользователя: {username}")
-            time.sleep(3)  # Задержка для защиты от брутфорса
-            return {'success': False, 'message': 'Неверный логин или пароль'}
-            
-    except Exception as e:
-        logger.error(f"Ошибка при проверке учетных данных: {str(e)}")
-        return {'success': False, 'message': 'Ошибка сервера'}
+
+        except Exception as e:
+            logger.critical(
+                f"Критическая ошибка аутентификации для '{login}': {str(e)}",
+                exc_info=True
+            )
+            raise

@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, request
 from services.ldap_service import read_ldap_config
-from services.logger_service import setup_logger
+from services.logger_service import LoggerService
 
-logger = setup_logger()
+logger = LoggerService.get_logger('ldap_routes')
 ldap_bp = Blueprint('ldap', __name__, url_prefix='/ldap')
 
 @ldap_bp.route('/active/', methods=['GET'])

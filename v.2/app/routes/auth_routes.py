@@ -1,40 +1,45 @@
 from flask import Blueprint, request, jsonify
-from services.token_service import TokenService, token_required
+from services.logger_service import LoggerService
+from services.auth_service import AuthService
+from services.token_service import TokenService
 from services.db_service import DatabaseService
 
+logger = LoggerService.get_logger('app.auth.routes')
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
-    data = request.get_json()
-    if not data or 'login' not in data or 'password' not in data:
-        return jsonify({"error": "Требуется логин и пароль"}), 400
+    """Маршрут входа в систему"""
+    logger.info(f"Запрос на /login от {request.remote_addr}")
 
-    user = DatabaseService.authenticate(data['login'], data['password'])
-    if not user:
-        return jsonify({"error": "Неверные учетные данные"}), 401
+    try:
+        data = request.get_json()
+        if not data or 'login' not in data or 'password' not in data:
+            logger.warning("Невалидный запрос: отсутствует логин/пароль")
+            return jsonify({"error": "Требуется логин и пароль"}), 400
 
-    access_token, refresh_token = TokenService.generate_tokens(user['id'])
-    return jsonify({
-        "access_token": access_token,
-        "refresh_token": refresh_token,
-        "user_id": user['id']
-    })
+        # Аутентификация через сервис
+        user = AuthService.authenticate_user(
+            data['login'],
+            data['password'],
+            DatabaseService
+        )
+        
+        if not user:
+            logger.warning(f"Неудачная аутентификация для '{data['login']}'")
+            return jsonify({"error": "Неверные учетные данные"}), 401
 
-@auth_bp.route('/refresh', methods=['POST'])
-def refresh():
-    refresh_token = request.json.get('refresh_token')
-    if not refresh_token:
-        return jsonify({"error": "Требуется refresh токен"}), 400
+        # Генерация токенов
+        tokens = TokenService.generate_tokens(user['id'])
+        logger.info(f"Успешный вход пользователя {user['id']}")
 
-    payload = TokenService.verify_token(refresh_token)
-    if not payload or payload.get('type') != 'refresh':
-        return jsonify({"error": "Невалидный refresh токен"}), 401
+        return jsonify({
+            "access_token": tokens[0],
+            "refresh_token": tokens[1],
+            "user_id": user['id'],
+            "user_name": user['name']
+        })
 
-    new_access_token, _ = TokenService.generate_tokens(payload['user_id'])
-    return jsonify({"access_token": new_access_token})
-
-@auth_bp.route('/test-auth')
-@token_required
-def test_auth(user_id):
-    return jsonify({"message": f"Аутентификация успешна для user_id={user_id}"})
+    except Exception as e:
+        logger.error(f"Ошибка обработки /login: {str(e)}", exc_info=True)
+        return jsonify({"error": "Внутренняя ошибка сервера"}), 500

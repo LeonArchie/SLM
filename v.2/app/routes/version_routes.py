@@ -1,9 +1,9 @@
 # version_routes.py
 from flask import Blueprint, jsonify, request
 from services.version_service import read_version_config
-from services.logger_service import setup_logger
+from services.logger_service import LoggerService
 
-logger = setup_logger()
+logger = LoggerService.get_logger('version_routes') 
 version_bp = Blueprint('version', __name__, url_prefix='/version')
 
 @version_bp.route('/', methods=['GET'])
