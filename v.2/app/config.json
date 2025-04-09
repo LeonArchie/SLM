@@ -25,14 +25,14 @@
         "SECRET_KEY": "98a51f9a057fcfc2a42d0c8481dcd43a84c947bd5bc13eb3045edbee7261bf051aae40e9f9c96864af1c25c607da17ba2b9e3b8483506e01e3286ee70a6cab20244ac44c5ec91cb7af8988900d6905980cadffd09eba2143d73bdc7199a74f0f49952cca",
         "JWT": {
         "SECRET_KEY": "033308946648ef6b2698633b7a95b9c73d22b128f241993a15ccf7641f83858f09c2afd8733478878a2a351c69ff4b2a0acd01a9c8b68a376f956979399518674494bcc3164a926e6ef593b5f45c1471d270a811bbdba9c093125428888ad38f62989027",
-        "ACCESS_EXPIRES": 60,
-        "REFRESH_EXPIRES": 120
+        "ACCESS_EXPIRES": 600,
+        "REFRESH_EXPIRES": 1200
         }
     },
     "frod": {
         "active": true
     },
     "version": {
-        "current_version": "0.7.7"
+        "current_version": "0.7.8"
     }
 }
