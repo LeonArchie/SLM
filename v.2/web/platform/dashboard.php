@@ -55,7 +55,7 @@
     </head>
     <body>
         <?php include 'include/visible/eos_header.html'; ?>
-        <?php include 'include/navbar.php'; ?>
+        <?php include 'include/visible/navbar.php'; ?>
         <main>
             <div class="message">
                 <h1>Добро пожаловать, <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Гость'; ?>!</h1>
