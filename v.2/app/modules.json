@@ -3,7 +3,7 @@
         {
             "guid": "3ad33b50-360f-4c8a-b691-aca388b48a8b",
             "title": "Дашборд",
-            "url": "/dashboard.php",
+            "url": "platform/dashboard.php",
             "active": true,
             "dropdown": []
         },
@@ -127,7 +127,7 @@
         {
             "guid": "a5366719-a2ec-4cc8-a1a6-f8a0f78e1238",
             "title": "Выход",
-            "url": "/back/logout.php",
+            "url": "/platform/logout.php",
             "active": true,
             "dropdown": []
             

@@ -1,7 +1,0 @@
-Таблица для хранения привилегий ролей
-
-NAME                        TYPE                    DESCRIPTION                     COOMMENT
-
-roleid                      TEXT                    GUID role id (name_rol)         PRIMARY KEY
-idmenu                      TEXT                    GUID menu id (json)
-role                        TEXT                    true - edit / false - view / NULL - Close

@@ -1,6 +1,0 @@
-Таблица хранения ролей в системе
-
-NAME                        TYPE                    DESCRIPTION                     COOMMENT
-
-roleid                      TEXT                    GUID role                       PRIMARY KEY
-names_rol                   TEXT                    Qutput name role
