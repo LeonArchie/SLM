@@ -3,7 +3,7 @@
         {
             "guid": "3ad33b50-360f-4c8a-b691-aca388b48a8b",
             "title": "Дашборд",
-            "url": "platform/dashboard.php",
+            "url": "/platform/dashboard.php",
             "active": true,
             "dropdown": []
         },
@@ -113,7 +113,7 @@
         {
             "guid": "27cc1a41-fc05-4e9d-931f-8133812e71ba",
             "title": "Справочник",
-            "url": "/modules/addresbook/addresbook.php",
+            "url": "/modules/adresbook/adresbook.php",
             "active": true,
             "dropdown": []
         },

@@ -1,0 +1,221 @@
+.address-book-wrapper {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: #333;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Заголовок и поиск */
+.address-book-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.address-book-header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.address-book-icon::before {
+    content: "📘";
+    font-size: 24px;
+}
+
+.search-container {
+    position: relative;
+    flex-grow: 1;
+    max-width: 400px;
+}
+
+.search-icon::before {
+    content: "🔍";
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    opacity: 0.7;
+}
+
+.search-box {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.search-box:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+/* Таблица контактов */
+.address-book-table-container {
+    overflow-x: auto;
+    max-height: calc(100vh - 200px); /* Ограничение высоты с прокруткой */
+}
+
+#contactsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+#contactsTable thead th {
+    background-color: #f8f9fa;
+    color: #555;
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 15px;
+    border-bottom: 2px solid #e9ecef;
+    position: sticky;
+    top: 0;
+}
+
+#contactsTable tbody tr {
+    border-bottom: 1px solid #e9ecef;
+    transition: background-color 0.2s ease;
+}
+
+#contactsTable tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+#contactsTable tbody td {
+    padding: 12px 15px;
+    vertical-align: middle;
+}
+
+/* Аватарки и ссылки */
+.name-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #3498db;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+.email-link, .phone-link {
+    color: #555;
+    text-decoration: none;
+}
+
+.email-link:hover, .phone-link:hover {
+    color: #3498db;
+    text-decoration: underline;
+}
+
+/* Сообщения об ошибках и пустом списке */
+.address-book-error, .address-book-empty {
+    padding: 20px;
+    text-align: center;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.address-book-error {
+    color: #e74c3c;
+    background-color: #fdecea;
+}
+
+.address-book-empty {
+    color: #7f8c8d;
+}
+
+.error-icon::before {
+    content: "⚠️";
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.empty-icon::before {
+    content: "📭";
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .address-book-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .search-container {
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    #contactsTable thead {
+        display: none;
+    }
+    
+    #contactsTable tbody tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 10px;
+    }
+    
+    #contactsTable tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 10px;
+        border-bottom: 1px solid #f1f1f1;
+    }
+    
+    #contactsTable tbody td:last-child {
+        border-bottom: none;
+    }
+    
+    #contactsTable tbody td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        margin-right: 10px;
+        color: #555;
+    }
+}
