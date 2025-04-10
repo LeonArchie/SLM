@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from services.logger_service import LoggerService
 from services.db_service import DatabaseService
 from services.config_service import get_config
+from routes.modules_routes import modules_bp
 from routes.frod_route import frod_bp
 from routes.verify import verify_bp
 from routes.refresh import refresh_bp
@@ -76,7 +77,8 @@ def create_app():
         ('Auth', auth_bp),
         ('Verify', verify_bp),
         ('Refresh', refresh_bp),
-        ('FROD', frod_bp)
+        ('FROD', frod_bp),
+        ('Modules', modules_bp) 
     ]
         
     for name, bp in blueprints:
