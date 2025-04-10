@@ -55,7 +55,6 @@ main {
     height: calc(100vh - 3em - 3em);
     width: 100%;
     overflow-y: auto;
-    display: flex; /* Включаем flexbox */
     justify-content: center; /* Горизонтальное центрирование */
     align-items: center; /* Вертикальное центрирование */
     min-height: calc(100vh - 9vh - 3vh); /* Высота main должна занимать всю высоту экрана минус отступы */
