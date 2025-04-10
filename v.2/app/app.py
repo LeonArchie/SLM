@@ -6,6 +6,7 @@ from routes.modules_routes import modules_bp
 from routes.frod_route import frod_bp
 from routes.verify import verify_bp
 from routes.refresh import refresh_bp
+from routes.addressbook_route import addressbook_bp
 from flask_cors import CORS
 import os
 import sys
@@ -78,7 +79,8 @@ def create_app():
         ('Verify', verify_bp),
         ('Refresh', refresh_bp),
         ('FROD', frod_bp),
-        ('Modules', modules_bp) 
+        ('Modules', modules_bp),
+        ('Addresbook',addressbook_bp)
     ]
         
     for name, bp in blueprints:
