@@ -100,14 +100,7 @@
                     "url": "/modules/setting/authority_manager.php",
                     "active": true,
                     "dropdown": []
-                },
-                {
-                    "guid": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-                    "title": "Управление модулями",
-                    "url": "/modules/setting/modules.php",
-                    "active": true,
-                    "dropdown": []
-                } 
+                }
             ]
         },
         {

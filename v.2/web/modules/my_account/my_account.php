@@ -338,7 +338,7 @@
                 </div>
             </div>
             
-            <?php include ROOT_PATH . '/include/loading.html'; ?>
+            <?php include ROOT_PATH . '/platform/include/visible/loading.html'; ?>
             
             <!-- Форма смены пароля -->
             <div class="modal-overlay" id="modalOverlay">
@@ -381,6 +381,7 @@
         <!-- Скрипты -->
         <script src="/platform/include/js/error.js"></script>
         <script src="js/save.js"></script>
-        <script src="js/my_account/my_pass_update.js"></script>
+        <script src="js/button_pass_update.js"></script>
+        <script src="js/form_pass_update.js"></script>
     </body>
 </html>

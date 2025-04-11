@@ -7,7 +7,7 @@
     left: 0;
     width: 30vh; /* Ширина остается фиксированной */
     height: calc(100vh - 2.5em); /* Высота равна высоте viewport минус высота header */
-    z-index: 999;
+    z-index: 100000;
     box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3); /* Более выраженная тень справа */
     overflow-y: auto; /* Добавляем прокрутку, если пунктов много */
     transition: background-color 0.3s ease; /* Плавное изменение фона */

@@ -1,139 +1,211 @@
-// Функция для сохранения данных пользователя
-document.getElementById('saveButton').addEventListener('click', async function() {
-    try {
-        // Показываем индикатор загрузки
-        showLoading(true);
-        
-        // Получаем данные из сессии
-        const accessToken = '<?= $_SESSION["access_token"] ?? "" ?>';
-        const userId = '<?= $_SESSION["userid"] ?? "" ?>';
-        
-        // Проверяем обязательные поля сессии
-        if (!accessToken) {
-            showErrorMessage('error', 'Ошибка', 'Требуется авторизация', 5000);
-            showLoading(false);
-            return;
-        }
-        
-        if (!userId) {
-            showErrorMessage('error', 'Ошибка', 'Не удалось определить пользователя', 5000);
-            showLoading(false);
-            return;
-        }
-        
-        // Собираем данные с формы
-        const formData = {
-            email: document.getElementById('email').value.trim(),
-            family: document.getElementById('lastName').value.trim(),
-            full_name: document.getElementById('fullName').value.trim(),
-            name: document.getElementById('firstName').value.trim(),
-            telephone: document.getElementById('phone').value.trim(),
-            tg_id: document.getElementById('telegramID').value.trim(),
-            tg_username: document.getElementById('telegramUsername').value.trim()
-        };
-        
-        // Валидация данных
-        const validationErrors = [];
-        
-        // Email (обязательное поле)
-        if (!formData.email) {
-            validationErrors.push('Email - обязательное поле');
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-            validationErrors.push('Некорректный формат email');
-        }
-        
-        // Полное имя (обязательное поле)
-        if (!formData.full_name) {
-            validationErrors.push('Полное имя - обязательное поле');
-        } else if (!/^[а-яА-ЯёЁ\s-]{1,70}$/.test(formData.full_name)) {
-            validationErrors.push('Полное имя должно содержать только русские буквы и быть не длиннее 70 символов');
-        }
-        
-        // Фамилия (не обязательное)
-        if (formData.family && !/^[а-яА-ЯёЁ\s-]{0,20}$/.test(formData.family)) {
-            validationErrors.push('Фамилия должна содержать только русские буквы и быть не длиннее 20 символов');
-        }
-        
-        // Имя (не обязательное)
-        if (formData.name && !/^[а-яА-ЯёЁ\s-]{0,20}$/.test(formData.name)) {
-            validationErrors.push('Имя должно содержать только русские буквы и быть не длиннее 20 символов');
-        }
-        
-        // Телефон (не обязательное)
-        if (formData.telephone) {
-            if (!/^(\+7|8)[0-9]{10}$/.test(formData.telephone)) {
-                validationErrors.push('Телефон должен начинаться с 8 или +7 и содержать 11 цифр');
-            } else {
-                // Нормализуем номер телефона
-                formData.telephone = formData.telephone.replace(/^8/, '+7');
-            }
-        }
-        
-        // Telegram ID (не обязательное)
-        if (formData.tg_id && !/^[0-9]{0,15}$/.test(formData.tg_id)) {
-            validationErrors.push('Telegram ID должен содержать только цифры (максимум 15)');
-        }
-        
-        // Telegram username (не обязательное)
-        if (formData.tg_username && !/^[a-zA-Z0-9@_\-]{0,32}$/.test(formData.tg_username)) {
-            validationErrors.push('Telegram username может содержать только латинские буквы, цифры и символы @, _, -');
-        }
-        
-        // Если есть ошибки валидации - показываем их
-        if (validationErrors.length > 0) {
-            validationErrors.forEach(error => {
-                showErrorMessage('warning', 'Внимание', error, 3000);
-            });
-            showLoading(false);
-            return;
-        }
-        
-        // Формируем данные для отправки
-        const dataToSend = {
-            access_token: accessToken,
-            userid: userId,
-            ...formData
-        };
-        
-        // Определяем базовый URL
-        const protocol = window.location.protocol;
-        const host = window.location.hostname;
-        const baseUrl = `${protocol}//${host}`;
-        
-        // Отправляем данные на сервер
-        const response = await fetch(`${baseUrl}:5000/user/save`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(dataToSend)
-        });
-        
-        const result = await response.json();
-        
-        if (!response.ok || !result.success) {
-            const errorMessage = result.message || 'Не удалось сохранить данные';
-            showErrorMessage('error', 'Ошибка', errorMessage, 5000);
-            showLoading(false);
-            return;
-        }
-        
-        // Успешное сохранение
-        showErrorMessage('success', 'Успех', 'Данные успешно сохранены', 3000);
-        
-    } catch (error) {
-        console.error('Ошибка при сохранении данных:', error);
-        showErrorMessage('error', 'Ошибка', 'Произошла ошибка при сохранении данных', 5000);
-    } finally {
-        showLoading(false);
-    }
-});
+/**
+ * save.js - Полная версия с индикатором загрузки
+ */
 
-// Функция для показа/скрытия индикатора загрузки
-function showLoading(show) {
-    const loadingElement = document.getElementById('loading');
-    if (loadingElement) {
-        loadingElement.style.display = show ? 'flex' : 'none';
-    }
+// Конфигурация API
+const API_BASE_URL = `${window.location.protocol}//${window.location.hostname}:5000`;
+const API_ENDPOINT = `${API_BASE_URL}/user/update`;
+
+// Полная конфигурация полей формы
+const FORM_FIELDS = {
+  email: {
+    id: 'email',
+    required: true,
+    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    error: 'Некорректный формат email'
+  },
+  full_name: {
+    id: 'fullName',
+    required: true,
+    pattern: /^[а-яА-ЯёЁ\s-]{1,70}$/,
+    error: 'Только русские буквы и пробелы (макс. 70)'
+  },
+  family: {
+    id: 'lastName',
+    pattern: /^[а-яА-ЯёЁ]{0,20}$/,
+    error: 'Только русские буквы (макс. 20)'
+  },
+  name: {
+    id: 'firstName',
+    pattern: /^[а-яА-ЯёЁ]{0,20}$/,
+    error: 'Только русские буквы (макс. 20)'
+  },
+  telephone: {
+    id: 'phone',
+    pattern: /^(\+7|8)\d{10}$/,
+    normalize: value => value.replace(/^8/, '+7'),
+    error: 'Формат: +79991234567 или 89991234567'
+  },
+  tg_id: {
+    id: 'telegramID',
+    pattern: /^\d{0,15}$/,
+    error: 'Только цифры (макс. 15)'
+  },
+  tg_username: {
+    id: 'telegramUsername',
+    pattern: /^[a-zA-Z0-9@_\-]{0,32}$/,
+    error: 'Латиница, цифры, @, _, - (макс. 32)'
+  }
+};
+
+// Функция показа/скрытия индикатора загрузки
+function toggleLoading(show = true) {
+  const loader = document.getElementById('loading');
+  if (loader) {
+    loader.style.display = show ? 'flex' : 'none';
+  }
 }
+
+// Основная функция обработки сохранения
+async function handleSave() {
+  try {
+    // Показываем индикатор загрузки
+    toggleLoading(true);
+
+    // 1. Проверка авторизации
+    const authCheck = checkAuth();
+    if (!authCheck.isValid) {
+      showErrorMessage('error', 'Ошибка', authCheck.error, 5000);
+      return;
+    }
+
+    // 2. Сбор и валидация данных
+    const { data: formData, errors } = collectFormData();
+    if (errors.length > 0) {
+      errors.forEach(err => showErrorMessage('warning', 'Ошибка', err, 3000));
+      return;
+    }
+
+    // 3. Отправка данных на сервер
+    const response = await sendData(authCheck.token, authCheck.userId, formData);
+
+    // 4. Обработка ответа сервера
+    handleServerResponse(response);
+
+  } catch (error) {
+    console.error('Неожиданная ошибка:', error);
+    showErrorMessage('error', 'Ошибка', 'Произошла непредвиденная ошибка', 5000);
+  } finally {
+    // Всегда скрываем индикатор загрузки
+    toggleLoading(false);
+  }
+}
+
+// Проверка авторизации
+function checkAuth() {
+  const token = localStorage.getItem('access_token');
+  const userId = localStorage.getItem('user_id');
+
+  if (!token || !userId) {
+    return {
+      isValid: false,
+      error: 'Требуется авторизация. Перенаправление на страницу входа...',
+      redirect: '/login'
+    };
+  }
+
+  return { isValid: true, token, userId };
+}
+
+// Сбор и валидация данных формы
+function collectFormData() {
+  const data = {};
+  const errors = [];
+
+  Object.entries(FORM_FIELDS).forEach(([field, config]) => {
+    const element = document.getElementById(config.id);
+    const value = element?.value.trim() || '';
+
+    // Проверка обязательных полей
+    if (config.required && !value) {
+      errors.push(`${getFieldLabel(field)} - обязательное поле`);
+      return;
+    }
+
+    // Проверка по шаблону
+    if (value && config.pattern && !config.pattern.test(value)) {
+      errors.push(`${getFieldLabel(field)}: ${config.error}`);
+      return;
+    }
+
+    // Нормализация и сохранение значения
+    if (value) {
+      data[field] = config.normalize ? config.normalize(value) : value;
+    }
+  });
+
+  return { data, errors };
+}
+
+// Отправка данных на сервер
+async function sendData(token, userId, formData) {
+  try {
+    const response = await fetch(API_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        access_token: token,
+        userid: userId,
+        ...formData
+      })
+    });
+
+    return {
+      ok: response.ok,
+      status: response.status,
+      data: await response.json()
+    };
+  } catch (error) {
+    console.error('Ошибка сети:', error);
+    return {
+      ok: false,
+      error: 'Ошибка соединения с сервером'
+    };
+  }
+}
+
+// Обработка ответа сервера
+function handleServerResponse(response) {
+  if (!response.ok) {
+    const errorMsg = response.data?.error || 'Ошибка сервера';
+    const details = response.data?.details ? ` (${response.data.details})` : '';
+    
+    showErrorMessage('error', 'Ошибка', `${errorMsg}${details}`, 5000);
+    
+    // Перенаправление при невалидном токене
+    if (response.status === 401) {
+      setTimeout(() => window.location.href = '/login', 2000);
+    }
+    return;
+  }
+
+  // Успешное сохранение
+  showErrorMessage('success', 'Успех', 'Данные успешно сохранены', 3000);
+  
+  // Обновление данных в localStorage при необходимости
+  if (response.data?.email) {
+    localStorage.setItem('user_email', response.data.email);
+  }
+}
+
+// Вспомогательные функции
+function getFieldLabel(field) {
+  const labels = {
+    email: 'Email',
+    family: 'Фамилия',
+    full_name: 'Полное имя',
+    name: 'Имя',
+    telephone: 'Телефон',
+    tg_id: 'Telegram ID',
+    tg_username: 'Telegram username'
+  };
+  return labels[field] || field;
+}
+
+// Инициализация
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('saveButton')?.addEventListener('click', handleSave);
+});
