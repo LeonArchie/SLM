@@ -9,7 +9,7 @@ async function checkPrivilege(privilegesPage) {
         // Автоматически определяем базовый URL с портом 5000
         const protocol = window.location.protocol;
         let host = window.location.host.replace(/:80|:443/, '');
-        const apiUrl = `${protocol}//${host}:5000/check-privilege`;
+        const apiUrl = `${protocol}//${host}:5000/privileges/check-privilege`;
         
         // Подготавливаем данные для запроса
         const postData = {

@@ -7,6 +7,10 @@ from routes.frod_route import frod_bp
 from routes.verify import verify_bp
 from routes.refresh import refresh_bp
 from routes.addressbook_route import addressbook_bp
+from routes.user_data_route import user_data_bp
+from routes.privileges_route import privileges_bp
+from routes.user_update_route import user_update_bp
+from routes.user_pass_update_route import user_pass_update_bp
 from flask_cors import CORS
 import os
 import sys
@@ -80,7 +84,11 @@ def create_app():
         ('Refresh', refresh_bp),
         ('FROD', frod_bp),
         ('Modules', modules_bp),
-        ('Addresbook',addressbook_bp)
+        ('Addresbook',addressbook_bp),
+        ('User Data', user_data_bp),
+        ('Privileges', privileges_bp),
+        ('User Update', user_update_bp),
+        ('User Password Update', user_pass_update_bp)
     ]
         
     for name, bp in blueprints:

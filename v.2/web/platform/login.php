@@ -37,7 +37,7 @@
 <html lang="ru">
     <head>
         <!--Заголовок-->
-        <title>ЕОС</title>	
+        <title>ЕОС Авторизиция</title>	
         <!--Кодировка-->
         <meta charset="utf-8">							
         <!--Ключевые слова-->

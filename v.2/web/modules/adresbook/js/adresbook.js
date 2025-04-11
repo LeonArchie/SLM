@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Функция для отображения профиля пользователя
     function showUserProfile(userId) {
-        // Здесь можно реализовать модальное окно
+        //реализовать модальное окно
         console.log('Открываем профиль пользователя:', userId);
         
         // 
@@ -91,9 +91,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initAddressBook();
     
     function initAddressBook() {
-        // Можно добавить проверку загрузки данных
+        // добавить проверку загрузки данных
         if (document.querySelector('#contactsTable tbody tr')) {
-            showErrorMessage('success', 'Готово', 'Адресная книга загружена', 2000);
+
         }
     }
 });

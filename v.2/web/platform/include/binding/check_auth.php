@@ -98,6 +98,7 @@
     // Основная логика
     if (!checkAuth()) {
         logger("WARNING", "Авторизация не пройдена, перенаправление на login");
-        header("Location: platform/login.php");
+        header("Location: /platform/login.php");
+        exit();
     }
 ?>
