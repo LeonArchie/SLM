@@ -100,14 +100,7 @@
                     "url": "/modules/setting/authority_manager.php",
                     "active": true,
                     "dropdown": []
-                },
-                {
-                    "guid": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-                    "title": "Управление модулями",
-                    "url": "/modules/setting/modules.php",
-                    "active": true,
-                    "dropdown": []
-                } 
+                }
             ]
         },
         {
@@ -120,7 +113,7 @@
         {
             "guid": "356a5297-1587-4d79-8f81-b3e1c7e21a73",
             "title": "Моя учетная запись",
-            "url": "/modules/setting/my_account.php",
+            "url": "/modules/my_account/my_account.php",
             "active": true,
             "dropdown": []
         },

@@ -70,7 +70,7 @@
         $host = str_replace([':80',':443'], '', $host);
         
         // Формируем URL с портом 5000
-        $api_url = "{$protocol}://{$host}:5000/check-privilege";
+        $api_url = "{$protocol}://{$host}:5000/privileges/check-privilege";
         logger("DEBUG", "Сформирован URL API: {$api_url}");
     
         // Подготавливаем данные для запроса
