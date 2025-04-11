@@ -1,25 +1,4 @@
 {
-    "version": {
-        "current_version": "0.7.0",
-        "level": "DEV"
-    },
-
-    "web": {
-        "session_timeout": 3600,
-        "host": "192.168.8.8",
-        "domain": "domain",
-        "frod": true,
-        "id_privileges_frod_ignore": "a8e479b1-534e-4d14-99ec-034af87f0994"
-    },
-
-    "db": {
-        "host": "192.168.3.4",
-        "port": "5432",
-        "name": "RLM-PSI",
-        "user": "RLM_PSI_USER",
-        "password": "vbngrjemd#mf!"
-    },
-
     "LDAP": {
         "active": false,
         "domain_master":"",
@@ -35,17 +14,5 @@
         "zabbixservers": [],
         "zabbixUser": "",
         "zabbixUserPassword": ""
-    },
-    
-    "app": {
-        "active": false
-    },
-    
-    "win_client": {
-        "active": false
-    },
-    
-    "unix_client": {
-        "active": false
     }
 }
