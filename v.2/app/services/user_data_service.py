@@ -7,7 +7,7 @@ logger = LoggerService.get_logger('app.user.data')
 class UserDataService:
     @staticmethod
     def get_user_data(user_id: str) -> Optional[Dict]:
-        """Получение данных пользователя по ID"""
+        """Получение данных пользователя по ID с обработкой NULL значений"""
         logger.debug(f"Fetching user data for user_id={user_id}")
         
         try:
@@ -18,7 +18,7 @@ class UserDataService:
                         SELECT 
                             userid, userlogin, tg_username, tg_id, telephone,
                             regtimes, full_name, name, family, email,
-                            api_key, dn, add_ldap, active
+                            api_key, ldap_dn, add_ldap, active
                         FROM users 
                         WHERE userid = %s
                         """,
@@ -27,21 +27,22 @@ class UserDataService:
                     result = cur.fetchone()
                     
                     if result:
+                        # Обрабатываем NULL значения, сохраняя все ключи
                         return {
-                            'userid': result[0],
-                            'userlogin': result[1],
-                            'tg_username': result[2],
-                            'tg_id': result[3],
-                            'telephone': result[4],
-                            'regtimes': result[5],
-                            'full_name': result[6],
-                            'name': result[7],
-                            'family': result[8],
-                            'email': result[9],
-                            'api_key': result[10],
-                            'dn': result[11],
-                            'add_ldap': result[12],
-                            'active': bool(result[13])
+                            'userid': result[0] if result[0] is not None else '',
+                            'userlogin': result[1] if result[1] is not None else '',
+                            'tg_username': result[2] if result[2] is not None else '',
+                            'tg_id': result[3] if result[3] is not None else '',
+                            'telephone': result[4] if result[4] is not None else '',
+                            'regtimes': result[5].isoformat() if result[5] is not None else '',
+                            'full_name': result[6] if result[6] is not None else '',
+                            'name': result[7] if result[7] is not None else '',
+                            'family': result[8] if result[8] is not None else '',
+                            'email': result[9] if result[9] is not None else '',
+                            'api_key': result[10] if result[10] is not None else '',
+                            'ldap_dn': result[11] if result[11] is not None else '',
+                            'add_ldap': bool(result[12]) if result[12] is not None else False,
+                            'active': bool(result[13]) if result[13] is not None else False
                         }
                     return None
                     
