@@ -90,7 +90,7 @@
     include "/platform/include/binding/inital_error.php";
 
     // Логирование успешной инициализации страницы
-    logger("DEBUG", "dashboard.php успешно инициализирован.");
+    logger("DEBUG", "adresbook.php успешно инициализирован.");
     }
 ?>
 <!DOCTYPE html>
@@ -100,7 +100,7 @@
         <link rel="stylesheet" href="/platform/include/css/navbar.css"/>
         <link rel="stylesheet" href="/platform/include/css/error.css"/>
         <link rel="stylesheet" href="css/adresbook.css"/>
-        <title>Адресная книга</title>
+        <title>ЕОС - Адресная книга</title>
     </head>
     <body>
         <?php include ROOT_PATH . '/platform/include/visible/eos_header.html'; ?>

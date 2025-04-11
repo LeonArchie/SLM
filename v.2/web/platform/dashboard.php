@@ -52,6 +52,7 @@
         <link rel="stylesheet" href="include/css/navbar.css"/>
         <link rel="stylesheet" href="include/css/error.css"/>
         <link rel="stylesheet" href="css/dashboard.css"/>
+        <title>ЕОС - Дашборд</title>
     </head>
     <body>
         <?php include 'include/visible/eos_header.html'; ?>
