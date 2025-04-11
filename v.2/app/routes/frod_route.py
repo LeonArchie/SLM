@@ -4,7 +4,7 @@ from services.logger_service import logger
 
 frod_bp = Blueprint('frod', __name__)
 
-@frod_bp.route('/check-privilege', methods=['POST'])
+@frod_bp.route('/privileges/check-privilege', methods=['POST'])
 def handle_check_privilege():
     try:
         data = request.get_json()

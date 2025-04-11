@@ -9,32 +9,35 @@ user_data_bp = Blueprint('user_data', __name__)
 
 @user_data_bp.route('/user/data', methods=['POST'])
 def get_user_data():
-    """Получение данных пользователя по user_id с проверкой токена"""
-    logger.info("Received user data request")
+    """Получение данных пользователя с проверкой токена и user_id"""
+    logger.info("Received user data request with token and user_id validation")
     
     try:
         # Получаем данные из запроса
         data = request.get_json()
-        if not data or 'token' not in data or 'user_id' not in data:
-            logger.warning("Invalid request - token and user_id are required")
+        if not data or 'access_token' not in data or 'user_id' not in data:
+            logger.warning("Invalid request - both token and user_id are required")
             return jsonify({"error": "Token and user_id are required"}), 400
 
         # Проверяем токен
-        payload = TokenService.verify_token(data['token'])
+        payload = TokenService.verify_token(data['access_token'])
         
-        # Проверяем соответствие user_id в токене и запросе
+        # Двойная проверка: user_id из токена должен совпадать с переданным user_id
         if payload['user_id'] != data['user_id']:
-            logger.warning(f"User ID mismatch: token={payload['user_id']}, request={data['user_id']}")
-            return jsonify({"error": "User ID does not match token"}), 403
+            logger.warning(f"Security alert: User ID mismatch! Token={payload['user_id']}, Request={data['user_id']}")
+            return jsonify({
+                "error": "Access denied",
+                "details": "Token does not match provided user_id"
+            }), 403
             
         # Получаем данные пользователя
-        user_data = UserDataService.get_user_data(data['user_id'])
+        user_data = UserDataService.get_user_data(payload['user_id'])
         
         if not user_data:
-            logger.warning(f"User not found: {data['user_id']}")
+            logger.warning(f"User not found: {payload['user_id']}")
             return jsonify({"error": "User not found"}), 404
             
-        logger.info(f"Successfully retrieved data for user_id={data['user_id']}")
+        logger.info(f"Successfully retrieved data for user_id={payload['user_id']}")
         return jsonify(user_data), 200
         
     except jwt.ExpiredSignatureError:

@@ -8,6 +8,7 @@ from routes.verify import verify_bp
 from routes.refresh import refresh_bp
 from routes.addressbook_route import addressbook_bp
 from routes.user_data_route import user_data_bp
+from routes.privileges_route import privileges_bp
 from flask_cors import CORS
 import os
 import sys
@@ -82,7 +83,8 @@ def create_app():
         ('FROD', frod_bp),
         ('Modules', modules_bp),
         ('Addresbook',addressbook_bp),
-        ('User Data', user_data_bp)
+        ('User Data', user_data_bp),
+        ('Privileges', privileges_bp)
     ]
         
     for name, bp in blueprints:

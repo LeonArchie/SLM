@@ -120,7 +120,7 @@
         {
             "guid": "356a5297-1587-4d79-8f81-b3e1c7e21a73",
             "title": "Моя учетная запись",
-            "url": "/modules/setting/my_account.php",
+            "url": "/modules/my_account/my_account.php",
             "active": true,
             "dropdown": []
         },
