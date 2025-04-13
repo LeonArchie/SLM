@@ -4,6 +4,7 @@ from services.db_service import DatabaseService
 from services.logger_service import LoggerService
 import jwt
 
+# Инициализация логгера для модуля адресной книги
 logger = LoggerService.get_logger('app.addressbook')
 
 class AddressBookService:
@@ -20,17 +21,22 @@ class AddressBookService:
             Dict: {"contacts": List} или {"error": str, "status_code": int}
         """
         try:
-            # Проверка токена
+            # Проверка валидности токена
             payload = TokenService.verify_token(access_token)
+            
+            # Проверка типа токена (должен быть access)
             if payload['type'] != 'access':
-                logger.warning("Invalid token type - access required")
-                return {"error": "Access token required", "status_code": 401}
+                # Логирование предупреждения о недопустимом типе токена
+                logger.warning("Недопустимый тип токена - требуется access-токен")
+                return {"error": "Требуется access-токен", "status_code": 401}
 
+            # Проверка соответствия user_id из токена и из запроса
             if str(payload['user_id']) != str(requesting_user_id):
-                logger.warning(f"User ID mismatch: token={payload['user_id']}, request={requesting_user_id}")
-                return {"error": "User ID does not match token", "status_code": 403}
+                # Логирование предупреждения о несоответствии user_id
+                logger.warning(f"Несоответствие user_id: токен={payload['user_id']}, запрос={requesting_user_id}")
+                return {"error": "User ID не соответствует токену", "status_code": 403}
 
-            # Получение контактов из БД
+            # Получение списка активных контактов из базы данных
             with DatabaseService.get_connection() as conn:
                 with conn.cursor() as cur:
                     cur.execute(
@@ -41,19 +47,24 @@ class AddressBookService:
                         {
                             "user_id": row[0],
                             "full_name": row[1],
-                            "phone": row[2],  # Изменил telephone на phone для единообразия
+                            "phone": row[2],  # Изменено с telephone на phone для единообразия
                             "email": row[3]
                         }
                         for row in cur.fetchall()
                     ]
+                    # Логирование успешного получения списка контактов
+                    logger.info(f"Список активных контактов успешно получен для user_id={requesting_user_id}")
                     return {"contacts": contacts}
 
         except jwt.ExpiredSignatureError:
-            logger.warning("Token expired")
-            return {"error": "Token expired", "status_code": 401}
+            # Логирование предупреждения о просроченном токене
+            logger.warning("Токен просрочен")
+            return {"error": "Токен просрочен", "status_code": 401}
         except jwt.InvalidTokenError:
-            logger.warning("Invalid token")
-            return {"error": "Invalid token", "status_code": 401}
+            # Логирование предупреждения о недействительном токене
+            logger.warning("Недействительный токен")
+            return {"error": "Недействительный токен", "status_code": 401}
         except Exception as e:
-            logger.error(f"Database error: {str(e)}", exc_info=True)
-            return {"error": "Failed to fetch contacts", "status_code": 500}
+            # Логирование ошибки при работе с базой данных
+            logger.error(f"Ошибка базы данных: {str(e)}", exc_info=True)
+            return {"error": "Не удалось получить контакты", "status_code": 500}

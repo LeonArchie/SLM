@@ -4,6 +4,7 @@ from services.logger_service import LoggerService
 import re
 import jwt
 
+# Инициализация логгера для модуля обновления данных пользователя
 logger = LoggerService.get_logger('app.user_update.service')
 
 class UserUpdateService:
@@ -12,29 +13,35 @@ class UserUpdateService:
         """Валидация входных данных"""
         errors = {}
         
-        # Email validation
+        # Проверка email
         if not re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', data['email']):
-            errors['email'] = "Invalid email format"
+            errors['email'] = "Неверный формат email"
         
-        # Full name validation
+        # Проверка ФИО (только русские буквы и пробелы, максимум 70 символов)
         if not re.fullmatch(r'^[а-яА-ЯёЁ\s]{1,70}$', data['full_name']):
-            errors['full_name'] = "Only Russian characters and spaces, max 70 symbols"
+            errors['full_name'] = "Только русские символы и пробелы, максимум 70 символов"
         
-        # Optional fields validation
+        # Проверка необязательных полей
+        
+        # Проверка фамилии (только русские буквы, максимум 20 символов)
         if 'family' in data and not re.fullmatch(r'^[а-яА-ЯёЁ]{0,20}$', data['family']):
-            errors['family'] = "Only Russian characters, max 20 symbols"
+            errors['family'] = "Только русские символы, максимум 20 символов"
         
+        # Проверка имени (только русские буквы, максимум 20 символов)
         if 'name' in data and not re.fullmatch(r'^[а-яА-ЯёЁ]{0,20}$', data['name']):
-            errors['name'] = "Only Russian characters, max 20 symbols"
+            errors['name'] = "Только русские символы, максимум 20 символов"
         
+        # Проверка телефона (начинается с +7, содержит 11 цифр)
         if 'telephone' in data and not re.fullmatch(r'^\+7\d{10}$', data['telephone']):
-            errors['telephone'] = "Must start with +7 and contain 11 digits"
+            errors['telephone'] = "Должен начинаться с +7 и содержать 11 цифр"
         
+        # Проверка Telegram ID (только цифры, максимум 15 символов)
         if 'tg_id' in data and not re.fullmatch(r'^\d{0,15}$', data['tg_id']):
-            errors['tg_id'] = "Only digits, max 15 symbols"
+            errors['tg_id'] = "Только цифры, максимум 15 символов"
         
+        # Проверка Telegram username (только латинские буквы, @, _, -)
         if 'tg_username' in data and not re.fullmatch(r'^[a-zA-Z0-9@_\-]{0,32}$', data['tg_username']):
-            errors['tg_username'] = "Only Latin letters, @, _, -"
+            errors['tg_username'] = "Только латинские буквы, @, _, -"
         
         return errors
 
@@ -44,18 +51,22 @@ class UserUpdateService:
         try:
             payload = TokenService.verify_token(access_token)
             if payload['user_id'] != userid:
-                logger.warning("Token user_id doesn't match request userid")
-                return {"error": "Token doesn't match user", "status_code": 403}
+                # Логирование предупреждения о несоответствии user_id из токена и запроса
+                logger.warning("User_id из токена не соответствует user_id из запроса")
+                return {"error": "Токен не соответствует пользователю", "status_code": 403}
             return {}
         except jwt.ExpiredSignatureError:
-            logger.warning("Token expired")
-            return {"error": "Token expired", "should_refresh": True, "status_code": 401}
+            # Логирование предупреждения о просроченном токене
+            logger.warning("Токен просрочен")
+            return {"error": "Токен просрочен", "should_refresh": True, "status_code": 401}
         except jwt.InvalidTokenError as e:
-            logger.warning(f"Invalid token: {str(e)}")
-            return {"error": "Invalid token", "status_code": 401}
+            # Логирование предупреждения о недействительном токене
+            logger.warning(f"Недействительный токен: {str(e)}")
+            return {"error": "Недействительный токен", "status_code": 401}
         except Exception as e:
-            logger.error(f"Token verification error: {str(e)}", exc_info=True)
-            return {"error": "Token verification failed", "status_code": 500}
+            # Логирование ошибки при проверке токена
+            logger.error(f"Ошибка проверки токена: {str(e)}", exc_info=True)
+            return {"error": "Ошибка проверки токена", "status_code": 500}
 
     @staticmethod
     def update_user_in_db(userid: str, update_data: dict) -> bool:
@@ -63,6 +74,7 @@ class UserUpdateService:
         try:
             with DatabaseService.get_connection() as conn:
                 with conn.cursor() as cur:
+                    # Формирование части SQL-запроса для обновления полей
                     set_clause = ", ".join([f"{field} = %s" for field in update_data])
                     values = list(update_data.values())
                     values.append(userid)
@@ -80,7 +92,8 @@ class UserUpdateService:
                     conn.commit()
                     return True
         except Exception as e:
-            logger.error(f"Database error: {str(e)}", exc_info=True)
+            # Логирование ошибки при работе с базой данных
+            logger.error(f"Ошибка базы данных: {str(e)}", exc_info=True)
             raise
 
     @staticmethod
@@ -90,7 +103,7 @@ class UserUpdateService:
         validation_errors = UserUpdateService.validate_input(data)
         if validation_errors:
             return {
-                "error": "Validation failed",
+                "error": "Ошибка валидации",
                 "details": validation_errors,
                 "status_code": 400
             }
@@ -114,11 +127,13 @@ class UserUpdateService:
         # Обновление в БД
         try:
             if not UserUpdateService.update_user_in_db(data['userid'], update_fields):
-                return {"error": "User not found", "status_code": 404}
+                return {"error": "Пользователь не найден", "status_code": 404}
             
-            logger.info(f"User {data['userid']} updated successfully")
+            # Логирование успешного обновления данных пользователя
+            logger.info(f"Данные пользователя {data['userid']} успешно обновлены")
             return {"success": True}
             
         except Exception as e:
-            logger.error(f"Update failed: {str(e)}", exc_info=True)
-            return {"error": "Database update failed", "status_code": 500}
+            # Логирование ошибки при обновлении данных
+            logger.error(f"Обновление не удалось: {str(e)}", exc_info=True)
+            return {"error": "Ошибка обновления в базе данных", "status_code": 500}

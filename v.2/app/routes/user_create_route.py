@@ -3,48 +3,56 @@ from services.logger_service import LoggerService
 from services.db_service import DatabaseService
 from services.user_create_service import UserCreateService
 
+# Инициализация логгера для модуля создания пользователей
 logger = LoggerService.get_logger('app.user.create.route')
+
+# Создание Blueprint для маршрута создания пользователей
 user_create_bp = Blueprint('user_create', __name__)
 
 @user_create_bp.route('/setting/user/create', methods=['POST'])
 def create_user():
-    """Endpoint for creating new users"""
-    logger.info("Received user creation request")
+    """Endpoint для создания новых пользователей"""
+    # Логирование начала обработки запроса на создание пользователя
+    logger.info("Получен запрос на создание пользователя")
 
     try:
-        # Get data from request
+        # Получение данных из тела запроса в формате JSON
         data = request.get_json()
         if not data:
-            logger.warning("No data provided in request")
-            return jsonify({"error": "No data provided"}), 400
+            # Логирование предупреждения о том, что данные не предоставлены
+            logger.warning("Данные не предоставлены в запросе")
+            return jsonify({"error": "Данные не предоставлены"}), 400
 
-        # Required fields check
+        # Проверка наличия обязательных полей в данных запроса
         required_fields = ['access_token', 'user_id', 'userlogin', 'full_name', 'password_hash']
         if not all(field in data for field in required_fields):
-            logger.warning("Missing required fields")
-            return jsonify({"error": "Missing required fields"}), 400
+            # Логирование предупреждения о недостающих обязательных полях
+            logger.warning("Отсутствуют обязательные поля")
+            return jsonify({"error": "Отсутствуют обязательные поля"}), 400
 
-        # Process user creation
+        # Формирование данных пользователя для дальнейшей обработки
         user_data = {
-            'userlogin': data['userlogin'],
-            'full_name': data['full_name'],
-            'email': data.get('email', ''),
-            'password_hash': data['password_hash']
+            'userlogin': data['userlogin'],  # Логин пользователя
+            'full_name': data['full_name'],  # Полное имя пользователя
+            'email': data.get('email', ''),  # Email пользователя (необязательное поле)
+            'password_hash': data['password_hash']  # Хэш пароля пользователя
         }
 
+        # Вызов сервиса для создания пользователя
         result = UserCreateService.create_user(
-            data['access_token'],
-            data['user_id'],
-            user_data
+            data['access_token'],  # Токен доступа
+            data['user_id'],       # ID пользователя
+            user_data              # Данные пользователя
         )
 
+        # Если результат содержит ошибку, возвращаем её клиенту
         if 'error' in result:
             return jsonify(result[0]), result[1]
 
-        # Save to database
+        # Сохранение данных пользователя в базу данных
         try:
-            with DatabaseService.get_connection() as conn:
-                with conn.cursor() as cur:
+            with DatabaseService.get_connection() as conn:  # Получение соединения с базой данных
+                with conn.cursor() as cur:  # Создание курсора для выполнения SQL-запросов
                     cur.execute(
                         """
                         INSERT INTO users 
@@ -52,27 +60,30 @@ def create_user():
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                         """,
                         (
-                            result['userid'],
-                            result['userlogin'],
-                            result['full_name'],
-                            result['email'],
-                            result['password_hash'],
-                            result['active'],
-                            result['add_ldap'],
-                            result['regtimes']
+                            result['userid'],         # ID пользователя
+                            result['userlogin'],      # Логин пользователя
+                            result['full_name'],      # Полное имя пользователя
+                            result['email'],          # Email пользователя
+                            result['password_hash'],  # Хэш пароля
+                            result['active'],         # Статус активности
+                            result['add_ldap'],       # Флаг добавления через LDAP
+                            result['regtimes']        # Время регистрации
                         )
                     )
-                    conn.commit()
-                    logger.info(f"User {result['userid']} created successfully")
+                    conn.commit()  # Подтверждение транзакции
+                    # Логирование успешного создания пользователя
+                    logger.info(f"Пользователь {result['userid']} успешно создан")
                     return jsonify({
                         "success": True,
-                        "user_id": result['userid']
+                        "user_id": result['userid']  # Возвращение ID созданного пользователя
                     }), 201
 
         except Exception as e:
-            logger.error(f"Database error during user creation: {str(e)}", exc_info=True)
-            return jsonify({"error": "Database error"}), 500
+            # Логирование ошибки при работе с базой данных
+            logger.error(f"Ошибка базы данных при создании пользователя: {str(e)}", exc_info=True)
+            return jsonify({"error": "Ошибка базы данных"}), 500
 
     except Exception as e:
-        logger.error(f"User creation error: {str(e)}", exc_info=True)
-        return jsonify({"error": "Internal server error"}), 500
+        # Логирование общей ошибки при создании пользователя
+        logger.error(f"Ошибка при создании пользователя: {str(e)}", exc_info=True)
+        return jsonify({"error": "Внутренняя ошибка сервера"}), 500

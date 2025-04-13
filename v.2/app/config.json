@@ -22,9 +22,9 @@
         "password": "vbngrjemd#mf!"
     },
     "flask": {
-        "SECRET_KEY": "98a51f9a057fcfc2a42d0c8481dcd43a84c947bd5bc13eb3045edbee7261bf051aae40e9f9c96864af1c25c607da17ba2b9e3b8483506e01e3286ee70a6cab20244ac44c5ec91cb7af8988900d6905980cadffd09eba2143d73bdc7199a74f0f49952cca",
+        "SECRET_KEY": "554da0399798af7c0853e32093ea589717ea3b205514f9e44842d4c0dd3a9a1eaaeb22f406ff691fb4edfa88197941b5c672e063cd8c6f5b2a5e13e68e2745135cdfad70f045d747446baa37ea282b29821c43c9efd9b2f10e98bd5976f6231df6f259fd52e36fa3dda04d00adb98deb6be0fe49ac30ff4912ad0d15fe",
         "JWT": {
-        "SECRET_KEY": "033308946648ef6b2698633b7a95b9c73d22b128f241993a15ccf7641f83858f09c2afd8733478878a2a351c69ff4b2a0acd01a9c8b68a376f956979399518674494bcc3164a926e6ef593b5f45c1471d270a811bbdba9c093125428888ad38f62989027",
+        "SECRET_KEY": "f51c8317f2a189d17400d8b9b53c7f04befc8e884c4fc89ab55c448d84bfbd65f262e941570eafcc4836affc4a02aff9114aab90da191fb6816cdbc673873b83de93919514f4c73422b051eb229705b75612ecd97cdce11641b43a1707f0fd58b75c4368cf6710d52e4790c8bdfb75d620d4caa4a9157913511763d18d",
         "ACCESS_EXPIRES": 600,
         "REFRESH_EXPIRES": 1200
         }
@@ -33,6 +33,6 @@
         "active": true
     },
     "version": {
-        "current_version": "0.7.13"
+        "current_version": "0.7.15"
     }
 }

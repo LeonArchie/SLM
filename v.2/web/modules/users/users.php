@@ -23,42 +23,108 @@
     // Проверка привилегий для текущей страницы
     $file_path = FROD;
 
-    // Проверка существования файла function.php
     if (!file_exists($file_path)) {
-        // Если файл не существует, перенаправляем пользователя на страницу ошибки 503
         header("Location: /err/50x.html");
-        exit(); // Прекращаем выполнение скрипта
+        exit();
     }
 
-    // Подключение файла с функциями
     require_once $file_path;
 
+    // Получаем список пользователей из API
+    $users = [];
+    try {
+        $apiUrl = "${baseUrl}:5000/setting/user/list";
+        $requestData = [
+            'user_id' => $_SESSION['userid'],
+            'access_token' => $_SESSION['access_token'] ?? ''
+        ];
 
+        $ch = curl_init($apiUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($requestData));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Accept: application/json'
+        ]);
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($httpCode !== 200) {
+            throw new Exception("API request failed with HTTP code: {$httpCode}");
+        }
+
+        $responseData = json_decode($response, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception("Failed to decode API response");
+        }
+
+        if ($responseData['status'] !== 'success') {
+            throw new Exception($responseData['error'] ?? 'Unknown API error');
+        }
+
+        $users = $responseData['users'] ?? [];
+    } catch (Exception $e) {
+        logger("ERROR", "Ошибка при получении списка пользователей: " . $e->getMessage());
+        // Выводим сообщение об ошибке на фронтенд
+        echo '<script>showErrorMessage(\'error\', \'Ошибка\', \'Не удалось загрузить данные.\', 5000);</script>';
+    }
+    
+    /**
+     * Генерирует HTML для аватарки на основе имени пользователя
+     */
+    function generateUserAvatar($fullName) {
+        $initials = '';
+        $parts = explode(' ', $fullName);
+        
+        // Берем первую букву первого слова
+        if (count($parts) > 0 && !empty($parts[0])) {
+            $initials .= mb_substr($parts[0], 0, 1);
+        }
+        
+        // Берем первую букву последнего слова (если есть)
+        if (count($parts) > 1 && !empty($parts[count($parts)-1])) {
+            $initials .= mb_substr($parts[count($parts)-1], 0, 1);
+        }
+        
+        // Если не получилось извлечь инициалы, используем "?"
+        if (empty($initials)) {
+            $initials = '?';
+        }
+        
+        // Генерируем цвет на основе хеша имени
+        $hash = crc32($fullName);
+        $colors = ['#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6', '#1abc9c', '#d35400'];
+        $color = $colors[abs($hash) % count($colors)];
+        
+        return '<div class="user-avatar" style="background-color: '.$color.'">'.mb_strtoupper($initials).'</div>';
+    }
     include "/platform/include/binding/inital_error.php";
 
     // Логирование успешной инициализации страницы
     logger("DEBUG", "uesers.php успешно инициализирован.");
-
 ?>
 <!DOCTYPE html>
-    <html lang="ru">
-        <head>
-            <?php include ROOT_PATH . '/platform/include/visible/all_head.html'; ?>
-            <link rel="stylesheet" href="/platform/include/css/navbar.css"/>
-            <link rel="stylesheet" href="/platform/include/css/error.css"/>
-            <link rel="stylesheet" href="css/users.css"/>
-            <title>ЕОС - Управление пользователями</title>
-        </head>
-        <body>
-            <?php include ROOT_PATH . '/platform/include/visible/eos_header.html'; ?>
-            <?php include ROOT_PATH .'/platform/include/visible/navbar.php'; ?>
+<html lang="ru">
+    <head>
+        <?php include ROOT_PATH . '/platform/include/visible/all_head.html'; ?>
+        <link rel="stylesheet" href="/platform/include/css/navbar.css"/>
+        <link rel="stylesheet" href="/platform/include/css/error.css"/>
+        <link rel="stylesheet" href="css/users.css"/>
+        <title>ЕОС - Управление пользователями</title>
+    </head>
+    <body>
+        <?php include ROOT_PATH . '/platform/include/visible/eos_header.html'; ?>
+        <?php include ROOT_PATH .'/platform/include/visible/navbar.php'; ?>
 
-            <main>
-                <!-- Контейнер для формы и таблицы -->
-                <div class="form-container">
-                    <!-- Панель кнопок для управления пользователями -->
-                    <div class="button-bar">
-
+        <main>
+            <!-- Контейнер для формы и таблицы -->
+            <div class="form-container">
+                <!-- Панель кнопок для управления пользователями -->
+                <div class="button-bar">
+                    <div class="button-group">
                         <?php 
                             $privileges_button = '076a0c70-8cca-4124-b009-97fe44f6c68e';
                             if (checkPrivilege($privileges_bottom)): ?>
@@ -77,7 +143,6 @@
                             <button id="blockButton" disabled>Сменить статус пользователя</button>
                         <?php endif; ?>
 
-
                         <?php 
                             $privileges_button = '';
                             if (checkPrivilege($privileges_bottom)): ?>
@@ -91,143 +156,82 @@
                         <?php endif; ?>
               
                         <button id="refreshButton" onclick="location.reload()">Обновить</button>
-                        
-                        <!-- Скрытые поля для CSRF-токена и ID пользователя -->
-                        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-                        <input type="hidden" name="userid" value="<?php echo $_SESSION['userid']; ?>">
                     </div>
                     
-                    <!-- Контейнер для таблицы пользователей -->
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <!-- Чекбокс для выбора всех пользователей -->
-                                    <th><input type="checkbox" id="selectAll"></th>
-                                    <th>Полное ФИО</th>
-                                    <th>Логин</th>
-                                    <th>Активен</th>
-                                    <th>LDAP</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                    // Преобразование массива пользователей в индексированный массив
-                                    $users = array_values($users);
-                                    // Цикл для отображения каждого пользователя в таблице
-                                    foreach ($users as $index => $user):
-                                        // Экранирование данных пользователя для безопасного отображения
+                    <!-- Строка поиска -->
+                    <div class="search-container">
+                        <input type="text" id="userSearch" placeholder="Поиск пользователя..." class="search-input">
+                        <button id="searchButton" class="search-button">Найти</button>
+                    </div>
+                    
+                    <!-- Скрытые поля для CSRF-токена и ID пользователя -->
+                    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                    <input type="hidden" name="userid" value="<?php echo $_SESSION['userid']; ?>">
+                </div>
+                
+                <!-- Контейнер для таблицы пользователей -->
+                <div class="table-container">
+                    <table id="usersTable">
+                        <thead>
+                            <tr>
+                                <!-- Чекбокс для выбора всех пользователей -->
+                                <th><input type="checkbox" id="selectAll"></th>
+                                <th>Полное ФИО</th>
+                                <th>Логин</th>
+                                <th>Активен</th>
+                                <th>LDAP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (!empty($users)): ?>
+                                <?php foreach ($users as $user): ?>
+                                    <?php
                                         $fullName = htmlspecialchars($user['full_name'] ?? 'Без имени');
                                         $userLogin = htmlspecialchars($user['userlogin'] ?? 'Без логина');
                                         $isActive = !empty($user['active']) ? 'checked' : '';
                                         $isLdap = !empty($user['add_ldap']) ? 'checked' : '';
-                                ?>
-                                    <tr>
-                                        <!-- Чекбокс для выбора конкретного пользователя -->
+                                        $avatar = generateUserAvatar($fullName);
+                                    ?>
+                                    <tr class="user-row" data-fullname="<?= htmlspecialchars(strtolower($fullName)) ?>" data-login="<?= htmlspecialchars(strtolower($userLogin)) ?>">
                                         <td>
                                             <input type="checkbox" class="userCheckbox" data-userid="<?= htmlspecialchars($user['userid']) ?>">
                                         </td>
-                                        <!-- Ссылка на редактирование пользователя -->
                                         <td class="name-cell">
+                                            <?= $avatar ?>
                                             <a href="#" onclick="event.preventDefault(); redirectToEditUser(<?= json_encode($user['userid']) ?>);">
                                                 <?= $fullName ?>
                                             </a>
                                         </td>
-                                        <!-- Логин пользователя -->
                                         <td><?= $userLogin ?></td>
-                                        <!-- Чекбокс для отображения активности пользователя -->
                                         <td>
                                             <input type="checkbox" disabled <?= $isActive ?> class="custom-checkbox status-indicator">
                                         </td>
-                                        <!-- Чекбокс для отображения LDAP-статуса пользователя -->
                                         <td>
                                             <input type="checkbox" disabled <?= $isLdap ?> class="custom-checkbox ldap-indicator">
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="5" style="text-align: center;">Нет данных о пользователях</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
-                <!-- Форма добавления нового пользователя -->
-                <div class="add-form-overlay" id="addFormOverlay">
-                    <div class="add-form">
-                        <form id="addUserForm">
-                            <!-- Скрытое поле для CSRF-токена -->
-                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
-                            <!-- Поле для ввода полного имени -->
-                            <div class="input-group">
-                                <label for="full_name">Полное ФИО:</label>
-                                <input type="text" id="full_name" name="full_name" required>
-                            </div>
-                            <!-- Поле для ввода логина -->
-                            <div class="input-group">
-                                <label for="userlogin">Логин:</label>
-                                <input type="text" id="userlogin" name="userlogin" required>
-                            </div>
-                            <!-- Поле для ввода пароля с кнопкой генерации пароля -->
-                            <div class="input-group password-container">
-                                <label for="password">Пароль:</label>
-                                <input type="text" id="password" name="password" required>
-                                <button type="button" id="generate-password">Сгенерировать</button>
-                            </div>
-                            <!-- Поле для ввода email -->
-                            <div class="input-group">
-                                <label for="email">E-mail:</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            <!-- Выпадающий список для выбора роли пользователя -->
-                            <div class="input-group">
-                                <label for="role">Полномочия:</label>
-                                <select id="role" name="role" required <?php echo (isset($error) ? 'disabled' : ''); ?>>
-                                    <?php
-                                    // Путь к файлу с шаблонами привилегий
-                                    $templatePath = TEMPLATE_PRIVILEGES;
-
-                                    // Проверка существования файла
-                                    if (!file_exists($templatePath)) {
-                                        // Логирование ошибки, если файл не найден
-                                        logger("ERROR", "Ошибка получения шаблонов полномочий - нет файла");
-                                        $error = true; // Установка флага ошибки
-                                        echo '<option value="default" selected>По умолчанию</option>';
-                                    } else {
-                                        // Чтение JSON-файла
-                                        $jsonData = file_get_contents($templatePath);
-                                        $privilegesData = json_decode($jsonData, true);
-
-                                        // Проверка на ошибки декодирования JSON
-                                        if (json_last_error() !== JSON_ERROR_NONE || !is_array($privilegesData)) {
-                                            // Логирование ошибки, если JSON не удалось декодировать
-                                            logger("ERROR", "Ошибка получения шаблонов полномочий - не могу декодировать");
-                                            $error = true; // Установка флага ошибки
-                                            echo '<option value="default" selected>По умолчанию</option>';
-                                        } else {
-                                            // Генерация опций для выбора роли
-                                            echo '<option value="" disabled selected>Выберите полномочия</option>';
-                                            foreach ($privilegesData as $key => $privilege) {
-                                                $name = htmlspecialchars($privilege['name']);
-                                                echo '<option value="' . $key . '">' . $name . '</option>';
-                                            }
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                            <!-- Кнопки для отмены и создания пользователя -->
-                            <div class="button-group">
-                                <button type="button" class="cancel">Отменить</button>
-                                <button type="submit" class="create">Создать</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-            </main>
-        
-            <?php include ROOT_PATH . '/platform/include/visible/error.php'; ?>
-            <?php include ROOT_PATH . '/platform/include/visible/footer.php'; ?>
+            </div>
             
-            <script src="/platform/include/js/error.js"></script>
-            <script src="js/users.js"></script>
-        </body>
-    </html>
+            <!-- Форма добавления нового пользователя -->
+            <div class="add-form-overlay" id="addFormOverlay">
+                <!-- ... (оставить без изменений) ... -->
+            </div>
+        </main>
+    
+        <?php include ROOT_PATH . '/platform/include/visible/error.php'; ?>
+        <?php include ROOT_PATH . '/platform/include/visible/footer.php'; ?>
+        
+        <script src="/platform/include/js/error.js"></script>
+        <script src="js/users.js"></script>
+        <script src="js/find_users.js"></script>
+    </body>
+</html>

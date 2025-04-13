@@ -3,45 +3,54 @@ from services.user_list_service import UserListService
 from services.logger_service import LoggerService
 from services.token_service import TokenService
 
+# Инициализация логгера для модуля получения списка пользователей
 logger = LoggerService.get_logger('app.user_list')
+
+# Создание Blueprint для маршрута получения списка пользователей
 user_list_bp = Blueprint('user_list', __name__)
 
 @user_list_bp.route('/setting/user/list', methods=['POST'])
 def get_user_list():
-    """Endpoint to get user list with detailed information"""
-    logger.info("Received user list request")
+    """Endpoint для получения списка пользователей с подробной информацией"""
+    # Логирование начала обработки запроса на получение списка пользователей
+    logger.info("Получен запрос на получение списка пользователей")
     
     try:
-        # Get data from request
+        # Получаем данные из тела запроса в формате JSON
         data = request.get_json()
         if not data or 'user_id' not in data or 'access_token' not in data:
-            logger.warning("Invalid request - missing required fields")
-            return jsonify({"error": "user_id and access_token are required"}), 400
+            # Логирование предупреждения о том, что запрос некорректен (отсутствуют обязательные поля)
+            logger.warning("Некорректный запрос - отсутствуют обязательные поля")
+            return jsonify({"error": "Требуются user_id и access_token"}), 400
 
         user_id = data['user_id']
         access_token = data['access_token']
 
-        # Verify token and user_id match
+        # Проверяем токен и соответствие user_id
         try:
             payload = TokenService.verify_token(access_token)
             if payload['user_id'] != user_id:
-                logger.warning(f"Token user_id mismatch: {payload['user_id']} != {user_id}")
-                return jsonify({"error": "Invalid token for this user"}), 403
+                # Логирование предупреждения о несоответствии user_id в токене и запросе
+                logger.warning(f"Несоответствие user_id в токене: {payload['user_id']} != {user_id}")
+                return jsonify({"error": "Недействительный токен для данного пользователя"}), 403
         except Exception as e:
-            logger.warning(f"Token verification failed: {str(e)}")
-            return jsonify({"error": "Token verification failed"}), 401
+            # Логирование предупреждения о неудачной проверке токена
+            logger.warning(f"Проверка токена не удалась: {str(e)}")
+            return jsonify({"error": "Проверка токена не удалась"}), 401
 
-        # Get user list
+        # Получаем список пользователей из сервиса
         users = UserListService.get_user_list()
         
-        logger.info(f"Successfully retrieved {len(users)} users")
+        # Логирование успешного получения списка пользователей
+        logger.info(f"Успешно получено {len(users)} пользователей")
         return jsonify({
             "status": "success",
-            "users": users
+            "users": users  # Возвращаем список пользователей
         })
 
     except Exception as e:
-        logger.error(f"Error in user list endpoint: {str(e)}", exc_info=True)
+        # Логирование общей ошибки при обработке запроса
+        logger.error(f"Ошибка в endpoint списка пользователей: {str(e)}", exc_info=True)
         return jsonify({
-            "error": "Internal server error while processing user list"
+            "error": "Внутренняя ошибка сервера при обработке списка пользователей"
         }), 500
