@@ -2,42 +2,54 @@ from flask import Blueprint, request, jsonify
 from services.user_update_service import UserUpdateService
 from services.logger_service import LoggerService
 
+# Инициализация логгера для модуля обновления данных пользователя
 logger = LoggerService.get_logger('app.user_update')
+
+# Создание Blueprint для маршрута обновления данных пользователя
 user_update_bp = Blueprint('user_update', __name__)
 
 @user_update_bp.route('/user/update', methods=['POST'])
 def update_user():
     """Endpoint для обновления данных пользователя"""
-    logger.info("Received user update request")
+    # Логирование начала обработки запроса на обновление данных пользователя
+    logger.info("Получен запрос на обновление данных пользователя")
     
     try:
+        # Получение данных из тела запроса в формате JSON
         data = request.get_json()
         if not data:
-            logger.warning("No data provided in request")
-            return jsonify({"error": "Request data is required"}), 400
+            # Логирование предупреждения о том, что данные не предоставлены
+            logger.warning("Данные не предоставлены в запросе")
+            return jsonify({"error": "Данные запроса обязательны"}), 400
 
-        # Проверка обязательных полей
+        # Проверка наличия всех обязательных полей
         required_fields = ['access_token', 'email', 'full_name', 'userid']
         missing_fields = [field for field in required_fields if field not in data]
         
         if missing_fields:
-            logger.warning(f"Missing required fields: {missing_fields}")
+            # Логирование предупреждения о недостающих обязательных полях
+            logger.warning(f"Отсутствуют обязательные поля: {missing_fields}")
             return jsonify({
-                "error": "Missing required fields",
+                "error": "Отсутствуют обязательные поля",
                 "details": missing_fields
             }), 400
 
-        # Вызов сервиса для обработки запроса
+        # Вызов сервиса для обработки запроса на обновление данных пользователя
         result = UserUpdateService.process_update(data)
         
         if 'error' in result:
+            # Логирование ошибки, возвращенной сервисом
+            logger.warning(f"Ошибка при обработке запроса: {result['error']}")
             return jsonify({
                 "error": result['error'],
                 "details": result.get('details')
             }), result.get('status_code', 400)
         
-        return jsonify({"success": True, "message": ""}), 200
+        # Логирование успешного завершения операции
+        logger.info(f"Данные пользователя успешно обновлены для userid={data['userid']}")
+        return jsonify({"success": True, "message": "Данные успешно обновлены"}), 200
 
     except Exception as e:
-        logger.error(f"Unexpected error: {str(e)}", exc_info=True)
-        return jsonify({"error": "Internal server error"}), 500
+        # Логирование общей ошибки при обработке запроса
+        logger.error(f"Неожиданная ошибка: {str(e)}", exc_info=True)
+        return jsonify({"error": "Внутренняя ошибка сервера"}), 500
