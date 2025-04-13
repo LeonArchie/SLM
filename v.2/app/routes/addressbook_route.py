@@ -5,6 +5,9 @@ from services.addressbook_service import AddressBookService
 # Создание Blueprint для маршрута работы с адресной книгой
 addressbook_bp = Blueprint('addressbook', __name__)
 
+# Инициализация логгера для модуля маршрутов адресной книги
+logger = LoggerService.get_logger('app.addressbook_route')
+
 @addressbook_bp.route('/adresbook/list', methods=['POST']) 
 def get_contact_list():
     """
@@ -19,7 +22,7 @@ def get_contact_list():
     # Валидация входных данных
     if not data or 'access_token' not in data or 'user_id' not in data:
         # Логирование ошибки о недостатке обязательных параметров
-        logger.warning("Некорректный запрос - отсутствуют обязательные поля: access_token или user_id")
+        logger.warning(f"Некорректный запрос - отсутствуют обязательные поля: access_token или user_id")
         return jsonify({"error": "Требуются access_token и user_id"}), 400
 
     # Вызов сервиса для получения активных контактов

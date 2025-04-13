@@ -9,7 +9,7 @@ logger = LoggerService.get_logger('version_routes')
 # Создание Blueprint для маршрута получения версии приложения
 version_bp = Blueprint('version', __name__,)
 
-@version_bp.route('/version', methods=['GET'])
+@version_bp.route('/version/', methods=['GET'])
 def get_version():
     """Endpoint для получения текущей версии приложения"""
     # Логирование запроса на проверку версии с указанием IP-адреса клиента
