@@ -1,6 +1,6 @@
 <?php
     // Идентификатор привилегий
-    $privileges_page = "3ad33b50-360f-4c8a-b691-aca388b48a8b";
+    $privileges_page = "3fda4364-74ff-4ea7-a4d4-5cca300758a2";
 
     // Путь к файлу с функциями
     $file_path = 'include/function.php';

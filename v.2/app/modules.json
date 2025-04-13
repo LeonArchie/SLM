@@ -1,7 +1,7 @@
 {
     "menu": [
         {
-            "guid": "3ad33b50-360f-4c8a-b691-aca388b48a8b",
+            "guid": "3fda4364-74ff-4ea7-a4d4-5cca300758a2",
             "title": "Дашборд",
             "url": "/platform/dashboard.php",
             "active": true,
@@ -90,35 +90,35 @@
                 {
                     "guid": "da137713-83fe-4325-868f-14b967dbf17c",
                     "title": "Управление учетными записями",
-                    "url": "/modules/setting/all_accounts.php",
+                    "url": "/modules/users/users.php",
                     "active": true,
                     "dropdown": []
                 },
                 {
                     "guid": "aeef82b7-5083-480e-a59e-507a083a16be",
-                    "title": "Просмотреть/Назначить роли",
-                    "url": "/modules/setting/authority_manager.php",
+                    "title": "Управление полномочиями",
+                    "url": "/modules/privileges/privileges.php",
                     "active": true,
                     "dropdown": []
                 }
             ]
         },
         {
-            "guid": "27cc1a41-fc05-4e9d-931f-8133812e71ba",
+            "guid": "3fda4364-74ff-4ea7-a4d4-5cca300758a2",
             "title": "Справочник",
             "url": "/modules/adresbook/adresbook.php",
             "active": true,
             "dropdown": []
         },
         {
-            "guid": "356a5297-1587-4d79-8f81-b3e1c7e21a73",
+            "guid": "3fda4364-74ff-4ea7-a4d4-5cca300758a2",
             "title": "Моя учетная запись",
             "url": "/modules/my_account/my_account.php",
             "active": true,
             "dropdown": []
         },
         {
-            "guid": "a5366719-a2ec-4cc8-a1a6-f8a0f78e1238",
+            "guid": "3fda4364-74ff-4ea7-a4d4-5cca300758a2",
             "title": "Выход",
             "url": "/platform/logout.php",
             "active": true,

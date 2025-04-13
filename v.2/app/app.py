@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from services.logger_service import LoggerService
+from services.guid_generate_service import GuidGenerateService
 from services.db_service import DatabaseService
 from services.config_service import get_config
 from routes.modules_routes import modules_bp
@@ -11,51 +12,56 @@ from routes.user_data_route import user_data_bp
 from routes.privileges_route import privileges_bp
 from routes.user_update_route import user_update_bp
 from routes.user_pass_update_route import user_pass_update_bp
+from routes.user_list_route import user_list_bp
+from routes.user_block_route import user_block_bp
+from routes.user_create_route import user_create_bp
 from flask_cors import CORS
 import os
 import sys
 
-# Initialize minimal logger first
+# Инициализация минимального логгера для начальной настройки приложения
 logger = LoggerService.get_logger('app.init')
 
 def configure_services(config: dict):
-    """Initialize all required services"""
+    """Инициализация всех необходимых сервисов"""
     try:
-        # Database initialization
-        logger.info("Initializing database connection...")
+        # Инициализация подключения к базе данных
+        logger.info("Инициализация подключения к базе данных...")
         DatabaseService.initialize(config['db'])
         
-        # Test database connection
+        # Тестирование подключения к базе данных
         try:
             with DatabaseService.get_connection() as conn:
                 with conn.cursor() as cur:
                     cur.execute("SELECT 1")
-                    logger.info("Database connection test successful")
+                    logger.info("Тест подключения к базе данных успешно выполнен")
         except Exception as e:
-            logger.critical(f"Database connection test failed: {str(e)}", exc_info=True)
+            # Логирование критической ошибки тестирования подключения к базе данных
+            logger.critical(f"Тест подключения к базе данных не удался: {str(e)}", exc_info=True)
             raise
             
-        logger.info("All services initialized successfully")
+        logger.info("Все сервисы успешно инициализированы")
         return True
         
     except Exception as e:
-        logger.critical(f"Service initialization failed: {str(e)}", exc_info=True)
+        # Логирование ошибки инициализации сервисов
+        logger.critical(f"Ошибка инициализации сервисов: {str(e)}", exc_info=True)
         return False
 
 def create_app():
-    """Application factory function"""
+    """Фабричная функция для создания экземпляра приложения"""
     app = Flask(__name__)
-    CORS(app)  # Разрешает все origins
+    CORS(app)  # Разрешение CORS для всех источников
     
     try:
-        # Load configuration
+        # Загрузка конфигурации
         config = get_config()
         
-        # Reconfigure logger with loaded config
+        # Переинициализация логгера с загруженной конфигурацией
         LoggerService.get_logger('app', config)
-        logger.info("Application logger reconfigured")
+        logger.info("Логгер приложения переинициализирован")
         
-        # Configure Flask
+        # Настройка Flask-приложения
         app.config.update({
             'SECRET_KEY': config['flask']['SECRET_KEY'],
             'JWT_SECRET_KEY': config['flask']['JWT']['SECRET_KEY'],
@@ -63,15 +69,16 @@ def create_app():
             'JWT_REFRESH_TOKEN_EXPIRES': config['flask']['JWT']['REFRESH_EXPIRES']
         })
         
-        # Initialize services
+        # Инициализация сервисов
         if not configure_services(config):
-            raise RuntimeError("Failed to initialize services")
+            raise RuntimeError("Не удалось инициализировать сервисы")
             
     except Exception as e:
-        logger.critical(f"Application configuration failed: {str(e)}", exc_info=True)
+        # Логирование ошибки конфигурации приложения
+        logger.critical(f"Ошибка конфигурации приложения: {str(e)}", exc_info=True)
         sys.exit(1)
 
-    # Import and register blueprints AFTER configuration
+    # Импорт и регистрация blueprint'ов ПОСЛЕ настройки
     from routes.ldap_routes import ldap_bp
     from routes.version_routes import version_bp
     from routes.auth_routes import auth_bp
@@ -84,60 +91,64 @@ def create_app():
         ('Refresh', refresh_bp),
         ('FROD', frod_bp),
         ('Modules', modules_bp),
-        ('Addresbook',addressbook_bp),
+        ('Addressbook', addressbook_bp),
         ('User Data', user_data_bp),
         ('Privileges', privileges_bp),
         ('User Update', user_update_bp),
-        ('User Password Update', user_pass_update_bp)
+        ('User Password Update', user_pass_update_bp),
+        ('User List', user_list_bp),
+        ('User Block', user_block_bp),
+        ('User Create', user_create_bp)
     ]
         
     for name, bp in blueprints:
         try:
             app.register_blueprint(bp)
-            logger.info(f"Registered blueprint: {name}")
+            logger.info(f"Blueprint зарегистрирован: {name}")
         except Exception as e:
-            logger.error(f"Failed to register {name} blueprint: {str(e)}")
+            logger.error(f"Не удалось зарегистрировать blueprint {name}: {str(e)}")
 
-    # Request logging middleware
+    # Middleware для логирования входящих запросов
     @app.before_request
     def log_request():
         logger.info(
-            f"Incoming {request.method} {request.path} | "
+            f"Входящий запрос {request.method} {request.path} | "
             f"IP: {request.remote_addr} | "
             f"User-Agent: {request.user_agent}"
         )
         if request.method in ['POST', 'PUT', 'PATCH'] and request.content_length:
-            logger.debug(f"Request body: {request.get_data(as_text=True)[:500]}...")
+            logger.debug(f"Тело запроса: {request.get_data(as_text=True)[:500]}...")
 
+    # Middleware для логирования исходящих ответов
     @app.after_request
     def log_response(response):
         logger.info(
-            f"Outgoing {request.method} {request.path} | "
-            f"Status: {response.status_code} | "
+            f"Исходящий запрос {request.method} {request.path} | "
+            f"Статус: {response.status_code} | "
             f"Content-Type: {response.content_type}"
         )
         return response
 
-    # Error handlers
+    # Обработчики ошибок
     @app.errorhandler(404)
     def handle_404(error):
         logger.warning(f"404 Not Found: {request.path}")
-        return jsonify({"error": "Not Found"}), 404
+        return jsonify({"error": "Ресурс не найден"}), 404
 
     @app.errorhandler(500)
     def handle_500(error):
         logger.error(f"500 Server Error: {str(error)}", exc_info=True)
-        return jsonify({"error": "Internal Server Error"}), 500
+        return jsonify({"error": "Внутренняя ошибка сервера"}), 500
 
     return app
 
-# Create application instance
+# Создание экземпляра приложения
 app = create_app()
 
 if __name__ == '__main__':
     try:
-        logger.info("Starting application...")
+        logger.info("Запуск приложения...")
         app.run(host='0.0.0.0', port=5000, debug=False)
     except Exception as e:
-        logger.critical(f"Application startup failed: {str(e)}", exc_info=True)
+        logger.critical(f"Ошибка запуска приложения: {str(e)}", exc_info=True)
         sys.exit(1)
