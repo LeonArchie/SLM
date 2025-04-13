@@ -33,7 +33,9 @@
     // Получаем список пользователей из API
     $users = [];
     try {
-        $apiUrl = "${baseUrl}:5000/setting/user/list";
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+        $host = str_replace([':80',':443'], '', $_SERVER['HTTP_HOST']);
+        $apiUrl = "{$protocol}:5000/setting/user/list";
         $requestData = [
             'user_id' => $_SESSION['userid'],
             'access_token' => $_SESSION['access_token'] ?? ''
