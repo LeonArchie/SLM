@@ -1,5 +1,5 @@
 <?php
-    $privileges_page = '27cc1a41-fc05-4e9d-931f-8133812e71ba';
+    $privileges_page = '3fda4364-74ff-4ea7-a4d4-5cca300758a2';
     $file_path = 'include/platform.php';
         
     if (!file_exists($file_path)) {

@@ -1,6 +1,6 @@
 <?php
     // Уникальный идентификатор страницы для проверки привилегий
-    $privileges_page = '356a5297-1587-4d79-8f81-b3e1c7e21a73';
+    $privileges_page = '3fda4364-74ff-4ea7-a4d4-5cca300758a2';
 
     $file_path = 'include/platform.php';
         

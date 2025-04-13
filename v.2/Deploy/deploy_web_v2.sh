@@ -23,8 +23,7 @@ fi
 
 # Создание директорий, если их нет
 echo "Создание целевых директорий..."
-mkdir -p "$TARGET_WEB_DIR" "$TARGET_APP_DIR" "$LOG_DIR/web/v1" "$LOG_DIR/web/v2" "$LOG_DIR/app/v2"
-mkdir -p "$LOG_DIR/app" /etc/systemd/system/
+mkdir -p "$TARGET_WEB_DIR" "$TARGET_APP_DIR" "$LOG_DIR"
 
 # 1. Очистка целевых директорий
 echo "Очистка целевых директорий..."
@@ -79,8 +78,18 @@ EOF
 # 5. Очистка логов
 echo "Очистка логов..."
 rm -f /var/log/nginx/*
-rm -f /var/log/slm/app/v2/*
-rm -f /var/log/slm/web/v2/*
+rm -f /var/log/slm/*
+
+cat > "/var/log/slm/web.log" <<EOF
+1
+EOF
+
+cat > "/var/log/slm/app.log" <<EOF
+1
+EOF
+
+chown -R www-data:www-data "/var/log/slm/web.log"
+chown -R archie:archie "/var/log/slm/app.log"
 
 # 6. Перезапуск сервисов
 echo "Перезапуск сервисов..."
