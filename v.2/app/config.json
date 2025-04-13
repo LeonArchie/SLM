@@ -9,7 +9,7 @@
         "password": ""
     },
     "LOG": {
-        "app": "/var/log/slm/app/v2/app.log",
+        "app": "/var/log/slm/app.log",
         "max_bytes": 10485700,
         "backup_count": 5,
         "log_level": "DEBUG"
@@ -33,6 +33,6 @@
         "active": true
     },
     "version": {
-        "current_version": "0.7.15"
+        "current_version": "0.7.18-364"
     }
 }

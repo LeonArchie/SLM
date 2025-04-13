@@ -96,8 +96,8 @@
                 },
                 {
                     "guid": "aeef82b7-5083-480e-a59e-507a083a16be",
-                    "title": "Просмотреть/Назначить роли",
-                    "url": "/modules/privileges/edit_privileges.php",
+                    "title": "Управление полномочиями",
+                    "url": "/modules/privileges/privileges.php",
                     "active": true,
                     "dropdown": []
                 }

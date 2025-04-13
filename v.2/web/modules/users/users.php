@@ -35,7 +35,7 @@
     try {
         $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
         $host = str_replace([':80',':443'], '', $_SERVER['HTTP_HOST']);
-        $apiUrl = "{$protocol}:5000/setting/user/list";
+        $apiUrl = "{$protocol}://{$host}:5000/setting/user/list";
         $requestData = [
             'user_id' => $_SESSION['userid'],
             'access_token' => $_SESSION['access_token'] ?? ''
@@ -71,7 +71,7 @@
     } catch (Exception $e) {
         logger("ERROR", "Ошибка при получении списка пользователей: " . $e->getMessage());
         // Выводим сообщение об ошибке на фронтенд
-        echo '<script>showErrorMessage(\'error\', \'Ошибка\', \'Не удалось загрузить данные.\', 5000);</script>';
+       $error_message = "Не удалось загрузить данные.";
     }
     
     /**
