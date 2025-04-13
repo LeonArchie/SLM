@@ -1,89 +1,56 @@
 <?php
-
     // Уникальный идентификатор страницы 
     $privileges_page = 'aeef82b7-5083-480e-a59e-507a083a16be';
 
-    // Путь к файлу platform.php
-    $file_path = __DIR__ . '/include/platform.php';
-    // Проверка существования файла platform.php
+    $file_path = 'include/platform.php';
+        
     if (!file_exists($file_path)) {
-        // Если файл не существует, перенаправляем на страницу ошибки 50x
         header("Location: /err/50x.html");
         exit();
     }
-    // Подключение файла platform.php
+
     require_once $file_path;
 
-    // Инициализация сессии, если она еще не начата
     startSessionIfNotStarted();
-    // Проверка авторизации пользователя
-    checkAuth();
-    // Генерация CSRF-токена для защиты от атак
-    csrf_token();
 
-    // Вызов функции FROD с идентификатором страницы 
-    FROD($privileges_page);
-
-    // Подключение к базе данных с обработкой исключений
-    try {
-        $pdo = connectToDatabase();
-    } catch (PDOException $e) {
-        // Логирование ошибки подключения к базе данных
-        logger("ERROR", "Ошибка подключения к базе данных: " . $e->getMessage());
-        // Вывод сообщения об ошибке
+    $file_path = CHECK_AUTH;
+    if (!file_exists($file_path)) {
         header("Location: /err/50x.html");
         exit();
     }
+    require_once $file_path;
 
-    // Подготовка запроса для получения данных о пользователях
-    $stmt = $pdo->prepare("SELECT userlogin, full_name, active, userid FROM users");
+    // Проверка привилегий для текущей страницы
+    $file_path = FROD;
 
-    // Выполнение запроса и проверка на ошибки
-    if (!$stmt->execute()) {
-        // Логирование ошибки, если запрос не выполнился
-        logger("ERROR", "Ошибка при выполнении запроса к таблице users.");
+    // Проверка существования файла function.php
+    if (!file_exists($file_path)) {
+        // Если файл не существует, перенаправляем пользователя на страницу ошибки 503
         header("Location: /err/50x.html");
-        exit();
+        exit(); // Прекращаем выполнение скрипта
     }
 
-    // Получение всех записей о пользователях
-    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Подключение файла с функциями
+    require_once $file_path;
 
-    // Подготовка запроса для получения всех привилегий
-    $stmt = $pdo->prepare("SELECT * FROM name_privileges");
-    
-    // Выполнение запроса и проверка на ошибки
-    if (!$stmt->execute()) {
-        // Логирование ошибки, если запрос не выполнился
-        logger("ERROR", "Ошибка при получении привилегий.");
-        header("Location: /err/50x.html");
-        exit();
-    }
-    
-    // Получение всех записей о привилегиях
-    $name_privileges = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Инициализация переменной для сообщения об ошибке
-    $error_message = "";
-    // Проверка наличия параметра ошибки в URL
-    if (isset($_GET['error'])) {
-        // Сохранение сырого значения ошибки
-        $raw_error = $_GET['error'];
-        // Экранирование значения ошибки для безопасного вывода на страницу
-        $error_message = htmlspecialchars($raw_error, ENT_QUOTES, 'UTF-8');
-    }
+    include "/platform/include/binding/inital_error.php";
+
+    // Логирование успешной инициализации страницы
+    logger("DEBUG", "uesers.php успешно инициализирован.");
 ?>
 <!DOCTYPE html>
 <html lang="ru">
     <head>
-        <?php include ROOT_PATH . '/include/all_head.html'; ?>
-        <link rel="stylesheet" href="/css/navbar.css"/>
-        <link rel="stylesheet" href="css/authority_manager.css"/>
-        <link rel="stylesheet" href="/css/error.css"/>
+    <?php include ROOT_PATH . '/platform/include/visible/all_head.html'; ?>
+            <link rel="stylesheet" href="/platform/include/css/navbar.css"/>
+            <link rel="stylesheet" href="/platform/include/css/error.css"/>
+            <link rel="stylesheet" href="css/users.css"/>
+            <title>ЕОС -У Управление пользователями</title>
     </head>
     <body>
-        <?php include ROOT_PATH . '/include/eos_header.html'; ?>
-        <?php include ROOT_PATH .'/include/navbar.php'; ?>
+        <?php include ROOT_PATH . '/platform/include/visible/eos_header.html'; ?>
+        <?php include ROOT_PATH .'/platform/include/visible/navbar.php'; ?>
         <main>
             <div class="form-container">
                 <div class="button-bar">
@@ -244,15 +211,11 @@
                 </form>
             </div>
         </main>
-            <?php include ROOT_PATH . '/include/error.php'; ?>
-            <?php include ROOT_PATH . '/include/footer.php'; ?>
-            <script src="js/authority_manager/auth_manager.js"></script>
-            <script src="js/authority_manager/create_privileges.js"></script>
-            <script src="js/authority_manager/delete_privileges.js"></script>
-            <script src="js/authority_manager/revoke_privileges.js"></script>
-            <script src="js/authority_manager/view_privileges.js"></script>
-            <script src="js/authority_manager/view_all_privileges.js"></script>
-            <script src="js/authority_manager/assign_privileges.js"></script>
-            <script src="/js/error.js"></script>
+        
+        <?php include ROOT_PATH . '/platform/include/visible/error.php'; ?>
+        <?php include ROOT_PATH . '/platform/include/visible/footer.php'; ?>
+           
+        <script src="/platform/include/js/error.js"></script>
+        <script src="js/users.js"></script>
     </body>
 </html>

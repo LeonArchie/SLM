@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from services.logger_service import LoggerService
+from services.guid_generate_service import GuidGenerateService
 from services.db_service import DatabaseService
 from services.config_service import get_config
 from routes.modules_routes import modules_bp
@@ -11,6 +12,9 @@ from routes.user_data_route import user_data_bp
 from routes.privileges_route import privileges_bp
 from routes.user_update_route import user_update_bp
 from routes.user_pass_update_route import user_pass_update_bp
+from routes.user_list_route import user_list_bp
+from routes.user_block_route import user_block_bp
+from routes.user_create_route import user_create_bp
 from flask_cors import CORS
 import os
 import sys
@@ -88,7 +92,10 @@ def create_app():
         ('User Data', user_data_bp),
         ('Privileges', privileges_bp),
         ('User Update', user_update_bp),
-        ('User Password Update', user_pass_update_bp)
+        ('User Password Update', user_pass_update_bp),
+        ('User List', user_list_bp),
+        ('User Block', user_block_bp),
+        ('User Create', user_create_bp)
     ]
         
     for name, bp in blueprints:

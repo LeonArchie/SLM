@@ -2,93 +2,101 @@
     // Уникальный идентификатор страницы для проверки привилегий
     $privileges_page = 'da137713-83fe-4325-868f-14b967dbf17c';
 
-    // Путь к файлу platform.php
-    $file_path = __DIR__ . '/include/platform.php';
-    // Проверка существования файла platform.php
+    $file_path = 'include/platform.php';
+        
     if (!file_exists($file_path)) {
-        // Если файл не существует, перенаправляем на страницу ошибки 500
         header("Location: /err/50x.html");
         exit();
     }
-    // Подключение файла platform.php
+
     require_once $file_path;
 
-    // Инициализация сессии, если она еще не начата
     startSessionIfNotStarted();
-    // Проверка авторизации пользователя
-    checkAuth();
-    // Генерация CSRF-токена для защиты от атак
-    csrf_token();
 
-    // Проверка привилегий для доступа к странице
-    FROD($privileges_page);
-
-    // Подключение к базе данных с обработкой исключений
-    try {
-        $pdo = connectToDatabase();
-    } catch (PDOException $e) {
-        // Логирование ошибки подключения к базе данных
-        logger("ERROR", "Ошибка подключения к базе данных: " . $e->getMessage());
-        // Перенаправление на страницу ошибки 500
+    $file_path = CHECK_AUTH;
+    if (!file_exists($file_path)) {
         header("Location: /err/50x.html");
         exit();
     }
+    require_once $file_path;
 
-    // Подготовка SQL-запроса для получения списка пользователей
-    $stmt = $pdo->prepare("SELECT userlogin, full_name, active, add_ldap, userid FROM users");
+    // Проверка привилегий для текущей страницы
+    $file_path = FROD;
 
-    // Выполнение запроса и проверка на ошибки
-    if (!$stmt->execute()) {
-        // Логирование ошибки, если запрос не выполнился
-        logger("ERROR", "Ошибка получения списка пользователей.");
-        // Перенаправление на страницу ошибки 500
+    // Проверка существования файла function.php
+    if (!file_exists($file_path)) {
+        // Если файл не существует, перенаправляем пользователя на страницу ошибки 503
         header("Location: /err/50x.html");
-        exit();
+        exit(); // Прекращаем выполнение скрипта
     }
 
-    // Получение всех записей из результата запроса
-    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Подключение файла с функциями
+    require_once $file_path;
 
-    // Инициализация переменной для сообщения об ошибке
-    $error_message = "";
-    // Проверка наличия параметра ошибки в URL
-    if (isset($_GET['error'])) {
-        // Получение и экранирование значения ошибки
-        $raw_error = $_GET['error'];
-        $error_message = htmlspecialchars($raw_error, ENT_QUOTES, 'UTF-8');
-    }
+
+    include "/platform/include/binding/inital_error.php";
+
+    // Логирование успешной инициализации страницы
+    logger("DEBUG", "uesers.php успешно инициализирован.");
+
 ?>
 <!DOCTYPE html>
     <html lang="ru">
         <head>
-            <!-- Подключение общих мета-тегов и стилей -->
-            <?php include ROOT_PATH . '/include/all_head.html'; ?>
-            <!-- Подключение дополнительных стилей -->
-            <link rel="stylesheet" href="/css/navbar.css"/>
-            <link rel="stylesheet" href="css/all_accounts.css"/>
-            <link rel="stylesheet" href="/css/error.css"/>
+            <?php include ROOT_PATH . '/platform/include/visible/all_head.html'; ?>
+            <link rel="stylesheet" href="/platform/include/css/navbar.css"/>
+            <link rel="stylesheet" href="/platform/include/css/error.css"/>
+            <link rel="stylesheet" href="css/users.css"/>
+            <title>ЕОС - Управление пользователями</title>
         </head>
         <body>
-            <!-- Подключение шапки сайта -->
-            <?php include ROOT_PATH . '/include/eos_header.html'; ?>
-            <!-- Подключение навигационной панели -->
-            <?php include ROOT_PATH .'/include/navbar.php'; ?>
+            <?php include ROOT_PATH . '/platform/include/visible/eos_header.html'; ?>
+            <?php include ROOT_PATH .'/platform/include/visible/navbar.php'; ?>
+
             <main>
                 <!-- Контейнер для формы и таблицы -->
                 <div class="form-container">
                     <!-- Панель кнопок для управления пользователями -->
                     <div class="button-bar">
-                        <button id="addButton">Добавить</button>
-                        <button id="editButton" disabled>Редактировать</button>
-                        <button id="blockButton" disabled>Сменить статус пользователя</button>
-                        <button id="deleteButton" disabled>Удалить</button>
-                        <button id="syncLdapButton" disabled>Принудительная синхронизация LDAP</button>
-                        <button id="ldapSettingsButton" disabled>Настройки LDAP</button>
+
+                        <?php 
+                            $privileges_button = '076a0c70-8cca-4124-b009-97fe44f6c68e';
+                            if (checkPrivilege($privileges_bottom)): ?>
+                            <button id="addButton">Добавить</button>
+                        <?php endif; ?>
+                        
+                        <?php 
+                            $privileges_button = '4e6c22aa-621a-4260-8e26-c2f4177362ba';
+                            if (checkPrivilege($privileges_bottom)): ?>
+                            <button id="editButton" disabled>Редактировать</button>
+                        <?php endif; ?>
+
+                        <?php 
+                            $privileges_button = '319b4c95-6beb-4aed-8447-f7338491d2e0';
+                            if (checkPrivilege($privileges_bottom)): ?>
+                            <button id="blockButton" disabled>Сменить статус пользователя</button>
+                        <?php endif; ?>
+
+
+                        <?php 
+                            $privileges_button = '';
+                            if (checkPrivilege($privileges_bottom)): ?>
+                            <button id="syncLdapButton" disabled>Принудительная синхронизация LDAP</button>
+                        <?php endif; ?>
+
+                        <?php 
+                            $privileges_button = '';
+                            if (checkPrivilege($privileges_bottom)): ?>
+                            <button id="ldapSettingsButton" disabled>Настройки LDAP</button>
+                        <?php endif; ?>
+              
                         <button id="refreshButton" onclick="location.reload()">Обновить</button>
+                        
                         <!-- Скрытые поля для CSRF-токена и ID пользователя -->
                         <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                         <input type="hidden" name="userid" value="<?php echo $_SESSION['userid']; ?>">
                     </div>
+                    
                     <!-- Контейнер для таблицы пользователей -->
                     <div class="table-container">
                         <table>
@@ -215,16 +223,11 @@
                 </div>
 
             </main>
-            <!-- Подключение блока для отображения ошибок -->
-            <?php include ROOT_PATH . '/include/error.php'; ?>
-            <!-- Подключение футера -->
-            <?php include ROOT_PATH . '/include/footer.php'; ?>
-            <!-- Подключение JavaScript-файлов -->
-            <script src="js/all_account/all_accounts.js"></script>
-            <script src="js/all_account/button_edit_all_acc.js"></script>
-            <script src="js/all_account/createuser.js"></script>
-            <script src="js/all_account/all_acc_delete.js"></script>
-            <script src="js/all_account/all_acc_block.js"></script>
-            <script src="/js/error.js"></script>
+        
+            <?php include ROOT_PATH . '/platform/include/visible/error.php'; ?>
+            <?php include ROOT_PATH . '/platform/include/visible/footer.php'; ?>
+            
+            <script src="/platform/include/js/error.js"></script>
+            <script src="js/users.js"></script>
         </body>
     </html>
