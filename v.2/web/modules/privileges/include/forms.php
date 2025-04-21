@@ -8,19 +8,35 @@
             </div>
             <div id="privilegesTableContainer"></div> <!-- Контейнер для таблицы -->
             <div class="button-group">
-                <button type="button" id="closeViewPrivilegesForm">Закрыть</button>
+                <button type="button" class="close-button" id="closeViewPrivilegesForm">Закрыть</button>
             </div>
         </form>
     </div>
     <!-- Форма для просмотра всех полномочий -->
     <div id="viewAllPrivilegesForm" class="form-modal" style="display: none;">
-        <h2>Все полномочия</h2>
-        <form id="viewAllPrivilegesFormContent">
-            <!-- Контейнер для таблицы -->
-            <div id="tableContainer"></div>
-        </form>
-        <div class="button-group">
-            <button type="button" id="closeViewAllPrivilegesForm">Закрыть</button>
+        <div class="form-modal-content">
+            <div class="table-header">
+                <h2>Все полномочия</h2>
+                <div class="search-container">
+                    <input type="text" id="privilegesSearch" placeholder="Поиск по названию или ID..." class="search-input">
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="privileges-table">
+                    <thead>
+                        <tr>
+                            <th>ID полномочий</th>
+                            <th>Название полномочий</th>
+                        </tr>
+                    </thead>
+                    <tbody id="privilegesTableBody">
+                        <!-- Данные будут загружены через JS -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="button-group">
+                <button type="button" class="close-button" id="closeViewAllPrivilegesForm">Закрыть</button>
+            </div>
         </div>
     </div>
     <?php 

@@ -114,6 +114,7 @@
             <link rel="stylesheet" href="/platform/include/css/navbar.css"/>
             <link rel="stylesheet" href="/platform/include/css/error.css"/>
             <link rel="stylesheet" href="css/privileges.css"/>
+            <link rel="stylesheet" href="css/modal.css"/>
             <title>ЕОС - Управление полномочиями</title>
     </head>
     <body>
@@ -202,12 +203,15 @@
                 </div>
             </div>
             <?php include 'include/forms.php'; ?>
+            <?php include ROOT_PATH . '/platform/include/visible/loading.html'; ?>
         </main>
         
         <?php include ROOT_PATH . '/platform/include/visible/error.php'; ?>
         <?php include ROOT_PATH . '/platform/include/visible/footer.php'; ?>
            
         <script src="/platform/include/js/error.js"></script>
+        <script src="js/view_all_privileges.js"></script>
+        <script src="js/find_all_privileges.js"></script>
         <script src="js/find_privileges.js"></script>
         <script src="js/privileges.js"></script>
     </body>
