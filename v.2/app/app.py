@@ -99,7 +99,8 @@ def create_app():
         ('User Password Update', user_pass_update_bp),
         ('User List', user_list_bp),
         ('User Block', user_block_bp),
-        ('User Create', user_create_bp)
+        ('User Create', user_create_bp),
+        ('Privileges Get All', privileges_get_all_bp)
     ]
         
     for name, bp in blueprints:
