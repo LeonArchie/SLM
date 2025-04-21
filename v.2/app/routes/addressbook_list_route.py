@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from services.logger_service import LoggerService  # Сервис для логирования
-from services.addressbook_service import AddressBookService
+from services.addressbook_list_service import AddressBookService
 
 # Создание Blueprint для маршрута работы с адресной книгой
 addressbook_bp = Blueprint('addressbook', __name__)

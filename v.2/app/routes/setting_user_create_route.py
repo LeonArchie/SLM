@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from services.logger_service import LoggerService
-from services.db_service import DatabaseService
-from services.user_create_service import UserCreateService
+from services.connect_db_service import DatabaseService
+from services.setting_user_create_service import UserCreateService
 
 # Инициализация логгера для модуля создания пользователей
 logger = LoggerService.get_logger('app.user.create.route')

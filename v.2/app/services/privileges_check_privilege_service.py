@@ -1,7 +1,7 @@
-from services.db_service import DatabaseService
+from services.connect_db_service import DatabaseService
 from services.token_service import TokenService
 from services.logger_service import logger
-from services.config_service import get_config
+from services.read_config_service import get_config
 
 def check_privilege(access_token: str, privilege_id: str, user_id: str) -> bool:
     """Проверяет наличие привилегии у пользователя с учетом активности FROD"""

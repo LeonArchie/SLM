@@ -1,8 +1,8 @@
 # Импорт необходимых библиотек
 import jwt  # Для работы с JWT-токенами
 from flask import Blueprint, request, jsonify  # Компоненты Flask для API
-from services.modules_service import load_modules  # Сервис загрузки модулей
-from services.modules_generate_service import get_user_menu  # Сервис генерации меню
+from services.setting_user_modules_read_service import load_modules  # Сервис загрузки модулей
+from services.setting_user_modules_generate_service import get_user_menu  # Сервис генерации меню
 from services.token_service import TokenService  # Сервис работы с токенами
 from services.logger_service import LoggerService  # Сервис логирования
 
@@ -12,7 +12,7 @@ logger = LoggerService.get_logger('app.routes.modules')
 # Создание Blueprint для группировки роутов модулей
 modules_bp = Blueprint('modules', __name__)
 
-@modules_bp.route("/user/modules", methods=["POST"])
+@modules_bp.route("/setting/user/modules", methods=["POST"])
 def user_modules():
     """
     Роут для получения персонализированного меню пользователя

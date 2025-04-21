@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from services.token_service import TokenService
-from services.user_data_service import UserDataService
+from services.setting_user_data_service import UserDataService
 from services.logger_service import LoggerService
 import jwt
 
@@ -10,7 +10,7 @@ logger = LoggerService.get_logger('app.user.data')
 # Создание Blueprint для маршрута получения данных пользователя
 user_data_bp = Blueprint('user_data', __name__)
 
-@user_data_bp.route('/user/data', methods=['POST'])
+@user_data_bp.route('/setting/user/data', methods=['POST'])
 def get_user_data():
     """Получение данных пользователя с проверкой токена и user_id"""
     # Логирование начала обработки запроса на получение данных пользователя

@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from services.logger_service import LoggerService
-from services.user_pass_update_service import UserPassUpdateService
+from services.setting_user_pass_update_service import UserPassUpdateService
 
 # Инициализация логгера для модуля обновления пароля пользователя
 logger = LoggerService.get_logger('app.user.pass.update.route')
@@ -8,7 +8,7 @@ logger = LoggerService.get_logger('app.user.pass.update.route')
 # Создание Blueprint для маршрута обновления пароля пользователя
 user_pass_update_bp = Blueprint('user_pass_update', __name__)
 
-@user_pass_update_bp.route('/user/pass/update', methods=['POST'])
+@user_pass_update_bp.route('/setting/user/pass-update', methods=['POST'])
 def update_password():
     """Endpoint для обновления пароля пользователя"""
     # Логирование начала обработки запроса на обновление пароля

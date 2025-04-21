@@ -1,20 +1,20 @@
 from flask import Flask, request, jsonify
 from services.logger_service import LoggerService
 from services.guid_generate_service import GuidGenerateService
-from services.db_service import DatabaseService
-from services.config_service import get_config
-from routes.modules_routes import modules_bp
-from routes.frod_route import frod_bp
-from routes.verify import verify_bp
-from routes.refresh import refresh_bp
-from routes.addressbook_route import addressbook_bp
-from routes.user_data_route import user_data_bp
-from routes.privileges_route import privileges_bp
-from routes.user_update_route import user_update_bp
-from routes.user_pass_update_route import user_pass_update_bp
-from routes.user_list_route import user_list_bp
-from routes.user_block_route import user_block_bp
-from routes.user_create_route import user_create_bp
+from services.connect_db_service import DatabaseService
+from services.read_config_service import get_config
+from routes.setting_user_modules_routes import modules_bp
+from routes.privileges_check_privilege_route import frod_bp
+from routes.auth_verify import verify_bp
+from routes.auth_refresh_route import refresh_bp
+from routes.addressbook_list_route import addressbook_bp
+from routes.setting_user_data_route import user_data_bp
+from routes.privileges_user_view_route import privileges_bp
+from routes.setting_user_update_route import user_update_bp
+from routes.setting_user_pass_update_route import user_pass_update_bp
+from routes.setting_user_list_route import user_list_bp
+from routes.setting_user_block_route import user_block_bp
+from routes.setting_user_create_route import user_create_bp
 from flask_cors import CORS
 import os
 import sys
@@ -79,9 +79,9 @@ def create_app():
         sys.exit(1)
 
     # Импорт и регистрация blueprint'ов ПОСЛЕ настройки
-    from routes.ldap_routes import ldap_bp
+    from routes.ldap_active_routes import ldap_bp
     from routes.version_routes import version_bp
-    from routes.auth_routes import auth_bp
+    from routes.auth_login_routes import auth_bp
     
     blueprints = [
         ('LDAP', ldap_bp),

@@ -20,7 +20,7 @@
     $userId = $_SESSION['userid'];
 
     // Формируем URL для API
-    $apiUrl = $apiBaseUrl . "/user/modules";
+    $apiUrl = $apiBaseUrl . "/setting/user/modules";
 
     // Подготовка данных для POST-запроса
     $postData = json_encode([

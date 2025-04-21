@@ -1,8 +1,8 @@
 from typing import Dict, Optional
 from services.logger_service import LoggerService
-from services.auth_service import AuthService
+from services.auth_login_service import AuthService
 from services.token_service import TokenService
-from services.db_service import DatabaseService
+from services.connect_db_service import DatabaseService
 import time
 
 # Инициализация логгера для модуля обновления пароля пользователя

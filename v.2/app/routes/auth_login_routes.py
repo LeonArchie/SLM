@@ -1,9 +1,9 @@
 # Импорт необходимых модулей и сервисов
 from flask import Blueprint, request, jsonify  # Flask-компоненты для роутинга и работы с запросами
 from services.logger_service import LoggerService  # Сервис для логирования
-from services.auth_service import AuthService  # Сервис аутентификации
+from services.auth_login_service import AuthService  # Сервис аутентификации
 from services.token_service import TokenService  # Сервис работы с токенами
-from services.db_service import DatabaseService  # Сервис работы с БД
+from services.connect_db_service import DatabaseService  # Сервис работы с БД
 
 # Инициализация логгера с указанием имени модуля
 logger = LoggerService.get_logger('app.auth.routes')

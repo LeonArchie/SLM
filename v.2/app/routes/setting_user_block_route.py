@@ -1,7 +1,7 @@
 # Импорт необходимых компонентов
 from flask import Blueprint, request, jsonify  # Базовые компоненты Flask
 from services.token_service import TokenService  # Сервис работы с токенами
-from services.user_block_service import UserBlockService  # Сервис блокировки пользователей
+from services.setting_user_block_service import UserBlockService  # Сервис блокировки пользователей
 from services.logger_service import LoggerService  # Сервис логирования
 import jwt  # Для работы с JWT токенами
 

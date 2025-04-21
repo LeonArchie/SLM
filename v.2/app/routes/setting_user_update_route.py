@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from services.user_update_service import UserUpdateService
+from services.setting_user_update_service import UserUpdateService
 from services.logger_service import LoggerService
 
 # Инициализация логгера для модуля обновления данных пользователя
@@ -8,7 +8,7 @@ logger = LoggerService.get_logger('app.user_update')
 # Создание Blueprint для маршрута обновления данных пользователя
 user_update_bp = Blueprint('user_update', __name__)
 
-@user_update_bp.route('/user/update', methods=['POST'])
+@user_update_bp.route('/setting/user/update', methods=['POST'])
 def update_user():
     """Endpoint для обновления данных пользователя"""
     # Логирование начала обработки запроса на обновление данных пользователя

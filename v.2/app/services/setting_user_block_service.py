@@ -1,5 +1,5 @@
-from services.db_service import DatabaseService
-from services.privileges_service import PrivilegesService
+from services.connect_db_service import DatabaseService
+from services.privileges_user_view_service import PrivilegesService
 from services.logger_service import LoggerService
 from typing import List, Dict, Union
 

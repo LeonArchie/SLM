@@ -2,7 +2,7 @@
 import jwt  # Для работы с JWT токенами
 from flask import Blueprint, request, jsonify  # Компоненты Flask для создания API
 from services.token_service import TokenService  # Сервис работы с токенами
-from services.privileges_service import PrivilegesService  # Сервис работы с привилегиями
+from services.privileges_user_view_service import PrivilegesService  # Сервис работы с привилегиями
 from services.logger_service import LoggerService  # Сервис логирования
 
 # Инициализация логгера для модуля привилегий

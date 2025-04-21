@@ -1,6 +1,6 @@
 # Импорт необходимых модулей Flask и сервисов
 from flask import Blueprint, request, jsonify  # Компоненты для роутинга и обработки запросов
-from services.frod_service import check_privilege  # Сервис проверки привилегий
+from services.privileges_check_privilege_service import check_privilege  # Сервис проверки привилегий
 from services.logger_service import logger  # Логгер для записи событий
 
 # Создание Blueprint для группировки роутов связанных с проверкой привилегий

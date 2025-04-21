@@ -4,7 +4,7 @@ from typing import Dict, Optional
 from services.logger_service import LoggerService
 from services.token_service import TokenService
 from services.guid_generate_service import GuidGenerateService
-from services.auth_service import AuthService
+from services.auth_login_service import AuthService
 
 # Инициализация логгера для модуля создания пользователя
 logger = LoggerService.get_logger('app.user.create')

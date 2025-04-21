@@ -1,6 +1,6 @@
 # Импорт необходимых модулей Flask и сервисов
 from flask import Blueprint, jsonify, request  # Компоненты для роутинга и обработки запросов
-from services.ldap_service import read_ldap_config  # Сервис работы с LDAP конфигурацией
+from services.ldap_active_service import read_ldap_config  # Сервис работы с LDAP конфигурацией
 from services.logger_service import LoggerService  # Сервис логирования
 
 # Инициализация логгера с указанием имени модуля
