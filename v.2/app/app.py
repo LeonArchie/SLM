@@ -15,6 +15,7 @@ from routes.setting_user_pass_update_route import user_pass_update_bp
 from routes.setting_user_list_route import user_list_bp
 from routes.setting_user_block_route import user_block_bp
 from routes.setting_user_create_route import user_create_bp
+from routes.privileges_get_all_route import privileges_get_all_bp
 from flask_cors import CORS
 import os
 import sys
