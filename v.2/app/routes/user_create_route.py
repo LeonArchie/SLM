@@ -46,8 +46,10 @@ def create_user():
         )
 
         # Если результат содержит ошибку, возвращаем её клиенту
-        if 'error' in result:
+        if isinstance(result, tuple) and len(result) == 2 and isinstance(result[0], dict) and 'error' in result[0]:
             return jsonify(result[0]), result[1]
+        elif isinstance(result, dict) and 'error' in result:
+            return jsonify(result), 401
 
         # Сохранение данных пользователя в базу данных
         try:
