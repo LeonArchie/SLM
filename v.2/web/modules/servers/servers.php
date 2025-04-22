@@ -46,6 +46,7 @@
         <link rel="stylesheet" href="/platform/include/css/navbar.css"/>
         <link rel="stylesheet" href="/platform/include/css/error.css"/>
         <link rel="stylesheet" href="css/servers.css"/>
+        <link rel="stylesheet" href="css/modal.css"/>
         <title>ЕОС - Серверное оборудование</title>
     </head>
     <body>
@@ -69,6 +70,10 @@
 
                     <button id="VievCardServer" disabled>Просмотреть карточку оборудования</button>
                     <button id="refreshButton" onclick="location.reload()">Обновить</button>
+                    <!-- Добавляем поле поиска -->
+                    <div class="search-container">
+                        <input type="text" id="serverSearch" placeholder="Поиск оборудования..." class="search-input">
+                    </div>
                     <input type="hidden" name="userid" value="<?php echo $_SESSION['userid']; ?>">
                 </div>
                 <div class="table-container">
