@@ -1,6 +1,6 @@
 <?php
     // Уникальный идентификатор страницы для проверки привилегий
-    $privileges_page = '16bdb437-08e7-4783-8945-73618eab30e7';
+    $privileges_page = '8f4e3aa7-b05b-455e-b7dc-ca599953b9ad';
 
 
     $file_path = 'include/platform.php';
@@ -37,7 +37,7 @@
     include "/platform/include/binding/inital_error.php";
 
     // Логирование успешной инициализации страницы
-    logger("DEBUG", "servers.php успешно инициализирован.");
+    logger("DEBUG", "tack_history.php успешно инициализирован.");
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -45,36 +45,23 @@
         <?php include ROOT_PATH . '/platform/include/visible/all_head.html'; ?>
         <link rel="stylesheet" href="/platform/include/css/navbar.css"/>
         <link rel="stylesheet" href="/platform/include/css/error.css"/>
-        <link rel="stylesheet" href="css/servers.css"/>
-        <link rel="stylesheet" href="css/modal.css"/>
-        <title>ЕОС - Серверное оборудование</title>
+        <link rel="stylesheet" href="css/task_history.css"/>
+        <title>ЕОС - История исполнения</title>
     </head>
     <body>
         <?php include ROOT_PATH . '/platform/include/visible/eos_header.html'; ?>
         <?php include ROOT_PATH .'/platform/include/visible/navbar.php'; ?>
         <main>
             <div class="form-container">
-            <h1 class="main-header"> <span class="servers-icon"></span> Серверное оборудование</h1>
+            <h1 class="main-header"> <span class="servers-icon"></span> История исполнения сценариев</h1>
                 <div class="button-bar">
                     <div class="button-group">
-                        <?php 
-                            $privileges_button = '305903e5-0b9a-4439-a828-7774d261bebd';
-                            if (checkPrivilege( $privileges_button)): ?>
-                            <button id="AddServers">Добавить оборудование</button>
-                        <?php endif; ?>
-
-                        <?php 
-                            $privileges_button = '20ad6598-a302-47f1-bc39-ff8d99e6002f';
-                            if (checkPrivilege( $privileges_button)): ?>
-                            <button id="GlobalCheck">Глобальная проверка конфиликтов</button>
-                        <?php endif; ?>
-
-                        <button id="VievCardServer" disabled>Просмотреть карточку оборудования</button>
+                        <button id="DownloadLogs" disabled>Скачать лог исполнения</button>
                         <button id="refreshButton" onclick="location.reload()">Обновить</button>
                     </div>
                     <!-- Добавляем поле поиска -->
                     <div class="search-container">
-                        <input type="text" id="serverSearch" placeholder="Поиск оборудования..." class="search-input">
+                        <input type="text" id="serverSearch" placeholder="Поиск задачи..." class="search-input">
                     </div>
                     <input type="hidden" name="userid" value="<?php echo $_SESSION['userid']; ?>">
                 </div>
@@ -83,14 +70,11 @@
                         <thead>
                             <tr>
                                 <th><input type="checkbox" id="selectAll"></th>
-                                <th>Наименование оборудования</th>
-                                <th>Стенд</th>
+                                <th>ID задачи</th>
+                                <th>Наименование задачи</th>
                                 <th>Статус</th>
-                                <th>Ip Адрес</th>
-                                <th>Домен</th>
-                                <th>Демон подключен</th>
-                                <th>Валидация</th>
-                                <th>ID Оборудования</th>
+                                <th>Инициатор</th>
+                                <th>Конфигурация</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -102,8 +86,6 @@
                                     $servId = htmlspecialchars($server['serv_id'] ?? 'Без ID');
                                     $ipAddr = htmlspecialchars($server['ip_addr'] ?? 'Не указан');
                                     $domain = htmlspecialchars($server['domain'] ?? 'Не указан');
-                                    $demonConnected = !empty($server['demon']) ? 'checked' : '';
-                                    $validateChecked = !empty($server['validate']) ? 'checked' : '';
                             ?>
                             <tr>
                                 <td>
@@ -118,13 +100,6 @@
                                 <td><?= $status ?></td>
                                 <td><?= $ipAddr ?></td>
                                 <td><?= $domain ?></td>
-                                <td>
-                                    <input type="checkbox" disabled <?= $demonConnected ?> class="custom-checkbox demon-indicator">
-                                </td>
-                                <td>
-                                    <input type="checkbox" disabled <?= $validateChecked ?> class="custom-checkbox validate-indicator">
-                                </td>
-                                <td><?= $servId ?></td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>

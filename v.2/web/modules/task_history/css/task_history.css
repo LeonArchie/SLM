@@ -10,7 +10,7 @@
 }
 
 .servers-icon::before {
-    content: "💻";
+    content: "📚";
     font-size: 24px;
 }
 
@@ -64,15 +64,7 @@
     color: white;
 }
 
-#AddServers {
-    background-color: #3498db;
-}
-
-#GlobalCheck {
-    background-color: #3498db;
-}
-
-#VievCardServer {
+#DownloadLogs {
     background-color: #3498db;
 }
 

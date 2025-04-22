@@ -11,27 +11,27 @@
             "guid": "8f4e3aa7-b05b-455e-b7dc-ca599953b9ad",
             "title": "Управление сценариями",
             "url": "",
-            "active": false,   
+            "active": true,   
             "dropdown": [
                 {
                     "guid": "8f4e3aa7-b05b-455e-b7dc-ca599953b9ad",
                     "title": "Запуск сценариев",
                     "url": "/modules/task_start/view_task.php",
-                    "active": false,
+                    "active": true,
                     "dropdown": []
                 },
                 {
                     "guid": "8f4e3aa7-b05b-455e-b7dc-ca599953b9ad",
                     "title": "История исполнения",
                     "url": "/modules/task_history/task_history.php",
-                    "active": false,
+                    "active": true,
                     "dropdown": []
                 },
                 {
                     "guid": "8f4e3aa7-b05b-455e-b7dc-ca599953b9ad",
                     "title": "Согласование исполненя",
-                    "url": "/modules/tack_agreement/tack_agreement.php",
-                    "active": false,
+                    "url": "/modules/task_agreement/task_agreement.php",
+                    "active": true,
                     "dropdown": []
                 }
             ]

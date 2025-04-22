@@ -10,7 +10,7 @@
 }
 
 .servers-icon::before {
-    content: "💻";
+    content: "📋";
     font-size: 24px;
 }
 
@@ -40,7 +40,6 @@
     flex-grow: 1;
     max-width: 400px;
     min-width: 250px;
-    order: 1; /* Поиск всегда первый */
 }
 
 .button-group {
@@ -64,20 +63,20 @@
     color: white;
 }
 
-#AddServers {
+#CreateTask {
     background-color: #3498db;
 }
 
-#GlobalCheck {
+#lockTask {
     background-color: #3498db;
 }
 
-#VievCardServer {
+#DelTask {
     background-color: #3498db;
 }
 
-#refreshButton {
-    background-color: #95a5a6;
+#SettingTask {
+    background-color: #3498db;
 }
 
 .button-bar button:hover {
