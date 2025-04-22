@@ -58,7 +58,7 @@
     </div>
     <?php 
         $privileges_button = 'e8e24302-c6e2-4b0d-9b23-4c7119a94756';
-        if (checkPrivilege($privileges_bottom)): ?>
+        if (checkPrivilege( $privileges_button)): ?>
             <!-- Форма для назначения полномочий -->
             <div id="assignPrivilegesForm" class="form-modal" style="display: none;">
                 <h2>Назначить полномочия</h2>
@@ -109,7 +109,7 @@
 
     <?php 
         $privileges_button = 'eff8f3c0-97c8-43ef-944e-8eb2dcd1d344';
-        if (checkPrivilege($privileges_bottom)): ?>
+        if (checkPrivilege( $privileges_button)): ?>
             <!-- Форма создания полномочий -->
             <div id="createPrivilegesForm" class="form-modal" style="display: none;">
                 <h2>Создать полномочия</h2>

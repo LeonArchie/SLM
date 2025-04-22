@@ -130,31 +130,31 @@
                     <div class="button-group">
                         <?php 
                             $privileges_button = '076a0c70-8cca-4124-b009-97fe44f6c68e';
-                            if (checkPrivilege($privileges_bottom)): ?>
+                            if (checkPrivilege( $privileges_button)): ?>
                             <button id="addButton">Добавить</button>
                         <?php endif; ?>
                         
                         <?php 
                             $privileges_button = '4e6c22aa-621a-4260-8e26-c2f4177362ba';
-                            if (checkPrivilege($privileges_bottom)): ?>
+                            if (checkPrivilege( $privileges_button)): ?>
                             <button id="editButton" disabled>Редактировать</button>
                         <?php endif; ?>
 
                         <?php 
                             $privileges_button = '319b4c95-6beb-4aed-8447-f7338491d2e0';
-                            if (checkPrivilege($privileges_bottom)): ?>
+                            if (checkPrivilege( $privileges_button)): ?>
                             <button id="blockButton" disabled>Сменить статус пользователя</button>
                         <?php endif; ?>
 
                         <?php 
                             $privileges_button = 'a3999d28-1b81-47ac-a0e7-5898ded6cbfa';
-                            if (checkPrivilege($privileges_bottom)): ?>
+                            if (checkPrivilege( $privileges_button)): ?>
                             <button id="syncLdapButton" disabled>Принудительная синхронизация LDAP</button>
                         <?php endif; ?>
 
                         <?php 
                             $privileges_button = '';
-                            if (checkPrivilege($privileges_bottom)): ?>
+                            if (checkPrivilege( $privileges_button)): ?>
                             <button id="ldapSettingsButton" disabled>Настройки LDAP</button>
                         <?php endif; ?>
               

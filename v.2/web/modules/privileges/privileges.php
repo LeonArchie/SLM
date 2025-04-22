@@ -130,14 +130,14 @@
 
                         <?php 
                             $privileges_button = 'e8e24302-c6e2-4b0d-9b23-4c7119a94756';
-                            if (checkPrivilege($privileges_bottom)): ?>
+                            if (checkPrivilege( $privileges_button)): ?>
                             <button id="AssignPrivileges" disabled>Назначить полномочия</button>
                             <button id="OffPrivileges" disabled>Снять полномочия</button>
                         <?php endif; ?>
 
                         <?php 
                             $privileges_button = 'eff8f3c0-97c8-43ef-944e-8eb2dcd1d344';
-                            if (checkPrivilege($privileges_bottom)): ?>
+                            if (checkPrivilege( $privileges_button)): ?>
                             <button id="CreatePrivileges">Создать полномочия</button>
                             <button id="DeletePrivileges">Удалить полномочия</button>
                         <?php endif; ?>
