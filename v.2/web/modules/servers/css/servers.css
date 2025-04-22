@@ -1,0 +1,15 @@
+.main-header {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.servers-icon::before {
+    content: "💻";
+    font-size: 24px;
+}

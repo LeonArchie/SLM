@@ -110,19 +110,19 @@
 <!DOCTYPE html>
 <html lang="ru">
     <head>
-    <?php include ROOT_PATH . '/platform/include/visible/all_head.html'; ?>
-            <link rel="stylesheet" href="/platform/include/css/navbar.css"/>
-            <link rel="stylesheet" href="/platform/include/css/error.css"/>
-            <link rel="stylesheet" href="css/privileges.css"/>
-            <link rel="stylesheet" href="css/modal.css"/>
-            <title>ЕОС - Управление полномочиями</title>
+        <?php include ROOT_PATH . '/platform/include/visible/all_head.html'; ?>
+        <link rel="stylesheet" href="/platform/include/css/navbar.css"/>
+        <link rel="stylesheet" href="/platform/include/css/error.css"/>
+        <link rel="stylesheet" href="css/privileges.css"/>
+        <link rel="stylesheet" href="css/modal.css"/>
+        <title>ЕОС - Управление полномочиями</title>
     </head>
     <body>
         <?php include ROOT_PATH . '/platform/include/visible/eos_header.html'; ?>
         <?php include ROOT_PATH .'/platform/include/visible/navbar.php'; ?>
         <main>
             <div class="form-container">
-            <h1 class="main-header"> <span class="privileges-icon"></span> Управление полномочиями</h1>
+                <h1 class="main-header"> <span class="privileges-icon"></span> Управление полномочиями</h1>
                 <div class="button-bar">
                     <div class="button-group">
                         <button id="ViewAllPrivileges">Просмотреть все полномочия</button>

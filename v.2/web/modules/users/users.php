@@ -147,7 +147,7 @@
                         <?php endif; ?>
 
                         <?php 
-                            $privileges_button = '';
+                            $privileges_button = 'a3999d28-1b81-47ac-a0e7-5898ded6cbfa';
                             if (checkPrivilege($privileges_bottom)): ?>
                             <button id="syncLdapButton" disabled>Принудительная синхронизация LDAP</button>
                         <?php endif; ?>
