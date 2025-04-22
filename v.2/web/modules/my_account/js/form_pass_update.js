@@ -6,7 +6,7 @@ const loadingOverlay = document.getElementById('loading');
 
 // Константы API с уникальными именами
 const PASSWORD_API_BASE_URL = `${window.location.protocol}//${window.location.hostname}:5000`;
-const PASSWORD_API_ENDPOINT = `${PASSWORD_API_BASE_URL}/user/pass/update`;
+const PASSWORD_API_ENDPOINT = `${PASSWORD_API_BASE_URL}/setting/user/pass-update`;
 
 // Обработчик кнопки "Сменить пароль"
 if (changePasswordButton) {

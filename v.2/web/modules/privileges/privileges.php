@@ -110,17 +110,19 @@
 <!DOCTYPE html>
 <html lang="ru">
     <head>
-    <?php include ROOT_PATH . '/platform/include/visible/all_head.html'; ?>
-            <link rel="stylesheet" href="/platform/include/css/navbar.css"/>
-            <link rel="stylesheet" href="/platform/include/css/error.css"/>
-            <link rel="stylesheet" href="css/privileges.css"/>
-            <title>ЕОС - Управление полномочиями</title>
+        <?php include ROOT_PATH . '/platform/include/visible/all_head.html'; ?>
+        <link rel="stylesheet" href="/platform/include/css/navbar.css"/>
+        <link rel="stylesheet" href="/platform/include/css/error.css"/>
+        <link rel="stylesheet" href="css/privileges.css"/>
+        <link rel="stylesheet" href="css/modal.css"/>
+        <title>ЕОС - Управление полномочиями</title>
     </head>
     <body>
         <?php include ROOT_PATH . '/platform/include/visible/eos_header.html'; ?>
         <?php include ROOT_PATH .'/platform/include/visible/navbar.php'; ?>
         <main>
             <div class="form-container">
+                <h1 class="main-header"> <span class="privileges-icon"></span> Управление полномочиями</h1>
                 <div class="button-bar">
                     <div class="button-group">
                         <button id="ViewAllPrivileges">Просмотреть все полномочия</button>
@@ -128,14 +130,14 @@
 
                         <?php 
                             $privileges_button = 'e8e24302-c6e2-4b0d-9b23-4c7119a94756';
-                            if (checkPrivilege($privileges_bottom)): ?>
+                            if (checkPrivilege( $privileges_button)): ?>
                             <button id="AssignPrivileges" disabled>Назначить полномочия</button>
                             <button id="OffPrivileges" disabled>Снять полномочия</button>
                         <?php endif; ?>
 
                         <?php 
                             $privileges_button = 'eff8f3c0-97c8-43ef-944e-8eb2dcd1d344';
-                            if (checkPrivilege($privileges_bottom)): ?>
+                            if (checkPrivilege( $privileges_button)): ?>
                             <button id="CreatePrivileges">Создать полномочия</button>
                             <button id="DeletePrivileges">Удалить полномочия</button>
                         <?php endif; ?>
@@ -201,121 +203,17 @@
                     </table>
                 </div>
             </div>
-            <!-- Форма создания полномочий -->
-            <div id="createPrivilegesForm" class="form-modal" style="display: none;">
-                <h2>Создать полномочия</h2>
-                <form id="createPrivilegesFormContent">
-                    <div class="input-group">
-                        <label for="privilegeName">Имя:</label>
-                        <input type="text" id="privilegeName" name="privilegeName" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="privilegeID">ID:</label>
-                        <input type="text" id="privilegeID" name="privilegeID" required>
-                    </div>
-                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                    <div class="button-group">
-                        <button type="button" id="submitCreatePrivilegesForm">Создать</button>
-                        <button type="button" id="cancelCreatePrivilegesForm">Отменить</button>
-                    </div>
-                </form>
-            </div>
-            <!-- Форма для удаления полномочий -->
-            <div id="deletePrivilegesForm" class="form-modal" style="display: none;">
-                <h2>Удалить полномочия</h2>
-                <form id="deletePrivilegesFormContent">
-                    <div class="input-group select-group">
-                        <label for="privilegesToDelete">Привилегии:</label>
-                        <select id="privilegesToDelete" name="privilegesToDelete[]" multiple>
-                            <?php foreach ($name_privileges as $privilege): ?>
-                                <option value="<?= $privilege['id_privileges'] ?>"><?= $privilege['name_privileges'] ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                    <div class="button-group">
-                        <button type="button" id="submitDeletePrivilegesForm">Удалить</button>
-                        <button type="button" id="cancelDeletePrivilegesForm">Отменить</button>
-                    </div>
-                </form>
-            </div>
-            <!-- Форма для снятия полномочий -->
-            <div id="revokePrivilegesForm" class="form-modal" style="display: none;">
-                <h2>Снять полномочия</h2>
-                <form id="revokePrivilegesFormContent">
-                    <div class="input-group">
-                        <label for="userIDRevoke">UserID:</label>
-                        <input type="text" id="userIDRevoke" name="userIDRevoke" readonly>
-                    </div>
-                    <div class="input-group select-group">
-                        <label for="privilegesToRevoke">Привилегии:</label>
-                        <select id="privilegesToRevoke" name="privilegesToRevoke[]" multiple>
-                            <?php foreach ($name_privileges as $privilege): ?>
-                                <option value="<?= $privilege['id_privileges'] ?>"><?= $privilege['name_privileges'] ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                    <div class="button-group">
-                        <button type="button" id="submitRevokePrivilegesForm">Снять</button>
-                        <button type="button" id="cancelRevokePrivilegesForm">Отменить</button>
-                    </div>
-                </form>
-            </div>
-            <!-- Форма для просмотра полномочий -->
-            <div id="viewPrivilegesForm" class="form-modal" style="display: none;">
-                <h2>Просмотр полномочий</h2>
-                <form id="viewPrivilegesFormContent">
-                    <div class="input-group">
-                        <label for="userIDView">UserID:</label>
-                        <input type="text" id="userIDView" name="userIDView" readonly>
-                    </div>
-                    <div id="privilegesTableContainer"></div> <!-- Контейнер для таблицы -->
-                    <div class="button-group">
-                        <button type="button" id="closeViewPrivilegesForm">Закрыть</button>
-                    </div>
-                </form>
-            </div>
-            <!-- Форма для просмотра всех полномочий -->
-            <div id="viewAllPrivilegesForm" class="form-modal" style="display: none;">
-                <h2>Все полномочия</h2>
-                <form id="viewAllPrivilegesFormContent">
-                    <!-- Контейнер для таблицы -->
-                    <div id="tableContainer"></div>
-                </form>
-                <div class="button-group">
-                    <button type="button" id="closeViewAllPrivilegesForm">Закрыть</button>
-                </div>
-            </div>
-            <!-- Форма для назначения полномочий -->
-            <div id="assignPrivilegesForm" class="form-modal" style="display: none;">
-                <h2>Назначить полномочия</h2>
-                <form id="assignPrivilegesFormContent">
-                    <div class="input-group">
-                        <label for="userIDAssign">UserID:</label>
-                        <input type="text" id="userIDAssign" name="userIDAssign" readonly>
-                    </div>
-                    <div class="input-group select-group">
-                        <label for="privilegesToAssign">Полномочия:</label>
-                        <select id="privilegesToAssign" name="privilegesToAssign[]" multiple>
-                            <?php foreach ($name_privileges as $privilege): ?>
-                                <option value="<?= $privilege['id_privileges'] ?>"><?= $privilege['name_privileges'] ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                    <div class="button-group">
-                        <button type="button" id="submitAssignPrivilegesForm">Назначить полномочия</button>
-                        <button type="button" id="cancelAssignPrivilegesForm">Отменить</button>
-                    </div>
-                </form>
-            </div>
+            <?php include 'include/forms.php'; ?>
+            <?php include ROOT_PATH . '/platform/include/visible/loading.html'; ?>
         </main>
         
         <?php include ROOT_PATH . '/platform/include/visible/error.php'; ?>
         <?php include ROOT_PATH . '/platform/include/visible/footer.php'; ?>
            
         <script src="/platform/include/js/error.js"></script>
+        <script src="js/viev_user_privileges.js"></script>
+        <script src="js/view_all_privileges.js"></script>
         <script src="js/find_privileges.js"></script>
+        <script src="js/privileges.js"></script>
     </body>
 </html>

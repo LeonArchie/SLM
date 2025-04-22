@@ -4,7 +4,7 @@
 
 // Конфигурация API
 const API_BASE_URL = `${window.location.protocol}//${window.location.hostname}:5000`;
-const API_ENDPOINT = `${API_BASE_URL}/user/update`;
+const API_ENDPOINT = `${API_BASE_URL}/setting/user/update`;
 
 // Полная конфигурация полей формы
 const FORM_FIELDS = {

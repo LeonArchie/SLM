@@ -8,30 +8,30 @@
             "dropdown": []
         },
         {
-            "guid": "db0126bf-9cfb-46ef-8978-6c750a1ce4ee",
-            "title": "Задания",
+            "guid": "8f4e3aa7-b05b-455e-b7dc-ca599953b9ad",
+            "title": "Управление сценариями",
             "url": "",
-            "active": false,   
+            "active": true,   
             "dropdown": [
                 {
-                    "guid": "09c37bdb-90cb-4e96-8da3-177383bbb922",
-                    "title": "Создать задание",
-                    "url": "/createtask.php",
-                    "active": false,
+                    "guid": "8f4e3aa7-b05b-455e-b7dc-ca599953b9ad",
+                    "title": "Запуск сценариев",
+                    "url": "/modules/task_start/view_task.php",
+                    "active": true,
                     "dropdown": []
                 },
                 {
-                    "guid": "9ff65e1a-1eb8-4761-9f59-098a9458a3f6",
-                    "title": "Реестр заданий",
-                    "url": "/registrytask.php",
-                    "active": false,
+                    "guid": "8f4e3aa7-b05b-455e-b7dc-ca599953b9ad",
+                    "title": "История исполнения",
+                    "url": "/modules/task_history/task_history.php",
+                    "active": true,
                     "dropdown": []
                 },
                 {
-                    "guid": "42abc527-dbdb-4524-b485-d0e5c662e82a",
-                    "title": "Согласование",
-                    "url": "/agreement.php",
-                    "active": false,
+                    "guid": "8f4e3aa7-b05b-455e-b7dc-ca599953b9ad",
+                    "title": "Согласование исполненя",
+                    "url": "/modules/task_agreement/task_agreement.php",
+                    "active": true,
                     "dropdown": []
                 }
             ]
@@ -46,14 +46,14 @@
                 {
                     "guid": "94248bd2-78dc-48d6-8995-6833a962a223",
                     "title": "Автоматизированные системы",
-                    "url": "/modules/AccInf/Automated_systems.php",
+                    "url": "",
                     "active": true,
                     "dropdown": []
                 },
                 {
                     "guid": "16bdb437-08e7-4783-8945-73618eab30e7",
                     "title": "Серверное оборудование",
-                    "url": "/modules/AccInf/Server_hardware.php",
+                    "url": "/modules/servers/servers.php",
                     "active": true,
                     "dropdown": []
                 },

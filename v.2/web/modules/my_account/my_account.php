@@ -39,7 +39,7 @@
     // Определяем URL API
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
     $host = str_replace([':80',':443'], '', $_SERVER['HTTP_HOST']);
-    $apiUrl = "{$protocol}://{$host}:5000/user/data";
+    $apiUrl = "{$protocol}://{$host}:5000/setting/user/data";
 
     $userData = [];
     $error = null;
@@ -208,6 +208,7 @@
             <?php endif; ?>
             
             <div class="form-container">
+                <h1 class="main-header"> <span class="account-icon"></span> Моя учетная запись</h1>
                 <!-- Группа кнопок -->
                 <div class="button-group fixed-buttons">
                     <button class="form-button" id="updateButton" onclick="location.reload()">
