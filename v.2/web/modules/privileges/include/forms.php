@@ -34,7 +34,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="button-group">
+            <div class="get-all-button-group">
                 <button type="button" class="close-button" id="closeViewAllPrivilegesForm">Закрыть</button>
             </div>
         </div>
