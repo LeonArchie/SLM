@@ -47,8 +47,6 @@
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-    order: 2; /* Кнопки всегда вторые */
-    justify-content: flex-end;
 }
 
 /* Стили для кнопок (новые цвета) */

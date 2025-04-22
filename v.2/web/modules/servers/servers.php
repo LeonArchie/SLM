@@ -56,20 +56,22 @@
             <div class="form-container">
             <h1 class="main-header"> <span class="servers-icon"></span> Серверное оборудование</h1>
                 <div class="button-bar">
-                    <?php 
-                        $privileges_button = '305903e5-0b9a-4439-a828-7774d261bebd';
-                        if (checkPrivilege( $privileges_button)): ?>
-                        <button id="AddServers">Добавить оборудование</button>
-                    <?php endif; ?>
+                    <div class="button-group">
+                        <?php 
+                            $privileges_button = '305903e5-0b9a-4439-a828-7774d261bebd';
+                            if (checkPrivilege( $privileges_button)): ?>
+                            <button id="AddServers">Добавить оборудование</button>
+                        <?php endif; ?>
 
-                    <?php 
-                        $privileges_button = '20ad6598-a302-47f1-bc39-ff8d99e6002f';
-                        if (checkPrivilege( $privileges_button)): ?>
-                        <button id="GlobalCheck">Глобальная проверка конфиликтов</button>
-                    <?php endif; ?>
+                        <?php 
+                            $privileges_button = '20ad6598-a302-47f1-bc39-ff8d99e6002f';
+                            if (checkPrivilege( $privileges_button)): ?>
+                            <button id="GlobalCheck">Глобальная проверка конфиликтов</button>
+                        <?php endif; ?>
 
-                    <button id="VievCardServer" disabled>Просмотреть карточку оборудования</button>
-                    <button id="refreshButton" onclick="location.reload()">Обновить</button>
+                        <button id="VievCardServer" disabled>Просмотреть карточку оборудования</button>
+                        <button id="refreshButton" onclick="location.reload()">Обновить</button>
+                    </div>
                     <!-- Добавляем поле поиска -->
                     <div class="search-container">
                         <input type="text" id="serverSearch" placeholder="Поиск оборудования..." class="search-input">
