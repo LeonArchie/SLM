@@ -8,29 +8,29 @@
             "dropdown": []
         },
         {
-            "guid": "db0126bf-9cfb-46ef-8978-6c750a1ce4ee",
-            "title": "Задания",
+            "guid": "8f4e3aa7-b05b-455e-b7dc-ca599953b9ad",
+            "title": "Управление сценариями",
             "url": "",
             "active": false,   
             "dropdown": [
                 {
-                    "guid": "09c37bdb-90cb-4e96-8da3-177383bbb922",
-                    "title": "Создать задание",
-                    "url": "/createtask.php",
+                    "guid": "8f4e3aa7-b05b-455e-b7dc-ca599953b9ad",
+                    "title": "Запуск сценариев",
+                    "url": "/modules/task_start/view_task.php",
                     "active": false,
                     "dropdown": []
                 },
                 {
-                    "guid": "9ff65e1a-1eb8-4761-9f59-098a9458a3f6",
-                    "title": "Реестр заданий",
-                    "url": "/registrytask.php",
+                    "guid": "8f4e3aa7-b05b-455e-b7dc-ca599953b9ad",
+                    "title": "История исполнения",
+                    "url": "/modules/task_history/task_history.php",
                     "active": false,
                     "dropdown": []
                 },
                 {
-                    "guid": "42abc527-dbdb-4524-b485-d0e5c662e82a",
-                    "title": "Согласование",
-                    "url": "/agreement.php",
+                    "guid": "8f4e3aa7-b05b-455e-b7dc-ca599953b9ad",
+                    "title": "Согласование исполненя",
+                    "url": "/modules/tack_agreement/tack_agreement.php",
                     "active": false,
                     "dropdown": []
                 }
