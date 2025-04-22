@@ -45,17 +45,17 @@
 }
 
 #AssignPrivileges, #OffPrivileges {
-    background-color: #e67e22;
+    background-color: #3498db;
     color: white;
 }
 
 #CreatePrivileges {
-    background-color: #2ecc71;
+    background-color: #3498db;
     color: white;
 }
 
 #DeletePrivileges {
-    background-color: #e74c3c;
+    background-color: #3498db;
     color: white;
 }
 

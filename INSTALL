@@ -3,8 +3,21 @@
         Обновите пакеты системы:
             sudo apt update && sudo apt upgrade -y
     Установка необходимого ПО:
-        Установите NGINX, PHP и PostgreSQL:
+        Установите Python, NGINX, PHP и PostgreSQL:
             sudo apt install nginx php-fpm php-pgsql postgresql postgresql-contrib
+        
+        Установите необходимые библиотеки
+            pip install flask
+            pip install flask-cors
+            pip install psycopg2-binary
+            pip install pyjwt
+            pip install bcrypt
+            pip install python-dotenv 
+            pip install ldap3
+            pip install cryptography 
+            pip install gunicorn
+            pip install python-dotenv
+
         Настройка PostgreSQL:
             Создайте базу данных и пользователя:
                 sudo -u postgres psql
@@ -13,59 +26,126 @@
                 GRANT ALL PRIVILEGES ON DATABASE "RLM-PSI" TO "RLM_PSI_USER";
                 \q
 
-                -- Создание таблицы для хранения оборудования (hardvare)
-                CREATE TABLE hardvare (
-                    hwid TEXT PRIMARY KEY,          -- GUID оборудования
-                    name TEXT NOT NULL,             -- Название оборудования
-                    status TEXT,                    -- Статус оборудования
-                    domain TEXT,                    -- Домен оборудования
-                    ip_addr TEXT,                   -- IP-адрес или MAC-адрес оборудования
-                    ssh_key TEXT,                   -- SSH-ключ оборудования
-                    system TEXT                     -- Операционная система оборудования
+            Настройка схемы базды данных
+                -- DROP SCHEMA public;
+
+                CREATE SCHEMA public AUTHORIZATION "RLM_PSI_USER";
+
+                COMMENT ON SCHEMA public IS 'standard public schema';
+                -- public.admin_servers определение
+
+                -- Drop table
+
+                -- DROP TABLE public.admin_servers;
+
+                CREATE TABLE public.admin_servers (
+                    id text NOT NULL,
+                    serv_id text NOT NULL,
+                    userid text NOT NULL,
+                    CONSTRAINT admin_servers_pkey PRIMARY KEY (id)
                 );
 
-                -- Создание таблицы для управления привилегиями к объектам (hardvare_user)
-                CREATE TABLE hardvare_user (
-                    id TEXT PRIMARY KEY,            -- GUID записи
-                    hwid TEXT REFERENCES hardvare(hwid) ON DELETE CASCADE,  -- Ссылка на оборудование
-                    userid TEXT REFERENCES users(userid) ON DELETE CASCADE, -- Ссылка на пользователя
-                    role TEXT                       -- Права доступа: true - редактирование, false - просмотр, NULL - закрыт
+                -- Permissions
+
+                ALTER TABLE public.admin_servers OWNER TO "PsDbAdmin";
+
+
+                -- public.name_privileges определение
+
+                -- Drop table
+
+                -- DROP TABLE public.name_privileges;
+
+                CREATE TABLE public.name_privileges (
+                    id_privileges text NOT NULL,
+                    name_privileges text NOT NULL,
+                    CONSTRAINT name_privileges_pkey PRIMARY KEY (id_privileges)
                 );
 
-                -- Создание таблицы для хранения ролей в системе (name_rol)
-                CREATE TABLE name_rol (
-                    roleid TEXT PRIMARY KEY,        -- GUID роли
-                    names_rol TEXT NOT NULL         -- Название роли
+                -- Permissions
+
+                ALTER TABLE public.name_privileges OWNER TO "PsDbAdmin";
+
+
+                -- public."privileges" определение
+
+                -- Drop table
+
+                -- DROP TABLE public."privileges";
+
+                CREATE TABLE public."privileges" (
+                    id text NOT NULL,
+                    userid text NOT NULL,
+                    id_privileges text NULL,
+                    CONSTRAINT provileges_pkey PRIMARY KEY (id)
                 );
 
-                -- Создание таблицы для хранения привилегий ролей (privileges)
-                CREATE TABLE privileges (
-                    roleid TEXT REFERENCES name_rol(roleid) ON DELETE CASCADE,  -- Ссылка на роль
-                    idmenu TEXT NOT NULL,           -- GUID меню (из JSON)
-                    role TEXT,                      -- Права доступа: true - редактирование, false - просмотр, NULL - закрыт
-                    PRIMARY KEY (roleid, idmenu)    -- Составной первичный ключ
+                -- Permissions
+
+                ALTER TABLE public."privileges" OWNER TO "PsDbAdmin";
+
+
+                -- public.servers определение
+
+                -- Drop table
+
+                -- DROP TABLE public.servers;
+
+                CREATE TABLE public.servers (
+                    serv_id text NOT NULL,
+                    "Name" text NOT NULL,
+                    status text NULL,
+                    ip_addr text NULL,
+                    "MAC_addr" text NULL,
+                    "Domain" text NULL,
+                    "Demon" bool NULL,
+                    "validate" bool NULL,
+                    stand text NULL,
+                    "database" bool NULL,
+                    replication bool NULL,
+                    CONSTRAINT servers_pkey PRIMARY KEY (serv_id)
                 );
 
-                -- Создание таблицы для хранения статусов (status)
-                CREATE TABLE status (
-                    stid TEXT PRIMARY KEY,          -- GUID статуса
-                    name TEXT NOT NULL,             -- Название статуса
-                    hardvare BOOLEAN,               -- Флаг разрешения для оборудования
-                    incident BOOLEAN,               -- Флаг разрешения для инцидентов
-                    tack BOOLEAN,                   -- Флаг разрешения для задач
-                    request BOOLEAN                 -- Флаг разрешения для запросов
+                -- Permissions
+
+                ALTER TABLE public.servers OWNER TO "PsDbAdmin";
+
+
+                -- public.users определение
+
+                -- Drop table
+
+                -- DROP TABLE public.users;
+
+                CREATE TABLE public.users (
+                    userid text NOT NULL,
+                    userlogin text NOT NULL,
+                    password_hash text NOT NULL,
+                    email text NOT NULL,
+                    regtimes timestamp NULL,
+                    active bool DEFAULT false NOT NULL,
+                    add_ldap bool NULL,
+                    "name" text NULL,
+                    "family" text NULL,
+                    tg_username text NULL,
+                    tg_id text NULL,
+                    full_name text NULL,
+                    telephone text NULL,
+                    ldap_dn text NULL,
+                    api_key text NULL,
+                    CONSTRAINT users_pkey PRIMARY KEY (userid)
                 );
 
-                -- Создание таблицы для хранения зарегистрированных пользователей (users)
-                CREATE TABLE users (
-                    userid TEXT PRIMARY KEY,        -- GUID пользователя
-                    userlogin TEXT NOT NULL UNIQUE, -- Логин пользователя
-                    password_hash TEXT NOT NULL,    -- Хэш пароля пользователя
-                    usernames TEXT NOT NULL,        -- Имя пользователя
-                    email TEXT NOT NULL UNIQUE,     -- Email пользователя
-                    roleid TEXT REFERENCES name_rol(roleid) ON DELETE SET NULL,  -- Ссылка на роль пользователя
-                    regtimes TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Дата и время регистрации пользователя
-                );
+                -- Permissions
+
+                ALTER TABLE public.users OWNER TO "PsDbAdmin";
+
+
+
+
+                -- Permissions
+
+                ALTER DEFAULT PRIVILEGES FOR ROLE "PsDbAdmin" IN SCHEMA public GRANT INSERT, UPDATE, REFERENCES, UNKNOWN, SELECT, TRUNCATE, DELETE, TRIGGER ON TABLES TO "RLM_PSI_USER";
 
 2. Настройка NGINX
     Создание конфигурационного файла для проекта:
@@ -75,63 +155,74 @@
                     server {
                         listen 80;
                         server_name slm-psi.domain;  # Замените на ваш домен или IP-адрес
-                        root /var/www/slm;
-                        index index.php index.html index.htm;
+                        root /var/www/html/web;
+                        index index.php;
 
-                        location / {
-                            try_files $uri $uri/ =404;
-                        }
-
-                        location ~ \.php$ {
-                            include snippets/fastcgi-php.conf;
-                            fastcgi_pass unix:/var/run/php/php-fpm.sock;  # Убедитесь, что путь к сокету PHP-FPM корректен
-                            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-                            include fastcgi_params;
-                        }
-
-                        location ~ /\.ht {
-                            deny all;
-                        }
-
-                        error_page 404 /404.html;
-                        error_page 500 502 503 504 /50x.html;
-                        location = /50x.html {
-                            root /usr/share/nginx/html;
-                        }
+                    location / {
+                        # First attempt to serve request as file, then
+                        # as directory, then fall back to displaying a 404.
+                        try_files $uri $uri/ =404;
                     }
+
+                    # pass PHP scripts to FastCGI server
+                    #
+                    location ~ \.php$ {
+                        set $root_path /var/www/html/web;
+                        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+                        fastcgi_index index.php;
+                        fastcgi_param SCRIPT_FILENAME $root_path$fastcgi_script_name;
+                        include fastcgi_params;
+                        fastcgi_param DOCUMENT_ROOT $root_path;
+                    #	include snippets/fastcgi-php.conf;
+                    #
+                    #	# With php-fpm (or other unix sockets):
+                    #	fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+                    #	# With php-cgi (or other tcp sockets):
+                    #	fastcgi_pass 127.0.0.1:9000;
+                    }
+
+                    # deny access to .htaccess files, if Apache's document root
+                    # concurs with nginx's one
+                    #
+                    location ~* \.(htaccess|log|env|conf|ini|bak|swp|json)$ {
+                        deny all;
+                    }
+                    location = /config/menu.json {
+                        allow all;
+                    }
+                    location ~* \.(jpg|jpeg|png|gif|ico|woff|woff2|ttf|svg)$ {
+                        expires 30d;
+                        add_header Cache-Control "public, no-transform";
+                    }
+                    error_page 404 /404.html;
+                    error_page 403 /403.html;
+                    error_page 500 502 503 504 /50x.html;
+
+                    location = /404.html {
+                        root /var/www/html/web/err;
+                        internal;
+                    }
+                    
+                    location = /403.html {
+                        root /var/www/html/web/err;
+                        internal;
+                    }
+
+                    location = /50x.html {
+                        root /var/www/html/web/err;
+                        internal;
+                    }
+                }
+
         Активация конфигурации:
             Создайте символическую ссылку для активации конфигурации:
-                sudo ln -s /etc/nginx/sites-available/slm /etc/nginx/sites-enabled/
+                sudo ln -s /etc/nginx/sites-available/ /etc/nginx/sites-enabled/
             Проверьте конфигурацию NGINX на ошибки:
                 sudo nginx -t
             Перезапустите NGINX для применения изменений:
                 sudo systemctl restart nginx
-3. Развертывание проекта
-    Клонирование репозитория:
-        Склонируйте проект в директорию /var/www/slm:
-            sudo git clone <репозиторий> /var/www/slm
-    Настройка прав доступа:
-        Установите правильные права доступа для директории проекта:
-            sudo chown -R www-data:www-data /var/www/slm
-            sudo chmod -R 755 /var/www/slm
-    Настройка конфигурации:
-        Отредактируйте файл config/config.json для настройки подключения к базе данных:
-        {
-            "web": {
-                "session_timeout": 3600,
-                "host": "ip-addreses",
-                "domain": "slm-psi.domain.ru",
-                "generator_url": "http:/domain/backend/generator.php"
-            },
-            "db": {
-                "host": "domain",
-                "port": "5432",
-                "name": "RLM-PSI",
-                "user": "RLM_PSI_USER",
-                "password": "vbngrjemd#mf!"
-            }
-        }
-4. Настройка PHP-FPM
+
+3. Настройка PHP-FPM
     Настройка php.ini:
         Откройте файл php.ini для редактирования:
             sudo nano /etc/php/7.4/fpm/php.ini
@@ -143,3 +234,104 @@
         Перезапуск PHP-FPM:
             Перезапустите PHP-FPM для применения изменений:
                 sudo systemctl restart php7.4-fpm
+
+4. Развертывание проекта
+    Подготовка расположения логов:
+        В папке /var/log/ создате папку для хранения логов /slm
+        В данной пакке создайте два файла web.log, app.log
+        Назначьте права для фалов логов
+        chown -R www-data:www-data "/var/log/slm/web.log"
+        chown -R user:user "/var/log/slm/app.log"
+
+    Клонирование репозитория:
+        Склонируйте проект:
+            sudo git clone <репозиторий> /home/user/project_files
+            Скопируйте файлы из директории /v2/web в папку /var/www/slm/web
+            Скопируйте файлы из директории /v2/app в папку /opt/slm/app
+
+    Настройка прав доступа:
+            
+        Установите правильные права доступа для директории проекта:
+            sudo chown -R www-data:www-data /var/www/slm
+            sudo chmod -R 755 /var/www/slm
+
+            sudo chown -R user:user /opt/slm/app
+            sudo chmod -R 755 /opt/slm/app
+
+    Создайте новый systemd сервис
+
+        [Unit]
+        Description=SLM Flask Application
+        After=network.target
+
+        [Service]
+        User=user
+        WorkingDirectory=/opt/slm/app
+        Environment="PYTHONPATH=/opt/slm/app"
+        ExecStart=/usr/bin/python3 /opt/slm/app/app.py
+        Restart=on-failure
+        RestartSec=5s
+
+        [Install]
+        WantedBy=multi-user.target
+
+
+5. Конфигурация приложения
+
+    Откройте файл config.json
+    Выполните конфигурацию приложения
+        {
+            "LDAP": {
+                "active": false,           - false не изменяемое
+                "domain_master": "",       
+                "domain_slave": "",        
+                "port": "",                
+                "DN": "",
+                "username": "",
+                "password": ""
+            },
+            "LOG": {
+                "app": "/var/log/slm/app.log",  - путь к лог файлу приложения
+                "max_bytes": 10485700,          - Максимальный объем файла логов в байтах
+                "backup_count": 5,              - количество лог файлов
+                "log_level": "DEBUG"            - уровень логирования
+            },
+            "db": {
+                "host": "",                     - IP базы данных
+                "port": "5432",                 - Порт подключения к базе данных
+                "name": "",                     - Имя базы данных для подключения
+                "user": "",                     - Имя для подключения к БД
+                "password": ""                  - Пароль для покдлючения к БД
+            },
+            "flask": {
+                "SECRET_KEY": "",               - HEX ключ для Flask
+                "JWT": {
+                "SECRET_KEY": "",               - HEX ключ для JWT
+                "ACCESS_EXPIRES": 600,          - время действия токена
+                "REFRESH_EXPIRES": 1200         - время в течении которого можно обновить токен
+                }
+            },
+            "frod": {
+                "active": true                  - true - включить проверки безопасности
+            },
+            "version": {
+                "current_version": "0.7.40-397" - Текущая версия приложения
+            }
+        }
+
+    Откойте файл modules.json 
+    Включите необходимые Вам модули
+
+6. Запустите приложение
+
+    Обновите конфигурацию systemd
+        systemctl daemon-reload
+
+    Включите сервис 
+        systemctl enable slm-app
+
+    Запустите сервис 
+        systemctl start slm-app
+
+    Перезапустите nginx
+        systemctl restart nginx
