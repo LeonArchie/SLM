@@ -31,11 +31,6 @@ def get_user_privileges():
         try:
             # Декодируем и проверяем токен
             payload = TokenService.verify_token(data['access_token'])
-            
-            # Проверяем соответствие user_id в токене и запросе
-            if payload['user_id'] != data['user_id']:
-                logger.warning(f"Несоответствие user_id в токене ({payload['user_id']}) и запросе ({data['user_id']})")
-                return jsonify({"error": "Токен не соответствует запрошенному пользователю"}), 403
                 
         except jwt.ExpiredSignatureError:  # Истек срок действия токена
             logger.warning("Токен просрочен")

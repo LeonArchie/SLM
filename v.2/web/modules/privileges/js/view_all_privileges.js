@@ -1,15 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // DOM элементы
     const viewAllPrivilegesForm = document.getElementById('viewAllPrivilegesForm');
     const privilegesTableBody = document.getElementById('privilegesTableBody');
     const closeButton = document.getElementById('closeViewAllPrivilegesForm');
     const viewAllButton = document.getElementById('ViewAllPrivileges');
+    const privilegesSearch = document.getElementById('privilegesSearch');
     const loading = document.getElementById('loading');
     
+    // Проверка необходимых элементов
     if (!viewAllPrivilegesForm || !privilegesTableBody || !closeButton || !viewAllButton) {
         console.error('Не найдены необходимые элементы DOM');
         return;
     }
     
+    // Данные привилегий
+    let allPrivileges = [];
+    
+    // Обработчики событий
     viewAllButton.addEventListener('click', async function() {
         viewAllPrivilegesForm.style.display = 'block';
         await fetchAndDisplayPrivileges();
@@ -17,8 +24,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     closeButton.addEventListener('click', function() {
         viewAllPrivilegesForm.style.display = 'none';
+        if (privilegesSearch) privilegesSearch.value = '';
+        renderPrivilegesTable(allPrivileges);
     });
     
+    if (privilegesSearch) {
+        privilegesSearch.addEventListener('input', function() {
+            filterPrivileges(this.value.trim().toLowerCase());
+        });
+    }
+    
+    // Основные функции
     async function fetchAndDisplayPrivileges() {
         try {
             if (loading) loading.style.display = 'flex';
@@ -59,14 +75,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(data.error || 'Не удалось получить данные');
             }
             
-            renderPrivilegesTable(data.privileges);
+            allPrivileges = data.privileges || [];
+            renderPrivilegesTable(allPrivileges);
             
         } catch (error) {
             console.error('Error fetching privileges:', error);
             showErrorMessage('error', 'Ошибка', error.message || 'Не удалось загрузить данные.', 5000);
+            renderPrivilegesTable([]);
         } finally {
             if (loading) loading.style.display = 'none';
         }
+    }
+    
+    function filterPrivileges(searchTerm) {
+        if (!searchTerm) {
+            renderPrivilegesTable(allPrivileges);
+            return;
+        }
+
+        const filtered = allPrivileges.filter(privilege => {
+            const nameMatch = privilege.name_privileges && 
+                privilege.name_privileges.toLowerCase().includes(searchTerm);
+            const idMatch = privilege.id_privileges && 
+                privilege.id_privileges.toLowerCase().includes(searchTerm);
+            return nameMatch || idMatch;
+        });
+
+        renderPrivilegesTable(filtered);
     }
     
     function renderPrivilegesTable(privileges) {
@@ -76,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
             privilegesTableBody.innerHTML = `
                 <tr>
                     <td colspan="2" style="text-align: center; padding: 20px; color: #7f8c8d;">
-                        Нет данных о полномочиях
+                        ${allPrivileges.length === 0 ? 'Данные не загружены' : 'Ничего не найдено'}
                     </td>
                 </tr>
             `;

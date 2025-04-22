@@ -124,6 +124,7 @@
         <main>
             <!-- Контейнер для формы и таблицы -->
             <div class="form-container">
+                <h1 class="main-header"> <span class="user-icon"></span> Управление пользователями </h1>
                 <!-- Панель кнопок для управления пользователями -->
                 <div class="button-bar">
                     <div class="button-group">

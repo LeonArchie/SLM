@@ -208,6 +208,7 @@
             <?php endif; ?>
             
             <div class="form-container">
+                <h1 class="main-header"> <span class="account-icon"></span> Моя учетная запись</h1>
                 <!-- Группа кнопок -->
                 <div class="button-group fixed-buttons">
                     <button class="form-button" id="updateButton" onclick="location.reload()">

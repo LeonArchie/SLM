@@ -1,16 +1,33 @@
     <!-- Форма для просмотра полномочий -->
     <div id="viewPrivilegesForm" class="form-modal" style="display: none;">
-        <h2>Просмотр полномочий</h2>
-        <form id="viewPrivilegesFormContent">
-            <div class="input-group">
+        <div class="form-modal-content">
+            <div class="table-header">
+                <h2>Просмотр полномочий пользователя</h2>
+                <div class="search-container">
+                    <input type="text" id="privilegesUserSearch" placeholder="Поиск по названию или ID..." class="search-input">
+                </div>
+            </div>
+            <div class="user-id-container">
                 <label for="userIDView">UserID:</label>
                 <input type="text" id="userIDView" name="userIDView" readonly>
             </div>
-            <div id="privilegesTableContainer"></div> <!-- Контейнер для таблицы -->
-            <div class="button-group">
+            <div class="table-container">
+                <table class="privileges-table">
+                    <thead>
+                        <tr>
+                            <th>ID полномочий</th>
+                            <th>Название полномочий</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userPrivilegesTableBody">
+                        <!-- Данные будут загружены через JS -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="get-all-button-group">
                 <button type="button" class="close-button" id="closeViewPrivilegesForm">Закрыть</button>
             </div>
-        </form>
+        </div>
     </div>
     <!-- Форма для просмотра всех полномочий -->
     <div id="viewAllPrivilegesForm" class="form-modal" style="display: none;">
