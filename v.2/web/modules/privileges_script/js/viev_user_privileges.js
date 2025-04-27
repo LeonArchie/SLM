@@ -26,29 +26,29 @@ document.addEventListener('DOMContentLoaded', function () {
         renderUserPrivilegesTable([]);
     });
 
-        // Добавляем обработчик поиска
-        const privilegesUserSearch = document.getElementById('privilegesUserSearch');
-        if (privilegesUserSearch) {
-            privilegesUserSearch.addEventListener('input', function() {
-                filterUserPrivileges(this.value.toLowerCase());
-            });
-        }
-    
-        // Функция фильтрации привилегий
-        function filterUserPrivileges(searchTerm) {
-            const rows = userPrivilegesTableBody.querySelectorAll('tr');
+    // Добавляем обработчик поиска
+    const privilegesUserSearch = document.getElementById('privilegesUserSearch');
+    if (privilegesUserSearch) {
+        privilegesUserSearch.addEventListener('input', function() {
+            filterUserPrivileges(this.value.toLowerCase());
+        });
+    }
+
+    // Функция фильтрации привилегий
+    function filterUserPrivileges(searchTerm) {
+        const rows = userPrivilegesTableBody.querySelectorAll('tr');
+        
+        rows.forEach(row => {
+            const id = row.cells[0].textContent.toLowerCase();
+            const name = row.cells[1].textContent.toLowerCase();
             
-            rows.forEach(row => {
-                const id = row.cells[0].textContent.toLowerCase();
-                const name = row.cells[1].textContent.toLowerCase();
-                
-                if (id.includes(searchTerm) || name.includes(searchTerm)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
+            if (id.includes(searchTerm) || name.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
 
     // Основные функции
     function initViewPrivilegesButton() {
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const host = window.location.hostname;
             const port = window.location.port ? `:${window.location.port}` : '';
             const baseUrl = `${protocol}//${host}${port}`;
-            const apiUrl = `${baseUrl}:5000/privileges/user_view`;
+            const apiUrl = `${baseUrl}:5000/privileges/scripts/user_view`;
 
             const response = await fetch(apiUrl, {
                 method: 'POST',
@@ -124,18 +124,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error || 'Ошибка сервера');
+                throw new Error(errorData.message || 'Ошибка сервера');
             }
 
             const data = await response.json();
 
-            // Проверка на наличие поля privileges
-            if (!data.privileges) {
+            // Проверка на наличие поля scripts
+            if (!data.scripts) {
                 throw new Error('Некорректный формат данных');
             }
 
-            userPrivileges = data.privileges || [];
-            renderUserPrivilegesTable(userPrivileges);
+            // Преобразуем данные для отображения
+            const privilegesForDisplay = data.scripts.map(script => ({
+                id_privilege: script.guid_scripts,
+                name_privilege: script.name_scripts
+            }));
+
+            renderUserPrivilegesTable(privilegesForDisplay);
 
         } catch (error) {
             console.error('Error fetching user privileges:', error);
@@ -153,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
             userPrivilegesTableBody.innerHTML = `
                 <tr>
                     <td colspan="2" style="text-align: center; padding: 20px; color: #7f8c8d;">
-                        ${privileges.length === 0 ? 'Полномочия отсутствуют' : 'Данные не загружены'}
+                        ${privileges.length === 0 ? 'Разрешения отсутствуют' : 'Данные не загружены'}
                     </td>
                 </tr>
             `;
