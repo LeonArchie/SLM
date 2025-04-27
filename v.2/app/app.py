@@ -16,6 +16,7 @@ from routes.setting_user_list_route import user_list_bp
 from routes.setting_user_block_route import user_block_bp
 from routes.setting_user_create_route import user_create_bp
 from routes.privileges_get_all_route import privileges_get_all_bp
+from routes.privileges_scripts_get_all_route import privileges_scripts_get_all_bp
 from flask_cors import CORS
 import os
 import sys
@@ -100,7 +101,8 @@ def create_app():
         ('User List', user_list_bp),
         ('User Block', user_block_bp),
         ('User Create', user_create_bp),
-        ('Privileges Get All', privileges_get_all_bp)
+        ('Privileges Get All', privileges_get_all_bp),
+        ('Privileges Scripts Get All', privileges_scripts_get_all_bp)
     ]
         
     for name, bp in blueprints:

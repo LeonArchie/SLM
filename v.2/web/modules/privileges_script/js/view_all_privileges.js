@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const host = window.location.hostname;
             const port = window.location.port ? `:${window.location.port}` : '';
             const baseUrl = `${protocol}//${host}${port}`;
-            const apiUrl = `${baseUrl}:5000/privileges/get-all`;
+            const apiUrl = `${baseUrl}:5000/privileges/scripts/get-all`;
             
             const response = await fetch(apiUrl, {
                 method: 'POST',
