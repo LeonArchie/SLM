@@ -593,7 +593,7 @@ main {
 }
 
 .passwd-form button {
-    padding: 12px 20px;
+    padding: 8px 16px;
     margin-right: 10px;
     border: none;
     border-radius: 8px;
@@ -601,9 +601,9 @@ main {
     font-size: 1em;
     font-weight: 500;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    background-color: #667eea;
+    background-color: #3498db;
     color: #ffffff;
-    background-image: linear-gradient(to right, #667eea, #764ba2);
+    /* background-image: linear-gradient(to right, #667eea, #764ba2); */
 }
 
 .passwd-form button:hover {

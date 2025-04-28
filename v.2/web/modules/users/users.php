@@ -164,7 +164,6 @@
                     <!-- Строка поиска -->
                     <div class="search-container">
                         <input type="text" id="userSearch" placeholder="Поиск пользователя..." class="search-input">
-                        <button id="searchButton" class="search-button">Найти</button>
                     </div>
                     
                     <!-- Скрытые поля для CSRF-токена и ID пользователя -->
@@ -236,5 +235,6 @@
         <script src="/platform/include/js/error.js"></script>
         <script src="js/users.js"></script>
         <script src="js/find_users.js"></script>
+        <script src="js/user_block.js"></script>
     </body>
 </html>

@@ -7,7 +7,7 @@ from typing import List, Dict, Union
 logger = LoggerService.get_logger('app.user_block.service')
 
 class UserBlockService:
-    REQUIRED_PRIVILEGE = "[SETTINGS] - Право блокировки учетной записи"
+    REQUIRED_PRIVILEGE = "[Учетные записи] - Право блокировки учетной записи"
 
     @staticmethod
     def process_block_request(requesting_user_id: str, block_user_ids: Union[str, List[str]]) -> List[Dict]:
