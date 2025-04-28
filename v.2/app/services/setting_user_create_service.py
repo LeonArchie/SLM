@@ -63,9 +63,9 @@ class UserCreateService:
             logger.warning(f"Неверное ФИО: {user_data.get('full_name')}")
             return {"error": "Неверный формат ФИО"}, 400
 
-        if not UserCreateService.validate_email(user_data.get('email')):
+        if not UserCreateService.validate_email(user_data.get('user_off_email')):
             # Логирование ошибки неверного формата email
-            logger.warning(f"Неверный email: {user_data.get('email')}")
+            logger.warning(f"Неверный email: {user_data.get('user_off_email')}")
             return {"error": "Неверный формат email"}, 400
 
         if not user_data.get('password_hash'):
@@ -85,7 +85,7 @@ class UserCreateService:
                 'userid': user_id,
                 'userlogin': user_data['userlogin'],
                 'full_name': user_data['full_name'],
-                'email': user_data.get('email', ''),  # Email может быть пустым
+                'email': user_data.get('user_off_email', ''),  # Email может быть пустым
                 'password_hash': password_hash,
                 'active': True,  # Пользователь активен по умолчанию
                 'add_ldap': False,  # LDAP-интеграция выключена по умолчанию

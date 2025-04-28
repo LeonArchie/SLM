@@ -23,7 +23,7 @@ class UserListService:
                             userid,
                             active,
                             add_ldap,
-                            email,
+                            user_off_email,
                             full_name,
                             telephone,
                             userlogin
@@ -40,7 +40,7 @@ class UserListService:
                             'userid': user[0],           # ID пользователя
                             'active': user[1],          # Активен ли пользователь
                             'add_ldap': user[2],        # Интеграция с LDAP
-                            'email': user[3],          # Email пользователя
+                            'user_off_email': user[3],          # Email пользователя
                             'full_name': user[4],      # Полное имя пользователя
                             'telephone': user[5],      # Телефон пользователя
                             'userlogin': user[6]       # Логин пользователя
