@@ -208,14 +208,14 @@
                 <h1 class="main-header"> <span class="account-icon"></span> Моя учетная запись</h1>
                 <!-- Группа кнопок -->
                 <div class="button-group fixed-buttons">
-                    <button class="form-button" id="updateButton" onclick="location.reload()">
-                        <i class="fas fa-sync-alt"></i> Обновить
-                    </button>
-                    <button class="form-button" id="saveButton">
-                        <i class="fas fa-save"></i> Сохранить
-                    </button>
                     <button class="form-button" id="changePasswordButton">
                         <i class="fas fa-key"></i> Сменить пароль
+                    </button>
+                    <button class="form-button" id="saveButton" disabled>
+                        <i class="fas fa-save"></i> Сохранить
+                    </button>
+                    <button class="form-button" id="updateButton" onclick="location.reload()">
+                        <i class="fas fa-sync-alt"></i> Обновить
                     </button>
                 </div>
                 
@@ -402,5 +402,6 @@
         <script src="js/save.js"></script>
         <script src="js/button_pass_update.js"></script>
         <script src="js/form_pass_update.js"></script>
+        <script src="js/activated_save.js"></script>
     </body>
 </html>

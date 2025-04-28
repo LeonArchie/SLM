@@ -46,7 +46,7 @@ main {
 
 /* Общие стили для кнопок (не изменяем) */
 .form-button {
-    padding: 12px 20px;
+    padding: 8px 16px;
     font-size: 14px;
     font-weight: 500;
     border: none;
@@ -59,7 +59,6 @@ main {
 }
 
 .form-button:hover:not(:disabled) {
-    background-color: #dc3545;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
@@ -70,39 +69,33 @@ main {
 
 /* Кнопка "Сбросить" */
 #updateButton {
-    background-color: #667eea;
+    background-color: #95a5a6;
     color: #ffffff;
-    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
 #updateButton:hover:not(:disabled) {
-    background-color: #dc3545;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Кнопка "Сохранить" */
 #saveButton {
-    background-color: #667eea;
+    background-color: #3498db;
     color: #ffffff;
-    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
 #saveButton:hover:not(:disabled) {
-    background-color: #dc3545;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Кнопка "Сменить пароль" */
 #changePasswordButton {
-    background-color: #667eea;
+    background-color: #3498db;
     color: #ffffff;
-    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
 #changePasswordButton:hover:not(:disabled) {
-    background-color: #dc3545;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
@@ -642,13 +635,11 @@ tbody tr.selected {
 
 /* Кнопка "API" */
 #getAPIKey {
-    background-color: #667eea;
+    background-color: #3498db;
     color: #ffffff;
-    background-image: linear-gradient(to right, #667eea, #764ba2);
 }
 
 #getAPIKey:hover:not(:disabled) {
-    background-color: #dc3545;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }

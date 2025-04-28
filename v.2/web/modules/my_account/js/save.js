@@ -1,18 +1,19 @@
-/**
- * save.js - Полная версия с индикатором загрузки
- */
-
 // Конфигурация API
 const API_BASE_URL = `${window.location.protocol}//${window.location.hostname}:5000`;
 const API_ENDPOINT = `${API_BASE_URL}/setting/user/update`;
 
 // Полная конфигурация полей формы
 const FORM_FIELDS = {
-  email: {
-    id: 'email',
-    required: true,
-    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-    error: 'Некорректный формат email'
+  // Основные данные
+  name: {
+    id: 'firstName',
+    pattern: /^[а-яА-ЯёЁ]{0,20}$/,
+    error: 'Только русские буквы (макс. 20)'
+  },
+  family: {
+    id: 'lastName',
+    pattern: /^[а-яА-ЯёЁ]{0,20}$/,
+    error: 'Только русские буквы (макс. 20)'
   },
   full_name: {
     id: 'fullName',
@@ -20,21 +21,57 @@ const FORM_FIELDS = {
     pattern: /^[а-яА-ЯёЁ\s-]{1,70}$/,
     error: 'Только русские буквы и пробелы (макс. 70)'
   },
-  family: {
-    id: 'lastName',
-    pattern: /^[а-яА-ЯёЁ]{0,20}$/,
-    error: 'Только русские буквы (макс. 20)'
+  department: {
+    id: 'department',
+    pattern: /^[а-яА-ЯёЁ\s-.,()]{0,100}$/,
+    error: 'Только русские буквы и спецсимволы (макс. 100)'
   },
-  name: {
-    id: 'firstName',
-    pattern: /^[а-яА-ЯёЁ]{0,20}$/,
-    error: 'Только русские буквы (макс. 20)'
+  post: {
+    id: 'post',
+    pattern: /^[а-яА-ЯёЁ\s-.,()]{0,100}$/,
+    error: 'Только русские буквы и спецсимволы (макс. 100)'
   },
-  telephone: {
-    id: 'phone',
+  
+  // Контактные данные
+  user_off_email: {
+    id: 'user_off_email',
+    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    error: 'Некорректный формат email'
+  },
+  personal_mail: {
+    id: 'personal_mail',
+    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    error: 'Некорректный формат email'
+  },
+  visible_personal_mail: {
+    id: 'visible_personal_mail',
+    type: 'checkbox'
+  },
+  corp_phone: {
+    id: 'corp_phone',
     pattern: /^(\+7|8)\d{10}$/,
     normalize: value => value.replace(/^8/, '+7'),
     error: 'Формат: +79991234567 или 89991234567'
+  },
+  visible_corp_phone: {
+    id: 'visible_corp_phone',
+    type: 'checkbox'
+  },
+  telephone: {
+    id: 'telephone',
+    pattern: /^(\+7|8)\d{10}$/,
+    normalize: value => value.replace(/^8/, '+7'),
+    error: 'Формат: +79991234567 или 89991234567'
+  },
+  visible_telephone: {
+    id: 'visible_telephone',
+    type: 'checkbox'
+  },
+  
+  // Внешние сервисы
+  api_key: {
+    id: 'apiKey',
+    readonly: true
   },
   tg_id: {
     id: 'telegramID',
@@ -76,8 +113,12 @@ async function handleSave() {
       return;
     }
 
+    // Добавляем токен и userid к данным формы
+    formData.access_token = authCheck.token;
+    formData.userid = authCheck.userId;
+
     // 3. Отправка данных на сервер
-    const response = await sendData(authCheck.token, authCheck.userId, formData);
+    const response = await sendData(formData);
 
     // 4. Обработка ответа сервера
     handleServerResponse(response);
@@ -93,8 +134,8 @@ async function handleSave() {
 
 // Проверка авторизации
 function checkAuth() {
-  const token = localStorage.getItem('access_token');
-  const userId = localStorage.getItem('user_id');
+  const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
+  const userId = localStorage.getItem('user_id') || sessionStorage.getItem('user_id');
 
   if (!token || !userId) {
     return {
@@ -113,7 +154,19 @@ function collectFormData() {
   const errors = [];
 
   Object.entries(FORM_FIELDS).forEach(([field, config]) => {
+    // Пропускаем поля только для чтения
+    if (config.readonly) return;
+
     const element = document.getElementById(config.id);
+    if (!element) return;
+
+    // Обработка чекбоксов
+    if (config.type === 'checkbox') {
+      data[field] = element.checked; // Передаем boolean напрямую
+      return;
+    }
+
+    // Обработка текстовых полей
     const value = element?.value.trim() || '';
 
     // Проверка обязательных полей
@@ -138,7 +191,7 @@ function collectFormData() {
 }
 
 // Отправка данных на сервер
-async function sendData(token, userId, formData) {
+async function sendData(formData) {
   try {
     const response = await fetch(API_ENDPOINT, {
       method: 'POST',
@@ -146,11 +199,7 @@ async function sendData(token, userId, formData) {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      body: JSON.stringify({
-        access_token: token,
-        userid: userId,
-        ...formData
-      })
+      body: JSON.stringify(formData)
     });
 
     return {
@@ -186,19 +235,30 @@ function handleServerResponse(response) {
   showErrorMessage('success', 'Успех', 'Данные успешно сохранены', 3000);
   
   // Обновление данных в localStorage при необходимости
-  if (response.data?.email) {
-    localStorage.setItem('user_email', response.data.email);
+  if (response.data?.user_off_email) {
+    localStorage.setItem('user_email', response.data.user_off_email);
   }
+  
+  // Обновляем кнопку сохранения (делаем неактивной)
+  document.getElementById('saveButton')?.setAttribute('disabled', 'disabled');
 }
 
 // Вспомогательные функции
 function getFieldLabel(field) {
   const labels = {
-    email: 'Email',
+    name: 'Имя',
     family: 'Фамилия',
     full_name: 'Полное имя',
-    name: 'Имя',
-    telephone: 'Телефон',
+    department: 'Подразделение',
+    post: 'Должность',
+    user_off_email: 'Корпоративный email',
+    personal_mail: 'Личный email',
+    visible_personal_mail: 'Видимость личного email',
+    corp_phone: 'Рабочий телефон',
+    visible_corp_phone: 'Видимость рабочего телефона',
+    telephone: 'Личный телефон',
+    visible_telephone: 'Видимость личного телефона',
+    api_key: 'API ключ',
     tg_id: 'Telegram ID',
     tg_username: 'Telegram username'
   };
@@ -207,5 +267,8 @@ function getFieldLabel(field) {
 
 // Инициализация
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('saveButton')?.addEventListener('click', handleSave);
+  const saveButton = document.getElementById('saveButton');
+  if (saveButton) {
+    saveButton.addEventListener('click', handleSave);
+  }
 });
