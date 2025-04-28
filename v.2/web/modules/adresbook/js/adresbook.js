@@ -12,11 +12,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Обработка кликов по пользователям
+    // Обработка кликов по карточкам пользователей
     document.addEventListener('click', function(e) {
-        if (e.target.closest('.name-cell a')) {
+        const card = e.target.closest('.contact-card');
+        if (card) {
             e.preventDefault();
-            const userId = e.target.closest('a').getAttribute('data-user-id');
+            const userId = card.getAttribute('data-user-id');
             if (userId) {
                 showUserProfile(userId);
             }
@@ -25,14 +26,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Функция поиска
     function performSearch(query) {
-        const rows = document.querySelectorAll('#contactsTable tbody tr');
+        const cards = document.querySelectorAll('.contact-card');
         let visibleCount = 0;
         
-        rows.forEach(row => {
-            const name = row.cells[0].textContent.toLowerCase();
-            const position = row.cells[1]?.textContent.toLowerCase() || '';
-            const department = row.cells[2]?.textContent.toLowerCase() || '';
-            const email = row.cells[3]?.textContent.toLowerCase() || '';
+        cards.forEach(card => {
+            const name = card.querySelector('h3').textContent.toLowerCase();
+            const position = card.querySelector('.position').textContent.toLowerCase();
+            const department = card.querySelector('.field-value:last-child').textContent.toLowerCase();
+            const email = card.querySelectorAll('.field-value')[1].textContent.toLowerCase();
             
             const matches = query === '' || 
                 name.includes(query) || 
@@ -40,23 +41,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 department.includes(query) || 
                 email.includes(query);
             
-            row.style.display = matches ? '' : 'none';
+            card.style.display = matches ? '' : 'none';
             if (matches) visibleCount++;
         });
         
         // Показываем сообщение, если ничего не найдено
         const emptyState = document.querySelector('.empty-state');
-        if (visibleCount === 0 && rows.length > 0) {
+        if (visibleCount === 0 && cards.length > 0) {
             if (!emptyState) {
-                const table = document.querySelector('#contactsTable');
-                if (table) {
+                const grid = document.querySelector('#contactsGrid');
+                if (grid) {
                     const noResults = document.createElement('div');
-                    noResults.className = 'empty-state';
+                    noResults.className = 'empty-state address-book-empty';
                     noResults.innerHTML = `
-                        <i class="fas fa-search"></i>
+                        <span class="empty-icon"></span>
                         <p>Ничего не найдено</p>
                     `;
-                    table.parentNode.insertBefore(noResults, table.nextSibling);
+                    grid.parentNode.insertBefore(noResults, grid.nextSibling);
                 }
             }
         } else if (emptyState && emptyState.textContent.includes('Ничего не найдено')) {
@@ -66,34 +67,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Функция для отображения профиля пользователя
     function showUserProfile(userId) {
-        //реализовать модальное окно
         console.log('Открываем профиль пользователя:', userId);
-        
-        // 
-       // fetch(`/api/user/${userId}`)
-        //    .then(response => {
-        //        if (!response.ok) {
-        //            throw new Error('Ошибка сервера');
-       //         }
- //               return response.json();
-   //         })
-     //       .then(data => {
-       //         // openModal(data);
-         //       showErrorMessage('success', 'Успех', 'Данные пользователя загружены', 3000);
- //           })
-   //         .catch(error => {
-     //           console.error('Ошибка:', error);
-       //         showErrorMessage('error', 'Ошибка', 'Не удалось загрузить профиль', 5000);
-         //   });
+        // Здесь можно реализовать открытие модального окна с подробной информацией
     }
     
     // Инициализация при загрузке
     initAddressBook();
     
     function initAddressBook() {
-        // добавить проверку загрузки данных
-        if (document.querySelector('#contactsTable tbody tr')) {
-
-        }
+        // Можно добавить дополнительную инициализацию при необходимости
     }
 });

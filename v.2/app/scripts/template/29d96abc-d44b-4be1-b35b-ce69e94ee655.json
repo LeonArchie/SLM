@@ -1,0 +1,55 @@
+{
+    "meta": {
+            "guid_scripts": "29d96abc-d44b-4be1-b35b-ce69e94ee655",
+            "name_scripts": "Первоначальная настройка АРМ Linux",
+            "description": "Подготовка АРМ к работе в промышленной эксплуатации",
+            "tag": ["linux, АРМ"]
+    },
+    "content": [
+        {
+            "type": "input",
+            "name": "Сервер синхронизации времени",
+            "description": "Укажите 1 сервер для NTP синхронизации",
+            "name_param": "ntp_servers",
+            "value": "",
+            "placeholder": "0.0.0.0",
+            "validation" : "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+        },
+        {
+            "type": "input",
+            "name": "Порт SSH",
+            "description": "Порт для SSH-подключений. Не используйте 22 для безопасности.",
+            "name_param": "ssh_port",
+            "value": "",
+            "placeholder": "1024-65535",
+            "validation" : "\\b(102[4-9]|10[3-9]\\d|1[1-9]\\d{2}|[2-9]\\d{3}|[1-5]\\d{4}|6[0-4]\\d{3}|65[0-4]\\d{2}|655[0-2]\\d|6553[0-5])\\b"
+        },
+        {
+            "type": "input",
+            "name": "Время для авторизации",
+            "description": "Время для авториазции 30-59 в секундах или от 1m до 5m",
+            "name_param": "auth_time",
+            "value": "",
+            "placeholder": "30-59, 1m-5m",
+            "validation" : "\\b(3[0-9]|4[0-9]|5[0-9]|[1-5]m)\\b"
+        },
+        {
+            "type": "input",
+            "name": "Количество попыток ввода пароля",
+            "description": "Количество попытко для ввода пароля",
+            "name_param": "auth_tries",
+            "value": "",
+            "placeholder": "1-10",
+            "validation" : "\\b([1-9]|10)\\b"
+        },
+        {
+            "type": "input",
+            "name": "Ограничение количества сессии",
+            "description": "Максимальное количество сессий с одного IP адреса",
+            "name_param": "max_sessions",
+            "value": "",
+            "placeholder": "1-10",
+            "validation" : "\\b([1-9]|10)\\b"
+        }
+    ]
+}

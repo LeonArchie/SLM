@@ -100,6 +100,13 @@
                     "url": "/modules/privileges/privileges.php",
                     "active": true,
                     "dropdown": []
+                },
+                {
+                    "guid": "c6bffa31-a8fc-475b-ac29-8babaeff55f1",
+                    "title": "Управление правами исполнения",
+                    "url": "/modules/privileges_script/privileges.php",
+                    "active": true,
+                    "dropdown": []
                 }
             ]
         },
