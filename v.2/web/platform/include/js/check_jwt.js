@@ -11,7 +11,7 @@ async function verifyToken() {
     
     // Если токена нет и мы не на странице логина - редирект
     if (!accessToken && !window.location.pathname.includes('/login')) {
-        console.log('Access token not found, redirecting to logout');
+        //console.log('Access token not found, redirecting to logout');
         window.location.href = '/platform/logout.php';
         return;
     }
@@ -37,16 +37,16 @@ async function verifyToken() {
         const verifyData = await verifyResponse.json();
 
         if (verifyData.valid) {
-            console.log('Token is valid');
+            //console.log('Token is valid');
             return;
         }
 
         if (verifyData.should_refresh) {
-            console.log('Token expired, attempting to refresh');
+            //console.log('Token expired, attempting to refresh');
             const refreshToken = localStorage.getItem('refresh_token');
             
             if (!refreshToken) {
-                console.log('Refresh token not found, redirecting to logout');
+                //console.log('Refresh token not found, redirecting to logout');
                 window.location.href = '/platform/logout.php';
                 return;
             }
@@ -71,7 +71,7 @@ async function verifyToken() {
             const refreshData = await refreshResponse.json();
 
             if (!refreshData.access_token || !refreshData.refresh_token) {
-                console.log('Invalid refresh response, redirecting to logout');
+                //console.log('Invalid refresh response, redirecting to logout');
                 window.location.href = '/platform/logout.php';
                 return;
             }
@@ -107,16 +107,16 @@ async function verifyToken() {
                 console.error('Failed to save session');
             }
 
-            console.log('Tokens refreshed successfully');
+            //console.log('Tokens refreshed successfully');
         } else {
-            console.log('Token is invalid and cannot be refreshed, redirecting to logout');
+            //console.log('Token is invalid and cannot be refreshed, redirecting to logout');
             window.location.href = '/platform/logout.php';
         }
     } catch (error) {
         console.error('Error during token verification:', error);
         // Не делаем редирект при ошибке сети
         if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {
-            console.log('Network error, skipping logout');
+            //console.log('Network error, skipping logout');
             return;
         }
         window.location.href = '/platform/logout.php';
