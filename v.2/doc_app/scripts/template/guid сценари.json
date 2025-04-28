@@ -1,0 +1,117 @@
+{
+    "guid_scripts": "20693f0f-f27a-4bfe-b23c-af930a80bea3",
+    "name_scripts": "Первоначальная настройка сервера Linux",
+    "description": "Подготовка сервера к работе в промышленной эксплуатации",
+    "tag": ["linux"],
+    "template": {
+        "type" : "input",
+        "name" : "Сервер синхронизации времени",
+        "placeholder": "0.0.0.0",
+        "validation" : "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"        
+    },
+
+
+{
+    "modal": {
+      "id": "feedback-modal",
+      "title": "Оставьте отзыв",
+      "size": "medium", // "small" | "medium" | "large" | "fullscreen"
+      "position": "center", // "top" | "center" | "bottom"
+      "closeButton": true,
+      "overlayClose": true,
+      "escapeClose": true,
+      "styles": {
+        "overlay": {
+          "backgroundColor": "rgba(0,0,0,0.5)"
+        },
+        "modal": {
+          "backgroundColor": "#ffffff",
+          "borderRadius": "8px"
+        },
+        "title": {
+          "fontSize": "20px",
+          "color": "#333333"
+        }
+      },
+      "content": [
+        {
+          "type": "text",
+          "value": "Пожалуйста, заполните форму ниже"
+        },
+        {
+          "type": "form",
+          "fields": [
+            {
+              "type": "input",
+              "inputType": "text",
+              "name": "name",
+              "label": "Ваше имя",
+              "placeholder": "Введите имя",
+              "required": true
+            },
+            {
+              "type": "input",
+              "inputType": "email",
+              "name": "email",
+              "label": "Email",
+              "placeholder": "Введите email",
+              "required": true
+            },
+            {
+              "type": "textarea",
+              "name": "message",
+              "label": "Сообщение",
+              "placeholder": "Введите ваше сообщение",
+              "rows": 4
+            },
+            {
+              "type": "select",
+              "name": "rating",
+              "label": "Оценка",
+              "options": [
+                {"value": "5", "label": "Отлично"},
+                {"value": "4", "label": "Хорошо"},
+                {"value": "3", "label": "Удовлетворительно"}
+              ]
+            }
+          ],
+          "buttons": [
+            {
+              "type": "submit",
+              "text": "Отправить",
+              "action": "/api/feedback",
+              "method": "POST",
+              "style": "primary"
+            },
+            {
+              "type": "button",
+              "text": "Отмена",
+              "action": "close",
+              "style": "secondary"
+            }
+          ]
+        }
+      ],
+      "footer": {
+        "text": "Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности",
+        "link": {
+          "text": "Подробнее",
+          "url": "/privacy"
+        }
+      },
+      "triggers": [
+        {
+          "type": "delay",
+          "value": 5000 // показ через 5 секунд
+        },
+        {
+          "type": "scroll",
+          "value": 50 // показ при скролле 50% страницы
+        }
+      ],
+      "conditions": {
+        "maxShowCount": 3, // максимальное количество показов
+        "showOncePerSession": true // показывать только раз за сессию
+      }
+    }
+  }
