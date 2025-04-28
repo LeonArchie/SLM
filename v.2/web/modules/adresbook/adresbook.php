@@ -187,6 +187,7 @@
         <?php include ROOT_PATH . '/platform/include/visible/footer.php'; ?>
         
         <script src="/platform/include/js/error.js"></script>
+        <script src="/platform/include/js/check_jwt.js"></script>
         <script src="js/adresbook.js"></script>
     </body>
 </html>

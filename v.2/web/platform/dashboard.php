@@ -68,6 +68,7 @@
         <?php include 'include/visible/error.php'; ?>
         <?php include 'include/visible/footer.php'; ?>
         <!-- Подключаем скрипты -->
+        <script src="/platform/include/js/check_jwt.js"></script>
         <script src="include/js/error.js"></script>
     </body>   
 </html>

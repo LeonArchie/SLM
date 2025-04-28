@@ -233,6 +233,7 @@
         <?php include ROOT_PATH . '/platform/include/visible/footer.php'; ?>
         
         <script src="/platform/include/js/error.js"></script>
+        <script src="/platform/include/js/check_jwt.js"></script>
         <script src="js/users.js"></script>
         <script src="js/find_users.js"></script>
         <script src="js/user_block.js"></script>

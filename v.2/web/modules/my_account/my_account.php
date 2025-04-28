@@ -399,6 +399,7 @@
         
         <!-- Скрипты -->
         <script src="/platform/include/js/error.js"></script>
+        <script src="/platform/include/js/check_jwt.js"></script>
         <script src="js/save.js"></script>
         <script src="js/button_pass_update.js"></script>
         <script src="js/form_pass_update.js"></script>
