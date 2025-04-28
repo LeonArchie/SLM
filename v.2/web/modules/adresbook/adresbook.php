@@ -127,48 +127,57 @@
                         <p>Нет данных для отображения</p>
                     </div>
                 <?php else: ?>
-                    <div class="address-book-table-container">
-                        <table id="contactsTable">
-                            <thead>
-                                <tr>
-                                    <th>ФИО</th>
-                                    <th>Должность</th>
-                                    <th>Отдел</th>
-                                    <th>Email</th>
-                                    <th>Телефон</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($contacts as $contact): ?>
-                                <tr>
-                                    <td class="name-cell">
-                                        <div class="user-avatar">
-                                            <?= getInitials($contact['full_name'] ?? '') ?>
-                                        </div>
-                                        <a href="#" data-user-id="<?= htmlspecialchars($contact['user_id'] ?? '') ?>">
-                                            <?= htmlspecialchars($contact['full_name'] ?? 'Неизвестно') ?>
-                                        </a>
-                                    </td>
-                                    <td><?= htmlspecialchars($contact['position'] ?? '—') ?></td>
-                                    <td><?= htmlspecialchars($contact['department'] ?? '—') ?></td>
-                                    <td>
-                                        <?php if (!empty($contact['email'])): ?>
-                                        <a href="mailto:<?= htmlspecialchars($contact['email']) ?>" class="email-link">
-                                            <?= htmlspecialchars($contact['email']) ?>
-                                        </a>
-                                        <?php else: ?>—<?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <?php if (!empty($contact['phone'])): ?>
-                                        <a href="tel:<?= htmlspecialchars($contact['phone']) ?>" class="phone-link">
-                                            <?= htmlspecialchars($contact['phone']) ?>
-                                        </a>
-                                        <?php else: ?>—<?php endif; ?>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                    <div class="contacts-grid" id="contactsGrid">
+                        <?php foreach ($contacts as $contact): ?>
+                        <div class="contact-card" data-user-id="<?= htmlspecialchars($contact['user_id'] ?? '') ?>">
+                            <div class="card-header">
+                                <div class="user-avatar">
+                                    <?= getInitials($contact['full_name'] ?? '') ?>
+                                </div>
+                                <div class="user-info">
+                                    <h3><?= htmlspecialchars($contact['full_name'] ?? 'Неизвестно') ?></h3>
+                                    <p class="position"><?= htmlspecialchars($contact['position'] ?? '—') ?></p>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="contact-field">
+                                    <span class="field-icon">📧</span>
+                                    <div>
+                                        <p class="field-label">Корпоративная почта</p>
+                                        <p class="field-value"><?= htmlspecialchars($contact['email'] ?? '—') ?></p>
+                                    </div>
+                                </div>
+                                <div class="contact-field">
+                                    <span class="field-icon">📧</span>
+                                    <div>
+                                        <p class="field-label">Личная почта</p>
+                                        <p class="field-value"><?= htmlspecialchars($contact['personal_mail'] ?? '—') ?></p>
+                                    </div>
+                                </div>
+                                <div class="contact-field">
+                                    <span class="field-icon">📱</span>
+                                    <div>
+                                        <p class="field-label">Корпоративный телефон</p>
+                                        <p class="field-value"><?= htmlspecialchars($contact['corp_phone'] ?? '—') ?></p>
+                                    </div>
+                                </div>
+                                <div class="contact-field">
+                                    <span class="field-icon">📞</span>
+                                    <div>
+                                        <p class="field-label">Телефон</p>
+                                        <p class="field-value"><?= htmlspecialchars($contact['telephone'] ?? '—') ?></p>
+                                    </div>
+                                </div>
+                                <div class="contact-field">
+                                    <span class="field-icon">🏢</span>
+                                    <div>
+                                        <p class="field-label">Отдел</p>
+                                        <p class="field-value"><?= htmlspecialchars($contact['department'] ?? '—') ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
             </div>

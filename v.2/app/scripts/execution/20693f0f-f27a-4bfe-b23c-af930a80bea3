@@ -1,0 +1,49 @@
+
+#!/bin/bash
+
+# Установка временной зоны
+timedatectl set-timezone Europe/Moscow
+
+# Подключение репозитория Zabbix
+wget https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-2+ubuntu22.04_all.deb
+
+# Обновление системы
+apt update -y && apt full-upgrade -y && apt autoremove -y
+
+# Установка пакета Zabbix
+dpkg -i zabbix-release_7.0-2+ubuntu22.04_all.deb
+
+# Установка Zabbix Agent 2 и Chrony
+apt install -y zabbix-agent2
+apt install -y chrony
+
+# Включение и запуск сервисов
+systemctl enable zabbix-agent2
+systemctl start zabbix-agent2
+systemctl enable chrony
+systemctl start chrony
+
+# Настройка Chrony
+sed -i 's/^pool/#pool/g' /etc/chrony/chrony.conf
+echo "server 192.168.8.15 iburst" >> /etc/chrony/chrony.conf
+
+# Перезапуск Chrony и проверка
+systemctl restart chrony
+echo "Проверка источников времени:"
+chronyc sources
+
+# Настройка SSH
+sed -i 's/^Include/#Include/g' /etc/ssh/sshd_config
+sed -i 's/^#Port 22/Port 56314/g' /etc/ssh/sshd_config
+sed -i 's/^#SyslogFacility AUTH/SyslogFacility AUTH/g' /etc/ssh/sshd_config
+sed -i 's/^#LogLevel INFO/LogLevel INFO/g' /etc/ssh/sshd_config
+sed -i 's/^#LoginGraceTime 2m/LoginGraceTime 30/g' /etc/ssh/sshd_config
+sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin no/g' /etc/ssh/sshd_config
+sed -i 's/^#MaxAuthTries 6/MaxAuthTries 3/g' /etc/ssh/sshd_config
+sed -i 's/^#MaxSessions 10/MaxSessions 2/g' /etc/ssh/sshd_config
+
+# Перезапуск SSH
+systemctl restart ssh
+
+echo "Настройка завершена!"
+echo "Не забудьте добавить SSH ключ администратора"
