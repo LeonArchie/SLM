@@ -11,13 +11,25 @@ logger = LoggerService.get_logger('app.privileges.scripts.user_view')
 class PrivilegesScriptsUserViewService:
     @staticmethod
     def verify_access(access_token: str, user_id: str) -> bool:
-        """Проверяет валидность токена и соответствие user_id"""
+        """
+        Проверяет валидность access_token.
+        Не проверяет соответствие user_id токена и переданного user_id.
+        
+        Args:
+            access_token: JWT токен для проверки
+            user_id: ID пользователя (не используется в проверке)
+            
+        Returns:
+            bool: True если токен валиден, False если не валиден
+        """
         try:
+            # Проверяем только валидность токена
             payload = TokenService.verify_token(access_token)
-            token_user_id = payload.get('user_id')
-            if token_user_id != user_id:
-                logger.warning(f"Несоответствие user_id: токен для {token_user_id}, запрос от {user_id}")
-            return token_user_id == user_id
+            
+            # Успешная проверка токена (user_id игнорируется)
+            logger.debug(f"Токен успешно верифицирован для пользователя {payload.get('user_id')}")
+            return True
+            
         except jwt.ExpiredSignatureError:
             logger.warning("Истек срок действия токена")
             return False
@@ -25,7 +37,7 @@ class PrivilegesScriptsUserViewService:
             logger.warning("Недействительный токен")
             return False
         except Exception as e:
-            logger.error(f"Ошибка верификации токена: {str(e)}")
+            logger.error(f"Ошибка верификации токена: {str(e)}", exc_info=True)
             return False
 
     @staticmethod
