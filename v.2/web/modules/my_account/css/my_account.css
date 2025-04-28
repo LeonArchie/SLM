@@ -264,6 +264,125 @@ main {
     margin-right: 0;
 }
 
+/* Секция контактов */
+.contacts-section {
+    margin-top: 25px;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 25px;
+    padding-bottom: 15px;
+    width: 100%;
+}
+
+.contacts-section h3 {
+    margin-bottom: 18px;
+    color: #4a5568;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contacts-section h3 i {
+    color: #667eea;
+}
+
+/* Контейнер для колонок */
+.contacts-container {
+    display: flex;
+    width: 100%;
+    gap: 30px;
+}
+
+/* Колонки в секции контактов */
+.contact-column {
+    flex: 1;
+    min-width: 0;
+    width: 50%;
+}
+
+/* Стили для полей формы в контактах */
+.contact-field {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.contact-field label {
+    flex: 0 0 200px;
+    font-size: 1em;
+    color: #4a5568;
+    text-align: right;
+    font-weight: 500;
+    margin-right: 15px;
+}
+
+.contact-field input[type="text"],
+.contact-field input[type="email"],
+.contact-field input[type="tel"] {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box;
+    height: 44px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Стили для чекбоксов */
+.checkbox-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.checkbox-row label {
+    flex: 0 0 200px;
+    text-align: right;
+    margin-right: 15px;
+    font-weight: 500;
+    color: #4a5568;
+}
+
+.checkbox-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.custom-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e2e8f0;
+    border-radius: 4px;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    margin-right: 10px;
+}
+
+.custom-checkbox:checked {
+    background-color: #667eea;
+    border-color: #667eea;
+}
+
+.custom-checkbox:checked::after {
+    content: '';
+    display: block;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 2px;
+    left: 6px;
+}
+
 /* Секция привилегий */
 .privileges-section {
     margin-top: 20px;
@@ -599,6 +718,36 @@ tbody tr.selected {
 }
 
 /* Адаптивные стили */
+@media (max-width: 992px) {
+    .contacts-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .contact-column {
+        width: 100%;
+    }
+    
+    .contact-field,
+    .checkbox-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .contact-field label,
+    .checkbox-row label {
+        text-align: left;
+        margin-right: 0;
+        margin-bottom: 5px;
+        flex: 1 1 100%;
+    }
+    
+    .contact-field input,
+    .checkbox-container {
+        width: 100%;
+    }
+}
+
 @media (max-width: 768px) {
     .profile-section {
         flex-direction: column;

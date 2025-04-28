@@ -200,12 +200,9 @@
         <?php include ROOT_PATH .'/platform/include/visible/navbar.php'; ?>
         
         <main>
-            <?php if ($error): ?>
-                <div class="error-message">
-                    <strong>Ошибка:</strong> <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
-                    <p>Попробуйте обновить страницу или обратитесь в поддержку</p>
-                </div>
-            <?php endif; ?>
+            <?php if ($error):
+                    $error_message = "Попробуйте обновить страницу или обратитесь в поддержку";
+            endif; ?>
             
             <div class="form-container">
                 <h1 class="main-header"> <span class="account-icon"></span> Моя учетная запись</h1>
@@ -254,6 +251,16 @@
                                 <input type="text" id="fullName" name="fullName" 
                                     value="<?= htmlspecialchars($userData['full_name'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                             </div>
+                            <div class="form-field">
+                                <label for="department">Подразделение:</label>
+                                <input type="text" id="department" name="department" 
+                                value="<?= htmlspecialchars($userData['department'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                            </div>
+                            <div class="form-field">
+                                <label for="post">Должность:</label>
+                                <input type="text" id="post" name="post" 
+                                value="<?= htmlspecialchars($userData['post'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                            </div>
                         </div>
                         <div class="profile-picture">
                             <img src="img/user_icon.png" alt="Аватар" id="userAvatar">
@@ -264,18 +271,63 @@
                             </div>
                         </div>
                     </div>
-                    
                     <!-- Контактные данные -->
-                    <div class="form-row spaced-fields">
-                        <div class="form-field">
-                            <label for="email">E-mail:</label>
-                            <input type="email" id="email" name="email" 
-                                value="<?= htmlspecialchars($userData['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                        </div>
-                        <div class="form-field">
-                            <label for="phone">Телефон:</label>
-                            <input type="tel" id="phone" name="phone" 
-                                value="<?= htmlspecialchars($userData['telephone'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                    <div class="contacts-section">
+                        <h3><i class="fas fa-address-book"></i> Контакты</h3>
+                        <div class="contacts-container">
+                            <!-- Левая колонка -->
+                            <div class="contact-column">
+                                <div class="contact-field">
+                                    <label for="personal_mail">Личный e-mail:</label>
+                                    <input type="email" id="personal_mail" name="personal_mail" 
+                                        value="<?= htmlspecialchars($userData['personal_mail'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                </div>
+                                
+                                <div class="checkbox-row">
+                                    <label for="visible_personal_mail">Показывать личный e-mail:</label>
+                                    <div class="checkbox-container">
+                                        <input type="checkbox" id="visible_personal_mail" name="visible_personal_mail" class="custom-checkbox"
+                                            <?= isset($userData['visible_personal_mail']) && $userData['visible_personal_mail'] ? 'checked' : '' ?>>
+                                    </div>
+                                </div>
+                                
+                                <div class="contact-field">
+                                    <label for="user_off_email">Корпоративный e-mail:</label>
+                                    <input type="email" id="user_off_email" name="user_off_email" 
+                                        value="<?= htmlspecialchars($userData['user_off_email'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                </div>
+                            </div>
+                            
+                            <!-- Правая колонка -->
+                            <div class="contact-column">
+                                <div class="contact-field">
+                                    <label for="telephone">Личный телефон:</label>
+                                    <input type="tel" id="telephone" name="telephone" 
+                                        value="<?= htmlspecialchars($userData['telephone'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                </div>
+                                
+                                <div class="checkbox-row">
+                                    <label for="visible_telephone">Показывать личный телефон:</label>
+                                    <div class="checkbox-container">
+                                        <input type="checkbox" id="visible_telephone" name="visible_telephone" class="custom-checkbox"
+                                            <?= isset($userData['visible_telephone']) && $userData['visible_telephone'] ? 'checked' : '' ?>>
+                                    </div>
+                                </div>
+                                
+                                <div class="contact-field">
+                                    <label for="corp_phone">Рабочий телефон:</label>
+                                    <input type="tel" id="corp_phone" name="corp_phone" 
+                                        value="<?= htmlspecialchars($userData['corp_phone'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                </div>
+                                
+                                <div class="checkbox-row">
+                                    <label for="visible_corp_phone">Показывать рабочий телефон:</label>
+                                    <div class="checkbox-container">
+                                        <input type="checkbox" id="visible_corp_phone" name="visible_corp_phone" class="custom-checkbox"
+                                            <?= isset($userData['visible_corp_phone']) && $userData['visible_corp_phone'] ? 'checked' : '' ?>>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -337,43 +389,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            
+            </div> 
             <?php include ROOT_PATH . '/platform/include/visible/loading.html'; ?>
-            
-            <!-- Форма смены пароля -->
-            <div class="modal-overlay" id="modalOverlay">
-                <div class="passwd-form">
-                    <form id="passwdForm">
-                        <h3><i class="fas fa-key"></i> Смена пароля</h3>
-                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                        
-                        <div class="form-field">
-                            <label for="current_password"><i class="fas fa-lock"></i> Текущий пароль:</label>
-                            <input type="password" id="current_password" name="current_password" required>
-                        </div>
-                        
-                        <div class="form-field">
-                            <label for="new_password"><i class="fas fa-key"></i> Новый пароль:</label>
-                            <input type="password" id="new_password" name="new_password" required>
-                        </div>
-                        
-                        <div class="form-field">
-                            <label for="confirm_password"><i class="fas fa-redo"></i> Повторите пароль:</label>
-                            <input type="password" id="confirm_password" name="confirm_password" required>
-                        </div>
-                        
-                        <div class="button-group">
-                            <button type="button" class="cancel" onclick="closeForm()">
-                                <i class="fas fa-times"></i> Отменить
-                            </button>
-                            <button type="submit" class="save">
-                                <i class="fas fa-check"></i> Сменить
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <?php include 'include/form.php'?>
         </main>
         
         <?php include ROOT_PATH . '/platform/include/visible/error.php'; ?>

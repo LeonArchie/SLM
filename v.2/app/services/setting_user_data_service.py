@@ -21,8 +21,10 @@ class UserDataService:
                         """
                         SELECT 
                             userid, userlogin, tg_username, tg_id, telephone,
-                            regtimes, full_name, name, family, email,
-                            api_key, ldap_dn, add_ldap, active
+                            full_name, name, family, user_off_email, api_key, ldap_dn, 
+                            add_ldap, active, api_key, department, personal_mail,
+                            visible_corp_phone, corp_phone, post, visible_telephone,
+                            visible_personal_mail
                         FROM users 
                         WHERE userid = %s
                         """,
@@ -32,22 +34,30 @@ class UserDataService:
                     
                     if result:
                         # Обработка NULL значений и формирование словаря с данными пользователя
-                        return {
-                            'userid': result[0] if result[0] is not None else '',
-                            'userlogin': result[1] if result[1] is not None else '',
-                            'tg_username': result[2] if result[2] is not None else '',
-                            'tg_id': result[3] if result[3] is not None else '',
-                            'telephone': result[4] if result[4] is not None else '',
-                            'regtimes': result[5].isoformat() if result[5] is not None else '',  # Преобразование даты в строку
-                            'full_name': result[6] if result[6] is not None else '',
-                            'name': result[7] if result[7] is not None else '',
-                            'family': result[8] if result[8] is not None else '',
-                            'email': result[9] if result[9] is not None else '',
-                            'api_key': result[10] if result[10] is not None else '',
-                            'ldap_dn': result[11] if result[11] is not None else '',
-                            'add_ldap': bool(result[12]) if result[12] is not None else False,  # Преобразование в булево значение
-                            'active': bool(result[13]) if result[13] is not None else False    # Преобразование в булево значение
+                        user_data = {
+                            'userid': result[0] or '',
+                            'userlogin': result[1] or '',
+                            'tg_username': result[2] or '',
+                            'tg_id': str(result[3]) if result[3] is not None else '',
+                            'telephone': result[4] or '',
+                            'full_name': result[5] or '',
+                            'name': result[6] or '',
+                            'family': result[7] or '',
+                            'user_off_email': result[8] or '',
+                            'api_key': result[9] or result[13] or '',  # Обрабатываем два поля api_key
+                            'ldap_dn': result[10] or '',
+                            'add_ldap': bool(result[11]) if result[11] is not None else False,
+                            'active': bool(result[12]) if result[12] is not None else False,
+                            'department': result[14] or '',
+                            'personal_mail': result[15] or '',
+                            'visible_corp_phone': bool(result[16]) if result[16] is not None else False,
+                            'corp_phone': result[17] or '',
+                            'post': result[18] or '',
+                            'visible_telephone': bool(result[19]) if result[19] is not None else False,
+                            'visible_personal_mail': bool(result[20]) if result[20] is not None else False
                         }
+                        return user_data
+                    
                     # Если пользователь не найден, возвращаем None
                     return None
                     
