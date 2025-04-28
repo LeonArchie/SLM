@@ -25,7 +25,7 @@
         "SECRET_KEY": "554da0399798af7c0853e32093ea589717ea3b205514f9e44842d4c0dd3a9a1eaaeb22f406ff691fb4edfa88197941b5c672e063cd8c6f5b2a5e13e68e2745135cdfad70f045d747446baa37ea282b29821c43c9efd9b2f10e98bd5976f6231df6f259fd52e36fa3dda04d00adb98deb6be0fe49ac30ff4912ad0d15fe",
         "JWT": {
         "SECRET_KEY": "f51c8317f2a189d17400d8b9b53c7f04befc8e884c4fc89ab55c448d84bfbd65f262e941570eafcc4836affc4a02aff9114aab90da191fb6816cdbc673873b83de93919514f4c73422b051eb229705b75612ecd97cdce11641b43a1707f0fd58b75c4368cf6710d52e4790c8bdfb75d620d4caa4a9157913511763d18d",
-        "ACCESS_EXPIRES": 800,
+        "ACCESS_EXPIRES": 600,
         "REFRESH_EXPIRES": 1200
         }
     },
@@ -33,6 +33,6 @@
         "active": true
     },
     "version": {
-        "current_version": "0.7.62-420"
+        "current_version": "0.7.65-423"
     }
 }
