@@ -144,7 +144,7 @@
                                     <span class="field-icon">📧</span>
                                     <div>
                                         <p class="field-label">Корпоративная почта</p>
-                                        <p class="field-value"><?= htmlspecialchars($contact['email'] ?? '—') ?></p>
+                                        <p class="field-value"><?= htmlspecialchars($contact['user_off_email'] ?? '—') ?></p>
                                     </div>
                                 </div>
                                 <div class="contact-field">
