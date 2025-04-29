@@ -264,6 +264,9 @@ main {
     padding-top: 25px;
     padding-bottom: 15px;
     width: 100%;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #eaeaea;
 }
 
 .contacts-section h3 {
@@ -346,34 +349,29 @@ main {
 }
 
 .custom-checkbox {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #e2e8f0;
-    border-radius: 4px;
-    appearance: none;
-    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
     cursor: pointer;
+    appearance: none;
+    border: 2px solid #bdc3c7;
+    border-radius: 4px;
     position: relative;
     transition: all 0.2s ease;
-    margin-right: 10px;
 }
 
 .custom-checkbox:checked {
-    background-color: #667eea;
-    border-color: #667eea;
+    background-color: #2ecc71;
+    border-color: #2ecc71;
 }
 
 .custom-checkbox:checked::after {
-    content: '';
-    display: block;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
+    content: "✓";
     position: absolute;
-    top: 2px;
-    left: 6px;
+    color: white;
+    font-size: 12px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 /* Секция привилегий */
@@ -647,27 +645,6 @@ tbody tr.selected {
 /* Чекбокс при наведении */
 .custom-checkbox:hover {
     border-color: #667eea;
-}
-
-/* Активный чекбокс */
-.custom-checkbox:checked {
-    background-color: #667eea;
-    border-color: #667eea;
-}
-
-/* Отметка внутри активного чекбокса */
-.custom-checkbox:checked::after {
-    content: '';
-    display: block;
-    width: 10px;
-    height: 5px;
-    border: 2px solid #fff;
-    border-top: none;
-    border-left: none;
-    transform: rotate(45deg);
-    position: absolute;
-    top: 4px;
-    left: 6px;
 }
 
 /* Неактивный чекбокс */
