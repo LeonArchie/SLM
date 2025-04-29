@@ -46,10 +46,10 @@ def create_user():
         elif isinstance(result, dict) and 'error' in result:
             return jsonify(result), 401
 
+        # Первая транзакция - создание пользователя
         try:
             with DatabaseService.get_connection() as conn:
                 with conn.cursor() as cur:
-                    # Создаем пользователя
                     cur.execute(
                         """INSERT INTO users 
                         (userid, userlogin, full_name, user_off_email, password_hash, 
@@ -67,38 +67,39 @@ def create_user():
                             result['reg_user_id']
                         )
                     )
-
-                    # Пытаемся добавить привилегию
-                    privilege_added = False
-                    try:
-                        privilege_id = GuidGenerateService.generate_guid()
-                        cur.execute(
-                            """INSERT INTO privileges 
-                            (id, userid, id_privilege) 
-                            VALUES (%s, %s, %s)""",
-                            (privilege_id, result['userid'], DEFAULT_PRIVILEGE_ID)
-                        )
-                        privilege_added = True
-                        logger.info(f"Привилегия добавлена для пользователя {result['userid']}")
-                    except Exception as e:
-                        logger.error(f"Ошибка при добавлении привилегии: {str(e)}", exc_info=True)
-
                     conn.commit()
                     logger.info(f"Пользователь {result['userid']} успешно создан")
-
-                    response = {
-                        "success": True,
-                        "user_id": result['userid'],
-                        "privilege_added": privilege_added
-                    }
-                    if not privilege_added:
-                        response["warning"] = "Пользователь создан, но не удалось добавить привилегию"
-
-                    return jsonify(response), 201
-
         except Exception as e:
-            logger.error(f"Ошибка базы данных: {str(e)}", exc_info=True)
+            logger.error(f"Ошибка базы данных при создании пользователя: {str(e)}", exc_info=True)
             return jsonify({"error": "Ошибка базы данных"}), 500
+
+        # Вторая транзакция - добавление привилегии (отдельная транзакция)
+        privilege_added = False
+        try:
+            with DatabaseService.get_connection() as conn:
+                with conn.cursor() as cur:
+                    privilege_id = GuidGenerateService.generate_guid()
+                    cur.execute(
+                        """INSERT INTO privileges 
+                        (id, userid, id_privileges) 
+                        VALUES (%s, %s, %s)""",
+                        (privilege_id, result['userid'], DEFAULT_PRIVILEGE_ID)
+                    )
+                    conn.commit()
+                    privilege_added = True
+                    logger.info(f"Привилегия добавлена для пользователя {result['userid']}")
+        except Exception as e:
+            logger.error(f"Ошибка при добавлении привилегии: {str(e)}", exc_info=True)
+
+        response = {
+            "success": True,
+            "user_id": result['userid'],
+            "privilege_added": privilege_added
+        }
+        if not privilege_added:
+            response["warning"] = "Пользователь создан, но не удалось добавить привилегию"
+
+        return jsonify(response), 201
 
     except Exception as e:
         logger.error(f"Ошибка при создании пользователя: {str(e)}", exc_info=True)

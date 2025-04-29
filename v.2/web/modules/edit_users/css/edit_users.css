@@ -68,6 +68,17 @@ main {
     transform: translateY(0);
 }
 
+/* Кнопка "Назад" */
+#backButton {
+    background-color: #95a5a6;
+    color: #ffffff;
+}
+
+#backButton:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
 /* Кнопка "Сбросить" */
 #updateButton {
     background-color: #95a5a6;

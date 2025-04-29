@@ -287,6 +287,9 @@
                 
                 <!-- Группа кнопок -->
                 <div class="button-group fixed-buttons">
+                    <button class="form-button" id="backButton">
+                        <i class="fas fa-sync-alt"></i> Назад
+                    </button>
                     <button class="form-button" id="changePasswordButton">
                         <i class="fas fa-key"></i> Сменить пароль
                     </button>
@@ -520,5 +523,6 @@
         <script src="/platform/include/js/error.js"></script>
         <script src="/platform/include/js/check_jwt.js"></script>
         <script src="js/save_user_data.js"></script>
+        <script src="js/back.js"></script>
     </body>
 </html>
