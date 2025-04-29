@@ -1,9 +1,73 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Обработчик клика на кнопку "Сменить статус пользователя"
-    document.getElementById('blockButton')?.addEventListener('click', handleBlockUsers);
+    document.getElementById('blockButton')?.addEventListener('click', function() {
+        const selectedUsers = getSelectedUsers();
+        if (selectedUsers.length === 0) {
+            showErrorMessage('warning', 'Внимание', 'Выберите хотя бы одного пользователя.', 3000);
+            return;
+        }
+        showConfirmationModal(selectedUsers);
+    });
 });
 
-async function handleBlockUsers() {
+// Функция показа модального окна подтверждения
+function showConfirmationModal(selectedUsers) {
+    // Удаляем предыдущее модальное окно, если оно есть
+    const oldModal = document.querySelector('.modal.confirmation-modal');
+    if (oldModal) oldModal.remove();
+
+    // Создаем новое модальное окно
+    const modal = document.createElement('div');
+    modal.className = 'modal confirmation-modal';
+    modal.style.display = 'block'; // Принудительно показываем окно
+    modal.style.opacity = '0'; // Начальное состояние для анимации
+    
+    modal.innerHTML = `
+        <div class="modal-content" style="transform: translateY(-20px)">
+            <div class="modal-header">
+                <h2>Подтверждение</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите изменить статус ${selectedUsers.length} пользователя(ей)?</p>
+                <div class="form-actions">
+                    <button class="cancel-button">Отмена</button>
+                    <button class="submit-button">Подтвердить</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Добавляем модальное окно в DOM
+    document.body.appendChild(modal);
+    
+    // Запускаем анимацию появления
+    setTimeout(() => {
+        modal.style.opacity = '1';
+        modal.querySelector('.modal-content').style.transform = 'translateY(0)';
+    }, 10);
+
+    // Обработчики событий
+    modal.querySelector('.close-modal').addEventListener('click', () => closeModal(modal));
+    modal.querySelector('.cancel-button').addEventListener('click', () => closeModal(modal));
+    modal.querySelector('.submit-button').addEventListener('click', () => {
+        closeModal(modal);
+        handleBlockUsers(selectedUsers);
+    });
+}
+
+// Функция закрытия модального окна
+function closeModal(modal) {
+    modal.style.opacity = '0';
+    modal.querySelector('.modal-content').style.transform = 'translateY(-20px)';
+    setTimeout(() => {
+        modal.style.display = 'none';
+        modal.remove();
+    }, 300);
+}
+
+// Основная функция обработки блокировки пользователей
+async function handleBlockUsers(selectedUsers) {
     try {
         // 1. Получаем и проверяем авторизационные данные
         const { accessToken, currentUserId } = getAuthData();
@@ -12,21 +76,14 @@ async function handleBlockUsers() {
             return;
         }
 
-        // 2. Получаем выбранных пользователей
-        const selectedUsers = getSelectedUsers();
-        if (selectedUsers.length === 0) {
-            showErrorMessage('warning', 'Внимание', 'Выберите хотя бы одного пользователя.', 3000);
-            return;
-        }
-
-        // 3. Формируем URL API
+        // 2. Формируем URL API
         const apiUrl = buildApiUrl();
 
-        // 4. Выполняем запросы
+        // 3. Выполняем запросы
         showProcessingMessage();
         const results = await processBlockRequests(apiUrl, accessToken, currentUserId, selectedUsers);
 
-        // 5. Обрабатываем результаты
+        // 4. Обрабатываем результаты
         handleResults(results, selectedUsers);
 
     } catch (error) {

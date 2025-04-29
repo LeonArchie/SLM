@@ -34,7 +34,7 @@ def create_user():
         user_data = {
             'userlogin': data['userlogin'],  # Логин пользователя
             'full_name': data['full_name'],  # Полное имя пользователя
-            'user_off_email': data.get('user_off_email', ''),  # Email пользователя (необязательное поле)
+            'user_off_email': data.get('user_off_email'),  # Email пользователя (необязательное поле)
             'password_hash': data['password_hash']  # Хэш пароля пользователя
         }
 
@@ -69,7 +69,7 @@ def create_user():
                             result['password_hash'],  # Хэш пароля
                             result['active'],         # Статус активности
                             result['add_ldap'],       # Флаг добавления через LDAP
-                            result['regtimes']        # Время регистрации
+                            result['regtimes'].strftime('%Y-%m-%d %H:%M:%S')      # Время регистрации
                         )
                     )
                     conn.commit()  # Подтверждение транзакции

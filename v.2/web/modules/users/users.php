@@ -115,6 +115,7 @@
         <link rel="stylesheet" href="/platform/include/css/navbar.css"/>
         <link rel="stylesheet" href="/platform/include/css/error.css"/>
         <link rel="stylesheet" href="css/users.css"/>
+        <link rel="stylesheet" href="css/form.css"/>
         <title>ЕОС - Управление пользователями</title>
     </head>
     <body>
@@ -222,11 +223,7 @@
                     </table>
                 </div>
             </div>
-            
-            <!-- Форма добавления нового пользователя -->
-            <div class="add-form-overlay" id="addFormOverlay">
-                <!-- ... (оставить без изменений) ... -->
-            </div>
+            <?php include 'include/form.php'; ?>
         </main>
     
         <?php include ROOT_PATH . '/platform/include/visible/error.php'; ?>
@@ -237,5 +234,7 @@
         <script src="js/users.js"></script>
         <script src="js/find_users.js"></script>
         <script src="js/user_block.js"></script>
+        <script src="js/open_create_user.js"></script>
+        <script src="js/create_user.js"></script>
     </body>
 </html>

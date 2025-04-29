@@ -1,5 +1,6 @@
 import re
 import time
+import datetime
 from typing import Dict, Optional
 from services.logger_service import LoggerService
 from services.token_service import TokenService
@@ -85,11 +86,11 @@ class UserCreateService:
                 'userid': user_id,
                 'userlogin': user_data['userlogin'],
                 'full_name': user_data['full_name'],
-                'email': user_data.get('user_off_email', ''),  # Email может быть пустым
+                'user_off_email': user_data.get('user_off_email'),  # Email может быть пустым
                 'password_hash': password_hash,
                 'active': True,  # Пользователь активен по умолчанию
                 'add_ldap': False,  # LDAP-интеграция выключена по умолчанию
-                'regtimes': int(time.time())  # Время регистрации в формате Unix timestamp
+                'regtimes': datetime.datetime.now()  # Время регистрации
             }
 
             # Логирование успешного создания данных пользователя
