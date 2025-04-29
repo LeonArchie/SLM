@@ -35,6 +35,15 @@ class UserBlockService:
                 with conn.cursor() as cur:
                     for user_id in block_user_ids:
                         try:
+                            # Проверка, не пытается ли пользователь заблокировать самого себя
+                            if user_id == requesting_user_id:
+                                results.append({
+                                    "user_id": user_id,
+                                    "success": False,
+                                    "message": "Нельзя блокировать самого себя"
+                                })
+                                continue
+                            
                             # Получение текущего статуса активности пользователя
                             cur.execute(
                                 "SELECT active FROM users WHERE userid = %s",
