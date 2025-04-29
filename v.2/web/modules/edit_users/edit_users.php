@@ -291,7 +291,10 @@
                         <i class="fas fa-sync-alt"></i> Назад
                     </button>
                     <button class="form-button" id="changePasswordButton">
-                        <i class="fas fa-key"></i> Сменить пароль
+                        <i class="fas fa-key"></i> Сбросить пароль пользователя
+                    </button>
+                    <button class="form-button" id="blockButton">
+                        <i class="fas fa-key"></i> Сменить статус пользователя
                     </button>
                     <button class="form-button" id="saveButton">
                         <i class="fas fa-save"></i> Сохранить
@@ -524,5 +527,6 @@
         <script src="/platform/include/js/check_jwt.js"></script>
         <script src="js/save_user_data.js"></script>
         <script src="js/back.js"></script>
+        <script src="js/button_pass_update.js"></script>
     </body>
 </html>

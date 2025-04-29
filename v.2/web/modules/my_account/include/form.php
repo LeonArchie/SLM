@@ -2,9 +2,7 @@
 <div class="modal-overlay" id="modalOverlay">
     <div class="passwd-form">
         <form id="passwdForm">
-            <h3><i class="fas fa-key"></i> Смена пароля</h3>
-            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-            
+            <h3><i class="fas fa-key"></i> Смена пароля</h3>s            
             <div class="form-field">
                 <label for="current_password"><i class="fas fa-lock"></i> Текущий пароль:</label>
                 <input type="password" id="current_password" name="current_password" required>

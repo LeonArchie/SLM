@@ -21,6 +21,7 @@ from routes.privileges_scripts_user_view_route import privileges_scripts_user_vi
 from routes.setting_user_active_route import user_active_bp
 from routes.setting_user_full_data_route import user_full_data_bp
 from routes.setting_user_full_update_route import user_full_update_bp
+from routes.setting_user_admin_pass_update_route import admin_pass_update_bp
 from flask_cors import CORS
 import os
 import sys
@@ -110,7 +111,8 @@ def create_app():
         ('User Scripts View', privileges_scripts_user_view_bp),
         ('User Active', user_active_bp),
         ('User Full Data', user_full_data_bp),
-        ('User Full Update', user_full_update_bp)
+        ('User Full Update', user_full_update_bp),
+        ('Admin Password Update', admin_pass_update_bp)
     ]
         
     for name, bp in blueprints:
