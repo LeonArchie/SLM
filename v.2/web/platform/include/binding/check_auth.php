@@ -8,7 +8,7 @@
         
         $verifyEndpoint = '/auth/verify';
         $refreshEndpoint = '/auth/refresh';
-        $userActiveEndpoint = '/setting/user/active';
+        $userActiveEndpoint = '/setting/user/active/';
         
         logger("INFO", "Начало проверки авторизации через сессию");
         
