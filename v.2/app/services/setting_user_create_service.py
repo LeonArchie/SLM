@@ -90,7 +90,8 @@ class UserCreateService:
                 'password_hash': password_hash,
                 'active': True,  # Пользователь активен по умолчанию
                 'add_ldap': False,  # LDAP-интеграция выключена по умолчанию
-                'regtimes': datetime.datetime.now()  # Время регистрации
+                'regtimes': datetime.datetime.now(),  # Время регистрации
+                'reg_user_id': requesting_user_id  # ID пользователя-инициатора
             }
 
             # Логирование успешного создания данных пользователя

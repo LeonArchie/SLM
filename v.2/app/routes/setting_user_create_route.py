@@ -41,7 +41,7 @@ def create_user():
         # Вызов сервиса для создания пользователя
         result = UserCreateService.create_user(
             data['access_token'],  # Токен доступа
-            data['user_id'],       # ID пользователя
+            data['user_id'],       # ID пользователя-инициатора
             user_data              # Данные пользователя
         )
 
@@ -58,18 +58,20 @@ def create_user():
                     cur.execute(
                         """
                         INSERT INTO users 
-                        (userid, userlogin, full_name, user_off_email, password_hash, active, add_ldap, regtimes)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                        (userid, userlogin, full_name, user_off_email, password_hash, 
+                         active, add_ldap, regtimes, reg_user_id)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                         """,
                         (
                             result['userid'],         # ID пользователя
                             result['userlogin'],      # Логин пользователя
                             result['full_name'],      # Полное имя пользователя
-                            result['user_off_email'],          # Email пользователя
+                            result['user_off_email'], # Email пользователя
                             result['password_hash'],  # Хэш пароля
                             result['active'],         # Статус активности
                             result['add_ldap'],       # Флаг добавления через LDAP
-                            result['regtimes'].strftime('%Y-%m-%d %H:%M:%S')      # Время регистрации
+                            result['regtimes'].strftime('%Y-%m-%d %H:%M:%S'), # Время регистрации
+                            result['reg_user_id']     # ID пользователя-инициатора
                         )
                     )
                     conn.commit()  # Подтверждение транзакции

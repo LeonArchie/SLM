@@ -236,5 +236,6 @@
         <script src="js/user_block.js"></script>
         <script src="js/open_create_user.js"></script>
         <script src="js/create_user.js"></script>
+        <script src="js/edit_user.js"></script>
     </body>
 </html>
