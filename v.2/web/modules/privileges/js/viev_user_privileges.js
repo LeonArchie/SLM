@@ -169,11 +169,4 @@ document.addEventListener('DOMContentLoaded', function () {
             userPrivilegesTableBody.appendChild(row);
         });
     }
-
-    function showErrorMessage(type, title, message, duration) {
-        console.warn(`[${type.toUpperCase()}] ${title}: ${message}`);
-        setTimeout(() => {
-            console.clear();
-        }, duration);
-    }
 });

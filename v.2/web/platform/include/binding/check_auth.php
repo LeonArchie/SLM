@@ -1,29 +1,28 @@
 <?php
     function checkAuth() {
         // Параметры API
-                // Автоматически определяем базовый URL с портом 5000
         $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
         $host = $_SERVER['HTTP_HOST'];
-        
-        // Удаляем стандартный порт если он есть в HTTP_HOST
         $host = str_replace([':80',':443'], '', $host);
-
         $apiBaseUrl = "{$protocol}://{$host}:5000";
+        
         $verifyEndpoint = '/auth/verify';
         $refreshEndpoint = '/auth/refresh';
+        $userActiveEndpoint = '/setting/user/active/';
         
         logger("INFO", "Начало проверки авторизации через сессию");
         
         // Проверяем наличие токенов в сессии
         $accessToken = $_SESSION['access_token'] ?? null;
         $refreshToken = $_SESSION['refresh_token'] ?? null;
+        $userId = $_SESSION['userid'] ?? null;
         
-        if (!$accessToken) {
-            logger("WARNING", "Access токен отсутствует в сессии");
+        if (!$accessToken || !$userId) {
+            logger("WARNING", "Access токен или user_id отсутствует в сессии");
             return false;
         }
 
-        logger("DEBUG", "Найден access токен в сессии");
+        logger("DEBUG", "Найден access токен и user_id в сессии");
         
         // Функция для выполнения запросов к API
         $makeRequest = function($url, $data) use ($apiBaseUrl) {
@@ -54,16 +53,17 @@
         logger("INFO", "Проверка валидности access токена");
         $verifyResult = $makeRequest($verifyEndpoint, ['token' => $accessToken]);
         
+        $isTokenValid = false;
+        
         // Если токен валиден
         if ($verifyResult['status'] == 200 && $verifyResult['response']['valid'] === true) {
             logger("INFO", "Access токен валиден");
-            return true;
+            $isTokenValid = true;
         }
-        
         // Если токен можно обновить
-        if ($verifyResult['status'] == 401 && 
-            ($verifyResult['response']['should_refresh'] ?? false) && 
-            $refreshToken) {
+        elseif ($verifyResult['status'] == 401 && 
+               ($verifyResult['response']['should_refresh'] ?? false) && 
+               $refreshToken) {
             
             logger("INFO", "Попытка обновления токенов");
             
@@ -76,29 +76,43 @@
                 // Сохраняем новые токены в сессию
                 $_SESSION['access_token'] = $refreshResult['response']['access_token'];
                 $_SESSION['refresh_token'] = $refreshResult['response']['refresh_token'];
-                
-                return true;
+                $isTokenValid = true;
             } else {
                 logger("WARNING", "Не удалось обновить токены (код {$refreshResult['status']})");
             }
         }
         
-        logger("WARNING", "Авторизация не пройдена, очистка сессии");
+        // Если токен не валиден и не обновлен
+        if (!$isTokenValid) {
+            logger("WARNING", "Авторизация не пройдена, очистка сессии");
+            unset($_SESSION['access_token']);
+            unset($_SESSION['refresh_token']);
+            session_destroy();
+            return false;
+        }
         
-        // Если авторизация не прошла - чистим сессию
-        unset($_SESSION['access_token']);
-        unset($_SESSION['refresh_token']);
-        session_destroy();
+        // 3. Проверяем активный статус пользователя
+        logger("INFO", "Проверка активного статуса пользователя");
+        $activeStatusResult = $makeRequest($userActiveEndpoint, ['user_id' => $userId]);
         
-        return false;
+        if ($activeStatusResult['status'] != 200 || !($activeStatusResult['response']['success'] ?? false)) {
+            logger("WARNING", "Пользователь не активен или ошибка проверки статуса");
+            unset($_SESSION['access_token']);
+            unset($_SESSION['refresh_token']);
+            session_destroy();
+            return false;
+        }
+        
+        logger("INFO", "Авторизация и проверка статуса успешно пройдены");
+        return true;
     }
 
     logger("INFO", "Скрипт авторизации инициализирован (режим сессии)");
 
     // Основная логика
     if (!checkAuth()) {
-        logger("WARNING", "Авторизация не пройдена, перенаправление на login");
-        header("Location: /platform/login.php");
+        logger("WARNING", "Авторизация не пройдена, перенаправление на logout");
+        header("Location: /platform/logout.php");
         exit();
     }
 ?>

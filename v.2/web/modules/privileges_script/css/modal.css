@@ -49,10 +49,13 @@
 
 /* Стили для формы просмотра всех привилегий */
 #viewAllPrivilegesForm .form-modal-content {
+    display: block;
     padding: 20px;
     width: 80%;
     max-height: 80vh;
-    top: 10vh;
+    top: 20vh;
+    left: 15vh;
+    max-width: 50vh;
 }
 
 /* Заголовок формы */
@@ -68,8 +71,8 @@
 #viewAllPrivilegesForm .table-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     margin-bottom: 15px;
+    align-items: center;
 }
 
 /* Контейнер поиска */
@@ -197,9 +200,13 @@
 
 /* Стили для формы просмотра привилегий пользователя */
 #viewPrivilegesForm .form-modal-content {
+    display: block;
     padding: 20px;
     width: 80%;
     max-height: 80vh;
+    left: 15vh;
+    top: -15vh;
+    max-width: 60vh;
 }
 
 #viewPrivilegesForm .table-header {

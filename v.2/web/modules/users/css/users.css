@@ -305,4 +305,8 @@
         margin-right: 10px;
         color: #555;
     }
+    .updated-row {
+        background-color: rgba(46, 204, 113, 0.2);
+        transition: background-color 2s ease-out;
+    }
 }

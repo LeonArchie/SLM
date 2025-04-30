@@ -144,7 +144,7 @@
                                     <span class="field-icon">📧</span>
                                     <div>
                                         <p class="field-label">Корпоративная почта</p>
-                                        <p class="field-value"><?= htmlspecialchars($contact['email'] ?? '—') ?></p>
+                                        <p class="field-value"><?= htmlspecialchars($contact['user_off_email'] ?? '—') ?></p>
                                     </div>
                                 </div>
                                 <div class="contact-field">
@@ -187,6 +187,7 @@
         <?php include ROOT_PATH . '/platform/include/visible/footer.php'; ?>
         
         <script src="/platform/include/js/error.js"></script>
+        <script src="/platform/include/js/check_jwt.js"></script>
         <script src="js/adresbook.js"></script>
     </body>
 </html>
