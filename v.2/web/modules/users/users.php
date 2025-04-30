@@ -115,6 +115,7 @@
         <link rel="stylesheet" href="/platform/include/css/navbar.css"/>
         <link rel="stylesheet" href="/platform/include/css/error.css"/>
         <link rel="stylesheet" href="css/users.css"/>
+        <link rel="stylesheet" href="css/form.css"/>
         <title>ЕОС - Управление пользователями</title>
     </head>
     <body>
@@ -164,7 +165,6 @@
                     <!-- Строка поиска -->
                     <div class="search-container">
                         <input type="text" id="userSearch" placeholder="Поиск пользователя..." class="search-input">
-                        <button id="searchButton" class="search-button">Найти</button>
                     </div>
                     
                     <!-- Скрытые поля для CSRF-токена и ID пользователя -->
@@ -223,18 +223,19 @@
                     </table>
                 </div>
             </div>
-            
-            <!-- Форма добавления нового пользователя -->
-            <div class="add-form-overlay" id="addFormOverlay">
-                <!-- ... (оставить без изменений) ... -->
-            </div>
+            <?php include 'include/form.php'; ?>
         </main>
     
         <?php include ROOT_PATH . '/platform/include/visible/error.php'; ?>
         <?php include ROOT_PATH . '/platform/include/visible/footer.php'; ?>
         
         <script src="/platform/include/js/error.js"></script>
+        <script src="/platform/include/js/check_jwt.js"></script>
         <script src="js/users.js"></script>
         <script src="js/find_users.js"></script>
+        <script src="js/user_block.js"></script>
+        <script src="js/open_create_user.js"></script>
+        <script src="js/create_user.js"></script>
+        <script src="js/edit_user.js"></script>
     </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
     // Уникальный идентификатор страницы для проверки привилегий
-    $privileges_page = '3fda4364-74ff-4ea7-a4d4-5cca300758a2';
+    $privileges_page = '4e6c22aa-621a-4260-8e26-c2f4177362ba';
 
     $file_path = 'include/platform.php';
         
@@ -32,6 +32,21 @@
 
     include "/platform/include/binding/inital_error.php";
 
+    // Проверяем, что передан userid
+    if (!isset($_GET['userid']) || empty($_GET['userid'])) {
+        header("Location: /err/400.html");
+        exit();
+    }
+
+    $user_check_id = $_GET['userid'];
+    $user_admin_id = $_SESSION['userid'] ?? null;
+    $access_token = $_SESSION['access_token'] ?? null;
+
+    if (!$user_admin_id || !$access_token) {
+        header("Location: /logout.php");
+        exit();
+    }
+
     // ==============================================
     // ПОЛУЧЕНИЕ ДАННЫХ ПОЛЬЗОВАТЕЛЯ ЧЕРЕЗ API
     // ==============================================
@@ -39,24 +54,18 @@
     // Определяем URL API
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
     $host = str_replace([':80',':443'], '', $_SERVER['HTTP_HOST']);
-    $apiUrl = "{$protocol}://{$host}:5000/setting/user/data";
+    $apiUrl = "{$protocol}://{$host}:5000/setting/user/full_data";
 
     $userData = [];
+    $addressBook = [];
     $error = null;
 
     try {
-        // Проверяем наличие обязательных данных в сессии
-        if (!isset($_SESSION['access_token']) || !isset($_SESSION['userid'])) {
-            throw new Exception("Требуется авторизация");
-        }
-
-        $access_token = $_SESSION['access_token'];
-        $user_id = $_SESSION['userid'];
-
-        // Формируем запрос к API
+        // Формируем запрос к API для получения данных пользователя
         $postData = json_encode([
             'access_token' => $access_token,
-            'user_id' => $user_id
+            'user_admin_id' => $user_admin_id,
+            'user_check_id' => $user_check_id
         ]);
 
         $ch = curl_init();
@@ -91,17 +100,23 @@
 
         // Декодируем и проверяем ответ
         $responseData = json_decode($response, true);
-        if (!is_array($responseData)) {
-            throw new Exception("Неверный формат ответа от API");
+        if (!is_array($responseData) || !isset($responseData['status']) || !$responseData['status']) {
+            throw new Exception("Неверный формат ответа от API или доступ запрещен");
         }
 
-        // Проверяем соответствие user_id
-        if (!isset($responseData['userid']) || $responseData['userid'] !== $user_id) {
-            throw new Exception("Несоответствие идентификаторов пользователя");
+        // Проверяем наличие данных пользователя
+        if (!isset($responseData['user_data']) || !is_array($responseData['user_data'])) {
+            throw new Exception("Отсутствуют данные пользователя в ответе API");
         }
 
-        $userData = $responseData;
-        logger("DEBUG", "Данные пользователя успешно получены из API для user_id: {$user_id}");
+        $userData = $responseData['user_data'];
+        logger("DEBUG", "Данные пользователя успешно получены из API для user_id: {$user_check_id}");
+
+        // Получаем адресную книгу
+        $addressBookResponse = getAddressBook($access_token, $user_admin_id);
+        if ($addressBookResponse['status']) {
+            $addressBook = $addressBookResponse['contacts'] ?? [];
+        }
 
     } catch (Exception $e) {
         $error = $e->getMessage();
@@ -115,24 +130,98 @@
         }
     }
 
+    // Получаем имя создателя из адресной книги
+    $creatorName = 'Пользователь неизвестен';
+    if (!empty($userData['reg_user_id']) && !empty($addressBook)) {
+        foreach ($addressBook as $contact) {
+            if ($contact['user_id'] === $userData['reg_user_id']) {
+                $creatorName = $contact['full_name'] ?? 'Пользователь неизвестен';
+                break;
+            }
+        }
+    }
+
+    // Получаем имя редактора из адресной книги
+    $editorName = 'Пользователь неизвестен';
+    if (!empty($userData['changing']) && !empty($addressBook)) {
+        foreach ($addressBook as $contact) {
+            if ($contact['user_id'] === $userData['changing']) {
+                $editorName = $contact['full_name'] ?? 'Пользователь неизвестен';
+                break;
+            }
+        }
+    }
+
     // ==============================================
     // ПОЛУЧЕНИЕ ПРИВИЛЕГИЙ ПОЛЬЗОВАТЕЛЯ
     // ==============================================
     $privileges = [];
-    $hasPageAccess = false;
 
     try {
-        if (isset($_SESSION['access_token'])) {
-            $privilegesUrl = "{$protocol}://{$host}:5000/privileges/user_view";
-            
-            $postData = json_encode([
-                'access_token' => $_SESSION['access_token'],
-                'user_id' => $_SESSION['userid']
-            ]);
+        $privilegesUrl = "{$protocol}://{$host}:5000/privileges/user_view";
+        
+        $postData = json_encode([
+            'access_token' => $access_token,
+            'user_id' => $user_check_id // Используем user_check_id вместо user_admin_id
+        ]);
 
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $privilegesUrl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $postData,
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Accept: application/json',
+                'Content-Length: ' . strlen($postData)
+            ],
+            CURLOPT_TIMEOUT => 3,
+            CURLOPT_CONNECTTIMEOUT => 2,
+        ]);
+
+        $privilegesResponse = curl_exec($ch);
+        $privilegesHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        
+        if (!curl_errno($ch)) {
+            if ($privilegesHttpCode === 200) {
+                $privilegesData = json_decode($privilegesResponse, true);
+                if (isset($privilegesData['privileges']) && is_array($privilegesData['privileges'])) {
+                    $privileges = $privilegesData['privileges'];
+                    logger("DEBUG", "Получены привилегии пользователя: " . count($privileges) . " шт.");
+                    
+                }
+            } else {
+                $errorData = json_decode($privilegesResponse, true) ?? [];
+                throw new Exception($errorData['error'] ?? "Ошибка API привилегий (код {$privilegesHttpCode})");
+            }
+        } else {
+            throw new Exception("Ошибка соединения с API привилегий: " . curl_error($ch));
+        }
+        
+        curl_close($ch);
+    } catch (Exception $e) {
+        logger("ERROR", "Ошибка при получении привилегий: " . $e->getMessage());
+    }
+
+    // Логирование успешной инициализации страницы
+    logger("DEBUG", "edit_users.php успешно инициализирован для редактирования пользователя {$user_check_id}");
+
+    // Функция для получения адресной книги
+    function getAddressBook($accessToken, $userId) {
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+        $host = str_replace([':80',':443'], '', $_SERVER['HTTP_HOST']);
+        $apiUrl = "{$protocol}://{$host}:5000/adresbook/list";
+        
+        try {
+            $postData = json_encode([
+                'access_token' => $accessToken,
+                'user_id' => $userId
+            ]);
+            
             $ch = curl_init();
             curl_setopt_array($ch, [
-                CURLOPT_URL => $privilegesUrl,
+                CURLOPT_URL => $apiUrl,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_POST => true,
                 CURLOPT_POSTFIELDS => $postData,
@@ -144,47 +233,36 @@
                 CURLOPT_TIMEOUT => 3,
                 CURLOPT_CONNECTTIMEOUT => 2,
             ]);
-
-            $privilegesResponse = curl_exec($ch);
-            $privilegesHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             
-            if (!curl_errno($ch)) {
-                if ($privilegesHttpCode === 200) {
-                    $privilegesData = json_decode($privilegesResponse, true);
-                    if (isset($privilegesData['privileges']) && is_array($privilegesData['privileges'])) {
-                        $privileges = $privilegesData['privileges'];
-                        logger("DEBUG", "Получены привилегии пользователя: " . count($privileges) . " шт.");
-                        
-                        // Проверяем доступ к текущей странице
-                        foreach ($privileges as $priv) {
-                            if (isset($priv['id_privilege']) && $priv['id_privilege'] === $privileges_page) {
-                                $hasPageAccess = true;
-                                break;
-                            }
-                        }
-                    }
-                } else {
-                    $errorData = json_decode($privilegesResponse, true) ?? [];
-                    throw new Exception($errorData['error'] ?? "Ошибка API привилегий (код {$privilegesHttpCode})");
-                }
-            } else {
-                throw new Exception("Ошибка соединения с API привилегий: " . curl_error($ch));
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            
+            if (curl_errno($ch)) {
+                throw new Exception("Ошибка соединения: " . curl_error($ch));
             }
             
             curl_close($ch);
+            
+            if ($httpCode !== 200) {
+                return ['status' => false, 'error' => "HTTP код: {$httpCode}"];
+            }
+            
+            $data = json_decode($response, true);
+            if (!isset($data['contacts'])) {
+                return ['status' => false, 'error' => 'Неверный формат ответа'];
+            }
+            
+            return ['status' => true, 'contacts' => $data['contacts']];
+            
+        } catch (Exception $e) {
+            return ['status' => false, 'error' => $e->getMessage()];
         }
-    } catch (Exception $e) {
-        logger("ERROR", "Ошибка при получении привилегий: " . $e->getMessage());
     }
 
-    // Если у пользователя нет доступа к этой странице - перенаправляем
-    if (!$hasPageAccess) {
-        header("Location: /err/403.html");
-        exit();
+    // Функция для форматирования NULL значений
+    function formatValue($value) {
+        return $value === null ? '' : htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
     }
-
-    // Логирование успешной инициализации страницы
-    logger("DEBUG", "my_account.php успешно инициализирован");
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -192,8 +270,8 @@
         <?php include ROOT_PATH . '/platform/include/visible/all_head.html'; ?>
         <link rel="stylesheet" href="/platform/include/css/navbar.css"/>
         <link rel="stylesheet" href="/platform/include/css/error.css"/>
-        <link rel="stylesheet" href="css/my_account.css"/>
-        <title>ЕОС - Моя учетная запись</title>
+        <link rel="stylesheet" href="css/edit_users.css"/>
+        <title>ЕОС - Редактирование пользователя</title>
     </head>
     <body>
         <?php include ROOT_PATH . '/platform/include/visible/eos_header.html'; ?>
@@ -205,13 +283,20 @@
             endif; ?>
             
             <div class="form-container">
-                <h1 class="main-header"> <span class="account-icon"></span> Моя учетная запись</h1>
+                <h1 class="main-header"> <span class="account-icon"></span> Редактирование пользователя</h1>
+                
                 <!-- Группа кнопок -->
                 <div class="button-group fixed-buttons">
-                    <button class="form-button" id="changePasswordButton">
-                        <i class="fas fa-key"></i> Сменить пароль
+                    <button class="form-button" id="backButton">
+                        <i class="fas fa-sync-alt"></i> Назад
                     </button>
-                    <button class="form-button" id="saveButton" disabled>
+                    <button class="form-button" id="changePasswordButton">
+                        <i class="fas fa-key"></i> Сбросить пароль пользователя
+                    </button>
+                    <button class="form-button" id="blockButton">
+                        <i class="fas fa-key"></i> Сменить статус пользователя
+                    </button>
+                    <button class="form-button" id="saveButton">
                         <i class="fas fa-save"></i> Сохранить
                     </button>
                     <button class="form-button" id="updateButton" onclick="location.reload()">
@@ -222,6 +307,8 @@
                 <!-- Скроллируемая форма -->
                 <div class="scrollable-form">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                    <input type="hidden" name="user_admin_id" value="<?= htmlspecialchars($user_admin_id ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                    <input type="hidden" name="user_check_id" value="<?= htmlspecialchars($user_check_id ?? '', ENT_QUOTES, 'UTF-8') ?>">
                     
                     <!-- Секция профиля -->
                     <div class="profile-section">
@@ -229,37 +316,37 @@
                             <div class="form-field">
                                 <label for="userID">UserID:</label>
                                 <input type="text" id="userID" name="userID" readonly 
-                                    value="<?= htmlspecialchars($userData['userid'] ?? $_SESSION['userid'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                    value="<?= formatValue($userData['userid'] ?? null) ?>">
                             </div>
                             <div class="form-field">
                                 <label for="login">Логин:</label>
-                                <input type="text" id="login" name="login" readonly 
-                                    value="<?= htmlspecialchars($userData['userlogin'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                <input type="text" id="login" name="login" 
+                                    value="<?= formatValue($userData['userlogin'] ?? null) ?>">
                             </div>
                             <div class="form-field">
                                 <label for="lastName">Фамилия:</label>
                                 <input type="text" id="lastName" name="lastName" 
-                                    value="<?= htmlspecialchars($userData['family'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                    value="<?= formatValue($userData['family'] ?? null) ?>">
                             </div>
                             <div class="form-field">
                                 <label for="firstName">Имя:</label>
                                 <input type="text" id="firstName" name="firstName" 
-                                    value="<?= htmlspecialchars($userData['name'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                    value="<?= formatValue($userData['name'] ?? null) ?>">
                             </div>
                             <div class="form-field">
                                 <label for="fullName">Полное ФИО:</label>
                                 <input type="text" id="fullName" name="fullName" 
-                                    value="<?= htmlspecialchars($userData['full_name'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                    value="<?= formatValue($userData['full_name'] ?? null) ?>">
                             </div>
                             <div class="form-field">
                                 <label for="department">Подразделение:</label>
                                 <input type="text" id="department" name="department" 
-                                value="<?= htmlspecialchars($userData['department'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                value="<?= formatValue($userData['department'] ?? null) ?>">
                             </div>
                             <div class="form-field">
                                 <label for="post">Должность:</label>
                                 <input type="text" id="post" name="post" 
-                                value="<?= htmlspecialchars($userData['post'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                value="<?= formatValue($userData['post'] ?? null) ?>">
                             </div>
                         </div>
                         <div class="profile-picture">
@@ -271,6 +358,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <!-- Контактные данные -->
                     <div class="contacts-section">
                         <h3><i class="fas fa-address-book"></i> Контакты</h3>
@@ -280,7 +368,7 @@
                                 <div class="contact-field">
                                     <label for="personal_mail">Личный e-mail:</label>
                                     <input type="email" id="personal_mail" name="personal_mail" 
-                                        value="<?= htmlspecialchars($userData['personal_mail'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                        value="<?= formatValue($userData['personal_mail'] ?? null) ?>">
                                 </div>
                                 
                                 <div class="checkbox-row">
@@ -294,7 +382,7 @@
                                 <div class="contact-field">
                                     <label for="user_off_email">Корпоративный e-mail:</label>
                                     <input type="email" id="user_off_email" name="user_off_email" 
-                                        value="<?= htmlspecialchars($userData['user_off_email'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                        value="<?= formatValue($userData['user_off_email'] ?? null) ?>">
                                 </div>
                             </div>
                             
@@ -303,7 +391,7 @@
                                 <div class="contact-field">
                                     <label for="telephone">Личный телефон:</label>
                                     <input type="tel" id="telephone" name="telephone" 
-                                        value="<?= htmlspecialchars($userData['telephone'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                        value="<?= formatValue($userData['telephone'] ?? null) ?>">
                                 </div>
                                 
                                 <div class="checkbox-row">
@@ -317,7 +405,7 @@
                                 <div class="contact-field">
                                     <label for="corp_phone">Рабочий телефон:</label>
                                     <input type="tel" id="corp_phone" name="corp_phone" 
-                                        value="<?= htmlspecialchars($userData['corp_phone'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                        value="<?= formatValue($userData['corp_phone'] ?? null) ?>">
                                 </div>
                                 
                                 <div class="checkbox-row">
@@ -361,7 +449,7 @@
                         <div class="form-field">
                             <label for="dn">DN пользователя:</label>
                             <input type="text" id="dn" name="dn" readonly 
-                                value="<?= htmlspecialchars($userData['ldap_dn'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                value="<?= formatValue($userData['ldap_dn'] ?? null) ?>">
                         </div>
                     </div>
                     
@@ -373,23 +461,60 @@
                                 <i class="fas fa-key"></i> Получить ключ API
                             </button>
                             <input type="text" id="apiKey" name="apiKey" readonly
-                                value="<?= htmlspecialchars($userData['api_key'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                value="<?= formatValue($userData['api_key'] ?? null) ?>">
                         </div>
                         <div class="form-row">
                             <div class="form-field">
                                 <label for="telegramUsername">Telegram Username:</label>
                                 <input type="text" id="telegramUsername" name="telegramUsername" 
-                                    value="<?= htmlspecialchars($userData['tg_username'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                    value="<?= formatValue($userData['tg_username'] ?? null) ?>">
                             </div>
                             <div class="form-field">
                                 <label for="telegramID">Telegram ID:</label>
                                 <input type="text" id="telegramID" name="telegramID" 
-                                    value="<?= htmlspecialchars($userData['tg_id'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                    value="<?= formatValue($userData['tg_id'] ?? null) ?>">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Служебная информация -->
+                    <div class="service-info-section">
+                        <h3><i class="fas fa-info-circle"></i> Служебная информация</h3>
+                        <div class="service-info-container">
+                            <div class="form-field">
+                                <label for="creator">Создал:</label>
+                                <input type="text" id="creator" name="creator" readonly 
+                                    value="<?= htmlspecialchars($creatorName, ENT_QUOTES, 'UTF-8') ?>">
+                            </div>
+                            <div class="form-field">
+                                <label for="creator_guid">GUID создателя:</label>
+                                <input type="text" id="creator_guid" name="creator_guid" readonly 
+                                    value="<?= formatValue($userData['reg_user_id'] ?? null) ?>">
+                            </div>
+                            <div class="form-field">
+                                <label for="created_at">Когда создан:</label>
+                                <input type="text" id="created_at" name="created_at" readonly 
+                                    value="<?= formatValue($userData['regtimes'] ?? null) ?>">
+                            </div>
+                            <div class="form-field">
+                                <label for="editor">Редактировал:</label>
+                                <input type="text" id="editor" name="editor" readonly 
+                                    value="<?= htmlspecialchars($editorName, ENT_QUOTES, 'UTF-8') ?>">
+                            </div>
+                            <div class="form-field">
+                                <label for="editor_guid">GUID редактирующего:</label>
+                                <input type="text" id="editor_guid" name="editor_guid" readonly 
+                                    value="<?= formatValue($userData['changing'] ?? null) ?>">
+                            </div>
+                            <div class="form-field">
+                                <label for="updated_at">Время изменения:</label>
+                                <input type="text" id="updated_at" name="updated_at" readonly 
+                                    value="<?= formatValue($userData['changing_timestamp'] ?? null) ?>">
                             </div>
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
             <?php include ROOT_PATH . '/platform/include/visible/loading.html'; ?>
             <?php include 'include/form.php'?>
         </main>
@@ -400,9 +525,10 @@
         <!-- Скрипты -->
         <script src="/platform/include/js/error.js"></script>
         <script src="/platform/include/js/check_jwt.js"></script>
-        <script src="js/save.js"></script>
+        <script src="js/back.js"></script>
         <script src="js/button_pass_update.js"></script>
-        <script src="js/form_pass_update.js"></script>
-        <script src="js/activated_save.js"></script>
+        <script src="js/admin_user_block.js"></script>
+        <script src="js/save.js"></script>
+        <script src="js/save_button.js"></script>
     </body>
 </html>
