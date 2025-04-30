@@ -82,17 +82,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             if (data.success) {
-                showErrorMessage('success', 'Успех', 'Пользователь успешно заблокирован.', 3000);
+                showErrorMessage('success', 'Успех', 'Стутас пользователя изменен.', 3000);
                 setTimeout(() => window.location.reload(), 2000);
             } else {
-                throw new Error(data.message || 'Не удалось заблокировать пользователя');
+                throw new Error(data.message || 'Не удалось изменить статус пользователя');
             }
         } catch (error) {
             console.error('Ошибка блокировки:', error);
             showErrorMessage(
                 'error', 
                 'Ошибка', 
-                error.message || 'Не удалось выполнить запрос на блокировку', 
+                error.message || 'Не удалось выполнить запрос на изменение статуса', 
                 5000
             );
         }

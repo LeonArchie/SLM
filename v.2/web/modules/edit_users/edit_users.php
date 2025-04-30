@@ -528,5 +528,7 @@
         <script src="js/back.js"></script>
         <script src="js/button_pass_update.js"></script>
         <script src="js/admin_user_block.js"></script>
+        <script src="js/save.js"></script>
+        <script src="js/save_button.js"></script>
     </body>
 </html>

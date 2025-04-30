@@ -1,39 +1,46 @@
 from flask import Blueprint, request, jsonify
-from services.logger_service import logger
-from services.setting_user_full_update_service import update_user_data
+from services.setting_user_full_update_service import UserFullUpdateService
+from services.logger_service import LoggerService
 
-# Создаем Blueprint для роутов обновления данных пользователей
+logger = LoggerService.get_logger('app.user_full_update')
+
 user_full_update_bp = Blueprint('user_full_update', __name__)
 
 @user_full_update_bp.route('/setting/user/full_update', methods=['POST'])
-def handle_user_full_update():
-    """
-    Обработчик запроса на обновление данных пользователя
-    """
+def full_update_user():
+    """Endpoint для полного обновления данных пользователя администратором"""
+    logger.info("Получен запрос на полное обновление данных пользователя")
+    
     try:
-        # Получаем данные из запроса
         data = request.get_json()
+        if not data:
+            logger.warning("Данные не предоставлены в запросе")
+            return jsonify({"error": "Данные запроса обязательны"}), 400
+
+        # Проверка наличия обязательных полей
+        required_fields = ['access_token', 'user_admin_id', 'user_update_id', 'user_data']
+        missing_fields = [field for field in required_fields if field not in data]
         
-        # Проверяем наличие обязательных полей
-        if not data or not all(key in data for key in ['access_token', 'user_admin_id', 'user_update_id', 'user_data']):
-            logger.warning("Неполные данные в запросе")
-            return jsonify({"status": False, "error": "Необходимы access_token, user_admin_id, user_update_id и user_data"}), 400
+        if missing_fields:
+            logger.warning(f"Отсутствуют обязательные поля: {missing_fields}")
+            return jsonify({
+                "error": "Отсутствуют обязательные поля",
+                "details": missing_fields
+            }), 400
+
+        result = UserFullUpdateService.process_full_update(data)
         
-        # Извлекаем параметры
-        access_token = data['access_token']
-        admin_user_id = data['user_admin_id']
-        update_user_id = data['user_update_id']
-        user_data = data['user_data']
+        if 'error' in result:
+            logger.warning(f"Ошибка при обработке запроса: {result['error']}")
+            return jsonify({
+                "error": result['error'],
+                "details": result.get('details'),
+                "should_refresh": result.get('should_refresh', False)
+            }), result.get('status_code', 400)
         
-        # Обновляем данные пользователя
-        result = update_user_data(access_token, admin_user_id, update_user_id, user_data)
-        
-        # Возвращаем результат
-        if result.get('status'):
-            return jsonify(result), 200
-        else:
-            return jsonify(result), 403 if result.get('error') == "Недостаточно прав" else 400
-            
+        logger.info(f"Данные пользователя {data['user_update_id']} успешно обновлены администратором {data['user_admin_id']}")
+        return jsonify({"success": True, "message": "Данные успешно обновлены"}), 200
+
     except Exception as e:
-        logger.error(f"Ошибка в API /setting/user/full_update: {str(e)}", exc_info=True)
-        return jsonify({"status": False, "error": "Внутренняя ошибка сервера"}), 500
+        logger.error(f"Неожиданная ошибка: {str(e)}", exc_info=True)
+        return jsonify({"error": "Внутренняя ошибка сервера"}), 500

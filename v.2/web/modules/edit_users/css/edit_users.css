@@ -762,3 +762,14 @@ tbody tr.selected {
         width: 90vw;
     }
 }
+
+/* Стиль для обязательных полей */
+.required-field {
+    border-left: 3px solid #ffa500 !important;
+}
+
+/* Стиль для невалидных полей */
+.invalid-field {
+    border-color: #ff0000 !important;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5) !important;
+}
