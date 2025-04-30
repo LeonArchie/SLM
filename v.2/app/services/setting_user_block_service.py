@@ -7,7 +7,7 @@ from typing import List, Dict, Union
 logger = LoggerService.get_logger('app.user_block.service')
 
 class UserBlockService:
-    REQUIRED_PRIVILEGE = "[SETTINGS] - Право блокировки учетной записи"
+    REQUIRED_PRIVILEGE = "[Учетные записи] - Право блокировки учетной записи"
 
     @staticmethod
     def process_block_request(requesting_user_id: str, block_user_ids: Union[str, List[str]]) -> List[Dict]:
@@ -35,6 +35,15 @@ class UserBlockService:
                 with conn.cursor() as cur:
                     for user_id in block_user_ids:
                         try:
+                            # Проверка, не пытается ли пользователь заблокировать самого себя
+                            if user_id == requesting_user_id:
+                                results.append({
+                                    "user_id": user_id,
+                                    "success": False,
+                                    "message": "Нельзя блокировать самого себя"
+                                })
+                                continue
+                            
                             # Получение текущего статуса активности пользователя
                             cur.execute(
                                 "SELECT active FROM users WHERE userid = %s",

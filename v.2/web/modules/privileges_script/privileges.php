@@ -211,6 +211,7 @@
         <?php include ROOT_PATH . '/platform/include/visible/footer.php'; ?>
            
         <script src="/platform/include/js/error.js"></script>
+        <script src="/platform/include/js/check_jwt.js"></script>
         <script src="js/viev_user_privileges.js"></script>
         <script src="js/view_all_privileges.js"></script>
         <script src="js/find_privileges.js"></script>

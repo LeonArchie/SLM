@@ -30,8 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const saveToSession = async (data) => {
         try {
+            // Сохраняем все данные в localStorage
             localStorage.setItem('access_token', data.access_token);
+            localStorage.setItem('refresh_token', data.refresh_token);
             localStorage.setItem('user_id', data.user_id);
+            localStorage.setItem('user_name', data.user_name);
             const response = await fetch(`${baseUrl}/platform/back/save_session.php`, {
                 method: 'POST',
                 headers: {

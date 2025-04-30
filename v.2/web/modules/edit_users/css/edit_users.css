@@ -69,6 +69,17 @@ main {
     transform: translateY(0);
 }
 
+/* Кнопка "Назад" */
+#backButton {
+    background-color: #95a5a6;
+    color: #ffffff;
+}
+
+#backButton:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
 /* Кнопка "Сбросить" */
 #updateButton {
     background-color: #95a5a6;
@@ -625,12 +636,12 @@ tbody tr.selected {
 
 /* Кнопка "Заблокировать" */
 #blockButton {
-    background-color: #667eea;
+    background-color: #3498db;
     color: #ffffff;
 }
 
 #blockButton:hover {
-    background-color: #5a67d8;
+    background-color: #3498db;
 }
 
 /* Кнопка "API" */
@@ -750,4 +761,15 @@ tbody tr.selected {
     .passwd-form {
         width: 90vw;
     }
+}
+
+/* Стиль для обязательных полей */
+.required-field {
+    border-left: 3px solid #ffa500 !important;
+}
+
+/* Стиль для невалидных полей */
+.invalid-field {
+    border-color: #ff0000 !important;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5) !important;
 }
