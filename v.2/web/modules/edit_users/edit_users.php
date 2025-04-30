@@ -525,8 +525,8 @@
         <!-- Скрипты -->
         <script src="/platform/include/js/error.js"></script>
         <script src="/platform/include/js/check_jwt.js"></script>
-        <script src="js/save_user_data.js"></script>
         <script src="js/back.js"></script>
         <script src="js/button_pass_update.js"></script>
+        <script src="js/admin_user_block.js"></script>
     </body>
 </html>

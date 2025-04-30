@@ -77,7 +77,6 @@ async function updateServerSession(tokenData) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Auth-Token': 'SECRET_TOKEN_123'
             },
             body: JSON.stringify({
                 access_token: tokenData.access_token,

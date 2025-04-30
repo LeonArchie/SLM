@@ -43,6 +43,7 @@ main {
     background-color: #f9f9f9;
     border-bottom: 1px solid #e0e0e0;
     z-index: 10;
+    flex-wrap: wrap;
 }
 
 /* Общие стили для кнопок (не изменяем) */
@@ -635,12 +636,12 @@ tbody tr.selected {
 
 /* Кнопка "Заблокировать" */
 #blockButton {
-    background-color: #667eea;
+    background-color: #3498db;
     color: #ffffff;
 }
 
 #blockButton:hover {
-    background-color: #5a67d8;
+    background-color: #3498db;
 }
 
 /* Кнопка "API" */

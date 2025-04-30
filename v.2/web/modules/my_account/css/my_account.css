@@ -43,6 +43,7 @@ main {
     background-color: #f9f9f9;
     border-bottom: 1px solid #e0e0e0;
     z-index: 10;
+    flex-wrap: wrap;
 }
 
 /* Общие стили для кнопок (не изменяем) */

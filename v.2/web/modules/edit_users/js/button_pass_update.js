@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Константы API с уникальными именами
     const PASSWORD_API_BASE_URL = `${window.location.protocol}//${window.location.hostname}:5000`;
-    const PASSWORD_API_ENDPOINT = `${PASSWORD_API_BASE_URL}/api/setting/user/admin-pass-update`;
+    const PASSWORD_API_ENDPOINT = `${PASSWORD_API_BASE_URL}/setting/user/admin-pass-update`;
 
     // Создаем модальное окно с формой
     function createPasswordResetModal() {
