@@ -1,0 +1,136 @@
+{
+    "menu": [
+        {
+            "guid": "3fda4364-74ff-4ea7-a4d4-5cca300758a2",
+            "title": "Дашборд",
+            "url": "/platform/dashboard.php",
+            "active": true,
+            "dropdown": []
+        },
+        {
+            "guid": "8f4e3aa7-b05b-455e-b7dc-ca599953b9ad",
+            "title": "Управление сценариями",
+            "url": "",
+            "active": true,   
+            "dropdown": [
+                {
+                    "guid": "8f4e3aa7-b05b-455e-b7dc-ca599953b9ad",
+                    "title": "Запуск сценариев",
+                    "url": "/modules/task_start/view_task.php",
+                    "active": true,
+                    "dropdown": []
+                },
+                {
+                    "guid": "8f4e3aa7-b05b-455e-b7dc-ca599953b9ad",
+                    "title": "История исполнения",
+                    "url": "/modules/task_history/task_history.php",
+                    "active": true,
+                    "dropdown": []
+                },
+                {
+                    "guid": "8f4e3aa7-b05b-455e-b7dc-ca599953b9ad",
+                    "title": "Согласование исполненя",
+                    "url": "/modules/task_agreement/task_agreement.php",
+                    "active": true,
+                    "dropdown": []
+                }
+            ]
+        },
+
+        {
+            "guid": "4c57985e-bafe-4dfb-ab21-1d65ec20d9c9",
+            "title": "Учет инфраструктуры",
+            "url": "",
+            "active": true,
+            "dropdown": [
+                {
+                    "guid": "94248bd2-78dc-48d6-8995-6833a962a223",
+                    "title": "Автоматизированные системы",
+                    "url": "",
+                    "active": true,
+                    "dropdown": []
+                },
+                {
+                    "guid": "16bdb437-08e7-4783-8945-73618eab30e7",
+                    "title": "Серверное оборудование",
+                    "url": "/modules/servers/servers.php",
+                    "active": true,
+                    "dropdown": []
+                },
+                {
+                    "guid": "60b000c6-d23e-405a-94ec-a7b8f6466fce",
+                    "title": "АРМ пользователя",
+                    "url": "",
+                    "active": true,
+                    "dropdown": []
+                },
+                {
+                    "guid": "bbfe8805-8ff5-4581-b2bd-6e123de021f0",
+                    "title": "Сетевое оборудование",
+                    "url": "",
+                    "active": true,
+                    "dropdown": []
+                },
+                {
+                    "guid": "1f853bee-9109-4f37-91d7-6d7efdaffc5c",
+                    "title": "Домены",
+                    "url": "",
+                    "active": true,
+                    "dropdown": []
+                }
+
+            ]
+        },
+        {
+            "guid": "9bc70913-5e7b-4577-8918-cde4756b29a8",
+            "title": "Настройки платформы",
+            "url": "",
+            "active": true,
+            "dropdown": [
+                {
+                    "guid": "da137713-83fe-4325-868f-14b967dbf17c",
+                    "title": "Управление учетными записями",
+                    "url": "/modules/users/users.php",
+                    "active": true,
+                    "dropdown": []
+                },
+                {
+                    "guid": "aeef82b7-5083-480e-a59e-507a083a16be",
+                    "title": "Управление полномочиями",
+                    "url": "/modules/privileges/privileges.php",
+                    "active": true,
+                    "dropdown": []
+                },
+                {
+                    "guid": "c6bffa31-a8fc-475b-ac29-8babaeff55f1",
+                    "title": "Управление правами исполнения",
+                    "url": "/modules/privileges_script/privileges.php",
+                    "active": true,
+                    "dropdown": []
+                }
+            ]
+        },
+        {
+            "guid": "3fda4364-74ff-4ea7-a4d4-5cca300758a2",
+            "title": "Справочник",
+            "url": "/modules/adresbook/adresbook.php",
+            "active": true,
+            "dropdown": []
+        },
+        {
+            "guid": "3fda4364-74ff-4ea7-a4d4-5cca300758a2",
+            "title": "Моя учетная запись",
+            "url": "/modules/my_account/my_account.php",
+            "active": true,
+            "dropdown": []
+        },
+        {
+            "guid": "3fda4364-74ff-4ea7-a4d4-5cca300758a2",
+            "title": "Выход",
+            "url": "/platform/logout.php",
+            "active": true,
+            "dropdown": []
+            
+        }
+    ]
+}

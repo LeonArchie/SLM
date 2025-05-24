@@ -1,0 +1,119 @@
+/* Стили для навбара */
+.navbar {
+    background-color: #2d3748; /* Темный серо-синий фон */
+    padding: 10px;
+    position: fixed;
+    top: 2.0em; /* Отступ от header */
+    left: 0;
+    width: 30vh; /* Ширина остается фиксированной */
+    height: calc(100vh - 2.5em); /* Высота равна высоте viewport минус высота header */
+    z-index: 100000;
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3); /* Более выраженная тень справа */
+    overflow-y: auto; /* Добавляем прокрутку, если пунктов много */
+    transition: background-color 0.3s ease; /* Плавное изменение фона */
+    border-right: 2px solid #1a202c; /* Темная граница справа */
+}
+
+/* Стили для пунктов меню */
+.navbar ul {
+    padding: 0;
+    margin: 0;
+}
+
+.navbar li {
+    list-style: none;
+    margin: 8px 0; /* Увеличиваем отступы между пунктами */
+}
+
+.navbar a {
+    display: block;
+    text-decoration: none;
+    color: #ffffff; /* Белый текст */
+    background-color: #4a5568; /* Темно-серый фон */
+    padding: 12px 15px; /* Увеличиваем отступы */
+    border-radius: 8px; /* Закругленные углы */
+    font-size: 14px;
+    font-weight: 600; /* Полужирный шрифт */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Плавные переходы */
+    text-align: left; /* Текст слева */
+    width: 100%; /* Все кнопки имеют одинаковую ширину */
+    box-sizing: border-box; /* Учитываем padding в ширине */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Легкая тень */
+}
+
+/* Ховер эффект для кнопок */
+.navbar a:hover {
+    background-color: #667eea; /* Синий при наведении */
+    transform: translateY(-2px); /* Легкий подъем */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Увеличиваем тень */
+}
+
+/* Активный пункт меню */
+.navbar a.active {
+    background-color: #4299e1; /* Ярко-синий цвет для активного пункта */
+    color: #ffffff; /* Белый текст */
+    box-shadow: 0 4px 10px rgba(66, 153, 225, 0.3); /* Тень для активного пункта */
+}
+
+/* Стили для выпадающего меню */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none; /* Сначала скрыто */
+    background-color: #4a5568; /* Темно-серый фон */
+    width: 100%; /* Ширина выпадающего меню такая же, как у родительской кнопки */
+    margin-top: 8px; /* Отступ сверху */
+    border-radius: 8px; /* Закругленные углы */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Тень */
+    z-index: 1000;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    padding: 0; /* Убираем внутренние отступы */
+}
+
+/* Пункты вложенного меню как кнопки */
+.dropdown-menu li {
+    list-style: none; /* Убираем маркеры списка */
+    margin: 0; /* Убираем отступы между пунктами */
+    padding: 0; /* Убираем внутренние отступы */
+    border-bottom: 1px solid #3c4858; /* Темный разделитель между кнопками */
+}
+
+.dropdown-menu li:last-child {
+    border-bottom: none; /* Убираем разделитель у последнего элемента */
+}
+
+.dropdown-menu a {
+    display: block; /* Каждый пункт как блочный элемент */
+    padding: 12px 15px; /* Отступы как у основных кнопок */
+    border-radius: 0; /* Без радиуса углов внутри выпадающего меню */
+    width: 100%; /* Занимают всю доступную ширину */
+    box-sizing: border-box; /* Учитываем padding в ширине */
+    text-align: left; /* Текст слева */
+    background-color: #4a5568; /* Темно-серый фон */
+    color: #ffffff; /* Белый текст */
+    transition: background-color 0.3s ease; /* Плавное изменение фона */
+}
+
+/* Эффекты для выпадающего меню */
+.dropdown-menu a:hover {
+    background-color: #667eea; /* Синий при наведении */
+}
+
+/* Общее выделение для кнопки и выпадающего меню */
+.dropdown.open .dropdown-toggle {
+    background-color: #4299e1; /* Ярко-синий цвет для активного пункта */
+    color: #ffffff; /* Белый текст */
+    border-radius: 8px 8px 0 0; /* Изменяем радиус углов */
+}
+
+.dropdown.open .dropdown-menu {
+    display: block;
+    max-height: 200px; /* Максимальная высота выпадающего меню */
+    opacity: 1;
+    border-radius: 0 0 8px 8px; /* Радиус только для нижних углов */
+}

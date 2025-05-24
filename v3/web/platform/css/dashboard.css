@@ -1,0 +1,42 @@
+.message {
+    background: linear-gradient(135deg, #667eea, #764ba2); /* Градиентный фон */
+    padding: 30px; /* Увеличиваем внутренние отступы */
+    border-radius: 15px; /* Закругленные углы */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Более выраженная тень */
+    text-align: center; /* Центрирование текста внутри блока */
+    max-width: 500px; /* Увеличиваем максимальную ширину */
+    width: 90%; /* Блок будет адаптироваться под ширину контента */
+    color: #ffffff; /* Белый текст */
+    position: relative; /*  позиционирование */
+    top: 45%; /* Позиционируем по вертикали */
+    left: 50%; /* Позиционируем по горизонтали */
+    transform: translate(-50%, -50%); /* Центрирование */
+    animation: fadeIn 0.5s ease-in-out; /* Анимация появления */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Легкая граница */
+}
+
+.message h1 {
+    font-size: 2em; /* Увеличиваем размер заголовка */
+    margin-bottom: 15px; /* Отступ снизу */
+    font-weight: 600; /* Полужирный шрифт */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Тень для текста */
+}
+
+.message p {
+    font-size: 1.1em; /* Увеличиваем размер текста */
+    margin: 10px 0; /* Отступы между параграфами */
+    line-height: 1.6; /* Увеличиваем межстрочный интервал */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Тень для текста */
+}
+
+/* Анимация появления */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%); /* Начальное положение */
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%); /* Конечное положение */
+    }
+}

@@ -1,0 +1,92 @@
+/* Основные стили для страниц ошибок */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Современный шрифт */
+    background: linear-gradient(135deg, #667eea, #764ba2); /* Градиентный фон */
+    color: #ffffff; /* Белый текст */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out; /* Анимация появления */
+}
+
+/* Анимация появления */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Контейнер для содержимого */
+.container {
+    max-width: 600px;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый фон */
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Более выраженная тень */
+    backdrop-filter: blur(10px); /* Размытие фона */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Легкая граница */
+}
+
+/* Заголовок */
+h1 {
+    font-size: 3.5rem; /* Увеличиваем размер заголовка */
+    margin: 0;
+    color: #ffffff; /* Белый цвет для заголовка */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Тень для текста */
+    animation: slideIn 0.8s ease-in-out; /* Анимация появления заголовка */
+}
+
+/* Анимация появления заголовка */
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Текст */
+p {
+    font-size: 1.2rem;
+    margin: 20px 0;
+    line-height: 1.6; /* Увеличиваем межстрочный интервал */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Тень для текста */
+    animation: fadeInText 1s ease-in-out; /* Анимация появления текста */
+}
+
+/* Анимация появления текста */
+@keyframes fadeInText {
+    from {
+        opacity: 0;
+    transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ссылка */
+a {
+    color: #ffffff; /* Белый цвет для ссылки */
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 2px solid #ffffff; /* Подчеркивание ссылки */
+    transition: color 0.3s ease, border-color 0.3s ease; /* Плавные переходы */
+}
+
+/* Эффект при наведении на ссылку */
+a:hover {
+    color: #ffdd57; /* Желтый цвет при наведении */
+    border-bottom-color: #ffdd57; /* Желтое подчеркивание при наведении */
+}

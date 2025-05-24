@@ -1,0 +1,106 @@
+body {
+	display: flex;
+	justify-content: center; /* Выравнивание по горизонтали */
+	align-items: center; /* Выравнивание по вертикали */
+	height: calc(100vh - 3em - 3em);
+	width: 100%;
+	margin: 0; /* Убираем отступы по умолчанию */
+	background-color: #f0f4f8;
+	font-size: 14px;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	margin-top: 3em;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2em;
+    z-index: 999999;
+    background-color: #4a5568;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo-container {
+    text-align: center;
+    padding: 10px;
+    margin-right: 20px;
+}
+
+.logo-image {
+    width: auto;
+    height: 2.5em;
+}
+
+.name {
+    text-decoration: none;
+    color: #ffffff;
+    position: relative;
+    left: 10px;
+    font-size: 1.5em;
+    margin: 0;
+    font-weight: 600;
+}
+
+main {
+    margin-top: 9vh;
+    margin-left: 35vh; /* Отступ для header */
+    margin-right: 3vh;
+    margin-bottom: 3vh;
+    height: calc(100vh - 3em - 3em);
+    width: 100%;
+    overflow-y: auto;
+    justify-content: center; /* Горизонтальное центрирование */
+    align-items: center; /* Вертикальное центрирование */
+    min-height: calc(100vh - 9vh - 3vh); /* Высота main должна занимать всю высоту экрана минус отступы */
+	overflow: hidden;
+}
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    width: 100%;
+    z-index: 999995;
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.version {
+    font-size: 0.7em;
+    color: #718096;
+    text-align: center;
+    margin: 1px 0;
+}
+
+.overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+}
+
+.overlay .loading-image {
+    display: block;
+}

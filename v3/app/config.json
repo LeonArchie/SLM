@@ -1,0 +1,38 @@
+{
+    "LDAP": {
+        "active": false,
+        "domain_master": "",
+        "domain_slave": "",
+        "port": "",
+        "DN": "",
+        "username": "",
+        "password": ""
+    },
+    "LOG": {
+        "app": "/var/log/slm/app.log",
+        "max_bytes": 10485700,
+        "backup_count": 5,
+        "log_level": "DEBUG"
+    },
+    "db": {
+        "host": "192.168.3.4",
+        "port": "5432",
+        "name": "RLM-PSI",
+        "user": "RLM_PSI_USER",
+        "password": "vbngrjemd#mf!"
+    },
+    "flask": {
+        "SECRET_KEY": "b523898bc5117503999d09146f1ae493d2d1e25a200921727eb2c25346657b1fa2b752ffc9bab63ee6447f1bcabe128ea64661e50f5759315451e92fa4815e060d2ae1c2d3803cb7b11c25a427f91a020d89fc0d52c1455155fee5869db1c31a7048816698d5c1d3774c4c7cebe11a50a66402da4b8a937e6723a1490f0a3cc6a710946a47909bd31d3f2fcd0204e623ca2fad236e9d",
+        "JWT": {
+        "SECRET_KEY": "43e65a8d49b56c5d12dd95d0241a09676839ed5080c790bc5883b365ea905f96bf20b98a39b7cf1c9fb6288e45a865877dd1dec2d44c9e526f56a5efcbd4c5f6f0b9084e682570f776e3d2c5365c95fad7f3664f0e8195595c53e4ef5172b2aba7f95d47312018b780175ad7e58729c71df7ebac26c0e3d29a800b634d5fa09cc804e3b90d5521b97c49a5ffab0b55f13e473d2fac06",
+        "ACCESS_EXPIRES": 600,
+        "REFRESH_EXPIRES": 1200
+        }
+    },
+    "frod": {
+        "active": true
+    },
+    "version": {
+        "current_version": "0.9.0-457"
+    }
+}

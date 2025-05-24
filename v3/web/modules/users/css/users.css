@@ -1,0 +1,312 @@
+.main-header {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-icon::before {
+    content: "👥";
+    font-size: 24px;
+}
+
+/* Основные стили контейнера */
+.form-container {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: #333;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin: 20px auto;
+}
+
+/* Заголовок страницы */
+.page-title {
+    margin: 0 0 20px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Панель управления */
+.button-bar {
+    display: flex;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.button-bar button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+}
+
+.button-bar button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#addButton {
+    background-color: #2ecc71;
+    color: white;
+}
+
+#editButton, #blockButton, #syncLdapButton, #ldapSettingsButton {
+    background-color: #3498db;
+    color: white;
+}
+
+#refreshButton {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.button-bar button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Поиск пользователей */
+.search-container {
+    position: relative;
+    flex-grow: 1;
+    max-width: 400px;
+    min-width: 250px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.search-container::before {
+    content: "🔍";
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    opacity: 0.7;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    background-color: white;
+}
+
+/* Таблица пользователей */
+.table-container {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    margin-top: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+#usersTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#usersTable thead th {
+    background-color: #f8f9fa;
+    color: #555;
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 15px;
+    border-bottom: 2px solid #e9ecef;
+    position: sticky;
+    top: 0;
+}
+
+#usersTable tbody tr {
+    border-bottom: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+}
+
+#usersTable tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+#usersTable tbody td {
+    padding: 12px 15px;
+    vertical-align: middle;
+}
+
+/* Чекбоксы */
+#selectAll, .userCheckbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Аватарки пользователей */
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    transition: transform 0.2s ease;
+}
+
+.name-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.name-cell a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.name-cell a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+/* Индикаторы статуса */
+.custom-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    appearance: none;
+    border: 2px solid #bdc3c7;
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.custom-checkbox:checked {
+    background-color: #2ecc71;
+    border-color: #2ecc71;
+}
+
+.custom-checkbox:checked::after {
+    content: "✓";
+    position: absolute;
+    color: white;
+    font-size: 12px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.ldap-indicator:checked {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+/* Сообщение об отсутствии данных */
+.no-data-message {
+    text-align: center;
+    padding: 20px;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#usersTable tbody tr {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .button-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .button-group {
+        justify-content: center;
+    }
+    
+    .search-container {
+        max-width: 100%;
+    }
+    
+    #usersTable thead {
+        display: none;
+    }
+    
+    #usersTable tbody tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 10px;
+    }
+    
+    #usersTable tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 10px;
+        border-bottom: 1px solid #f1f1f1;
+    }
+    
+    #usersTable tbody td:last-child {
+        border-bottom: none;
+    }
+    
+    #usersTable tbody td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        margin-right: 10px;
+        color: #555;
+    }
+    .updated-row {
+        background-color: rgba(46, 204, 113, 0.2);
+        transition: background-color 2s ease-out;
+    }
+}
