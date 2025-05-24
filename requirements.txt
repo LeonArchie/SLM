@@ -1,6 +1,6 @@
 # Основные зависимости Flask
 flask==2.2.5
-flask-cors==4.0.2
+flask-cors==6.0.0
 
 # Работа с базой данных (PostgreSQL)
 psycopg2-binary==2.9.1
