@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-only WITH LICENSE-ADDITIONAL
+# Copyright (C) 2025 Петунин Лев Михайлович
+
 # version_routes.py
 from flask import Blueprint, jsonify, request
 from services.version_service import read_version_config

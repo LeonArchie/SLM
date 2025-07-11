@@ -1,4 +1,7 @@
 <?php
+    // SPDX-License-Identifier: AGPL-3.0-only WITH LICENSE-ADDITIONAL
+    // Copyright (C) 2025 Петунин Лев Михайлович
+   
     // Уникальный идентификатор страницы для проверки привилегий
     $privileges_page = '8f4e3aa7-b05b-455e-b7dc-ca599953b9ad';
 

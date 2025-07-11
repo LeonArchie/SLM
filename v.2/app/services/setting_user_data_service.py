@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-only WITH LICENSE-ADDITIONAL
+# Copyright (C) 2025 Петунин Лев Михайлович
+
 from services.connect_db_service import DatabaseService
 from services.logger_service import LoggerService
 from typing import Dict, Optional
