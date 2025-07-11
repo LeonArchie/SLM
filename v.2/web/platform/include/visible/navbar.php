@@ -1,4 +1,7 @@
 <?php
+    // SPDX-License-Identifier: AGPL-3.0-only WITH LICENSE-ADDITIONAL
+    // Copyright (C) 2025 Петунин Лев Михайлович
+    
     // Автоматически определяем базовый URL с портом 5000
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
     $host = $_SERVER['HTTP_HOST'];

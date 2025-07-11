@@ -1,4 +1,6 @@
-from flask import Blueprint, request, jsonify
+# SPDX-License-Identifier: AGPL-3.0-only WITH LICENSE-ADDITIONAL
+# Copyright (C) 2025 Петунин Лев Михайловичfrom flask import Blueprint, request, jsonify
+
 from services.setting_user_list_service import UserListService
 from services.logger_service import LoggerService
 from services.token_service import TokenService

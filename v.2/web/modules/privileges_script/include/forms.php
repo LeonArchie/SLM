@@ -1,4 +1,7 @@
-    <!-- Форма для просмотра полномочий -->
+<!-- SPDX-License-Identifier: AGPL-3.0-only WITH LICENSE-ADDITIONAL
+    // Copyright (C) 2025 Петунин Лев Михайлович -->
+    
+<!-- Форма для просмотра полномочий -->
     <div id="viewPrivilegesForm" class="form-modal" style="display: none;">
         <div class="form-modal-content">
             <div class="table-header">
