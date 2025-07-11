@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-only WITH LICENSE-ADDITIONAL
+// Copyright (C) 2025 Петунин Лев Михайлович
+
 document.addEventListener("DOMContentLoaded", function () {
     const saveButton = document.getElementById("saveButton");
     const formContainer = document.querySelector(".scrollable-form"); // Изменено с form на .scrollable-form

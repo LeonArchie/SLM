@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-only WITH LICENSE-ADDITIONAL
+# Copyright (C) 2025 Петунин Лев Михайлович
+
 # Импорт необходимых библиотек
 import jwt  # Для работы с JWT токенами
 from flask import Blueprint, request, jsonify  # Компоненты Flask для создания API

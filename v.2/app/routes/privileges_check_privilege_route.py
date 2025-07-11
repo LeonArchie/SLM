@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-only WITH LICENSE-ADDITIONAL
+# Copyright (C) 2025 Петунин Лев Михайлович
+
 # Импорт необходимых модулей Flask и сервисов
 from flask import Blueprint, request, jsonify  # Компоненты для роутинга и обработки запросов
 from services.privileges_check_privilege_service import check_privilege  # Сервис проверки привилегий

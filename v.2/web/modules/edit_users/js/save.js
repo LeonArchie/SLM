@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-only WITH LICENSE-ADDITIONAL
+// Copyright (C) 2025 Петунин Лев Михайлович
+
 document.addEventListener('DOMContentLoaded', function() {
     // Получаем все элементы формы, которые нужно отслеживать
     const formInputs = document.querySelectorAll('.scrollable-form input:not([readonly]):not([type="hidden"]), .scrollable-form select, .scrollable-form textarea');
