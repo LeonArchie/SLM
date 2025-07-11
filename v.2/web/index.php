@@ -1,4 +1,7 @@
 <?php
+    // SPDX-License-Identifier: AGPL-3.0-only WITH LICENSE-ADDITIONAL
+    // Copyright (C) 2025 Петунин Лев Михайлович
+    
     // Инициализация вызвываемых функции
     $file_path = 'platform/include/function.php';
     if (!file_exists($file_path)) {

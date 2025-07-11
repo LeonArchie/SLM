@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-only WITH LICENSE-ADDITIONAL
+# Copyright (C) 2025 Петунин Лев Михайлович
+
 # setting_user_update_route.py
 from flask import Blueprint, request, jsonify
 from services.setting_user_update_service import UserUpdateService
